@@ -1,9 +1,18 @@
+import { auth } from "@/auth";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Mail } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
-export default function Verify() {
+export default async function Verify() {
+
+    const session = await auth();
+    if (session?.user) {
+        redirect("/dashboard");
+    }
+
     return <div className="flex h-screen w-full justify-center items-center p-4">
         <Card className="w-[300px] shadow-2xl">
             <div className="flex flex-col items-center space-y-2">
@@ -17,7 +26,7 @@ export default function Verify() {
                 </CardDescription>
                 <CardFooter className="w-full pt-4">
                     <Link href={"/"} className={buttonVariants({ className: "w-full" })}>
-                        <ArrowLeft className="size-3.5"/> Redirect to homepage
+                        <ArrowLeft className="size-3.5" /> Redirect to homepage
                     </Link>
                 </CardFooter>
             </div>
