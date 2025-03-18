@@ -1,25 +1,27 @@
 "use server";
-import z from "zod";
-import { signIn } from "@/auth";
 import { userSession } from "../../../utils/sessionHook";
-import { onboardingSchema } from "../../../utils/zodSchemas";
+import { onboardingFormSchema, OnboardingFormSchema, OnboardingFormState } from "./types";
 
-export const onboardingUser = async (formData: FormData) => {
-    const session = await userSession();
+export const onboardingUserAction = async (prevState: OnboardingFormState, formData: FormData): Promise<OnboardingFormState> => {
+
+    await userSession();
+
+    const rawData: OnboardingFormSchema = {
+        firstName: formData.get('firstName') as string,
+        lastName: formData.get("lastName") as string,
+        address: formData.get("address") as string
+    }
 
     try {
-        const formDataObj: z.infer<typeof onboardingSchema> = {
-            firstName: formData.get('firstName') as string,
-            lastName: formData.get("lastName") as string,
-            address: formData.get("address") as string
-        }
-
-        const validated = onboardingSchema.safeParse(formDataObj);
+        const validated = onboardingFormSchema.safeParse(rawData);
         if (!validated.success) {
-            console.log(validated.error.flatten().fieldErrors);
+            return { success: false, errors: validated.error.flatten().fieldErrors, inputs: rawData };
+        } else {
+            console.log("CHiite suit te daag pe gye");
+            return { success: true};
         }
     } catch (err) {
-        console.log("ERROR jaafdsfsa");
+        return { success: false, message: "INTERNAL SERVER ERROR", inputs: rawData };
     }
 
 
