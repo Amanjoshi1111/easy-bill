@@ -1,18 +1,19 @@
-import { userSession } from "@/utils/hooks/sessionHook"
+import { userSession } from "@/utils/sessionHook"
 import { Menu, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/app/favicon.ico";
-import DashboardLinks from "@/components/dashboardLinks";
+import DashboardLinks from "@/app/dashboard/dashboardLinks";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { links } from "@/utils/constants";
 import { signOut } from "@/auth";
+import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 
-    const session = await userSession();
+    const session = await userSession();    
 
     return <div className="grid min-h-screen w-full md:grid-cols-[250px_1fr]
      lg:grid-cols-[300px_1fr]">
@@ -60,10 +61,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
                             ))}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
-                                <form  action={async () => {
+                                <form action={async () => {
                                     "use server";
                                     await signOut({
-                                        redirectTo: "/"
+                                        redirectTo: "/login"
                                     });
                                 }}>
                                     <button className="text-base hover:cursor-pointer w-full text-left" >Logout</button>

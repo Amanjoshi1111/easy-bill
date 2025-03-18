@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail } from "lucide-react";
 import { SubmitButton } from "@/components/submitButton";
-import { loginFormSubmit } from "@/app/login/action";
+import { loginFormSubmit } from "./_actions/loginAction";
 
 export default async function Login() {
 
@@ -34,7 +34,7 @@ export default async function Login() {
                         <p className="text-xs px-2 text-center text-muted-foreground">We'll send you a secure login link to your email</p>
                         <CardFooter className="w-full px-0 pt-4">
                             <div className="w-full flex justify-center">
-                                <SubmitButton />
+                                <SubmitButton text={"Continue with email"} loadingText={"Signing In"} />
                             </div>
                         </CardFooter>
                     </div>

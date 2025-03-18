@@ -9,9 +9,6 @@ export default function DashboardLinks() {
 
     const pathname = usePathname();
 
-    console.log("PATHNAME : ", pathname);
-
-
     return <>
         {links.map(link => {
             return <Link

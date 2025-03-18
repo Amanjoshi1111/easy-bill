@@ -1,5 +1,6 @@
 import { signOut } from "@/auth";
-import { userSession } from "../../utils/hooks/sessionHook";
+import { userSession } from "../../utils/sessionHook";
+import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
 
@@ -9,7 +10,7 @@ export default async function Dashboard() {
         <h1>dashboard dfsdffd</h1>
         <button onClick={async () => {
             "use server";
-            await signOut({redirectTo: "/"});
+            await signOut({ redirectTo: "/" });
         }}>Signout</button>
     </div>
 
