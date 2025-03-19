@@ -26,21 +26,12 @@ const initialBlurs: OnboardingFormBlurs = {
 export default function OnboardingForm() {
 
     const [serverState, action] = useActionState(onboardingUserAction, initialState);
-    // const [errors, setErrors] = useState<OnboardingFromStateErrors>({});
-    // const [blurs, setBlurs] = useState<OnboardingFormBlurs>(initialBlurs)
-    // const [onboardingData, setOnboardingData] = useState<OnboardingFormSchema>(serverState.inputs || initialOnboardingData);
-
 
     useEffect(() => {
         if (serverState.success) {
             alert("YAY ONBOARDED");
         }
     }, [serverState])
-
-    // const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    //     const { name } = e.target;
-    //     setBlurs((prev) => ({ ...prev, [name]: false }))
-    // }
 
     return <div className="h-screen w-screen flex items-center justify-center">
         <Card className="w-[500px]">
