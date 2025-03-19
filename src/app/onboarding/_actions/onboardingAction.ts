@@ -15,10 +15,17 @@ export const onboardingUserAction = async (prevState: OnboardingFormState, formD
     try {
         const validated = onboardingFormSchema.safeParse(rawData);
         if (!validated.success) {
-            return { success: false, errors: validated.error.flatten().fieldErrors, inputs: rawData };
+            return {
+                success: false, errors: validated.error.flatten().fieldErrors, inputs: rawData,
+                blurs: {
+                    firstName: true,
+                    lastName: true,
+                    address: true
+                }
+            };
         } else {
             console.log("CHiite suit te daag pe gye");
-            return { success: true};
+            return { success: true };
         }
     } catch (err) {
         return { success: false, message: "INTERNAL SERVER ERROR", inputs: rawData };

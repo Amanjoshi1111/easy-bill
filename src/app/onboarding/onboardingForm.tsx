@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { onboardingUserAction } from "./_actions/onboardingAction";
-import { OnboardingFormBlurs, OnboardingFormSchema, OnboardingFormState, OnboardingFromStateErrors } from "./_actions/types";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { OnboardingFormBlurs, onboardingFormSchema, OnboardingFormSchema, OnboardingFormState, OnboardingFromStateErrors } from "./_actions/types";
+import React, { useActionState, useEffect, useRef, useState } from "react";
 
 const initialState: OnboardingFormState = {
     success: false,
@@ -26,21 +26,46 @@ const initialBlurs: OnboardingFormBlurs = {
 export default function OnboardingForm() {
 
     const [serverState, action] = useActionState(onboardingUserAction, initialState);
-    // const [errors, setErrors] = useState<OnboardingFromStateErrors>({});
-    // const [blurs, setBlurs] = useState<OnboardingFormBlurs>(initialBlurs)
-    // const [onboardingData, setOnboardingData] = useState<OnboardingFormSchema>(serverState.inputs || initialOnboardingData);
+    const [blurs, setBlurs] = useState<OnboardingFormBlurs>(serverState.blurs || initialBlurs)
+    const [errors, setErrors] = useState<OnboardingFromStateErrors>(serverState.errors || {});
+    const [onboardingData, setOnboardingData] = useState<OnboardingFormSchema>(serverState.inputs || initialOnboardingData);
 
 
     useEffect(() => {
         if (serverState.success) {
+            setOnboardingData(initialOnboardingData);
             alert("YAY ONBOARDED");
+        } else if (serverState.errors) {
+
+        }
+        if (serverState.inputs) {
+            setOnboardingData(serverState.inputs);
         }
     }, [serverState])
 
-    // const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    //     const { name } = e.target;
-    //     setBlurs((prev) => ({ ...prev, [name]: false }))
-    // }
+    const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name } = e.target;
+        setBlurs((prev) => ({ ...prev, [name]: true }))
+    }
+
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setOnboardingData((prev) => {
+            const updatedData = {
+                ...prev,
+                [name]: value
+            }
+            const validated = onboardingFormSchema.safeParse(updatedData);
+            if (validated.success) {
+                setErrors({});
+            } else {
+                console.log("ERROR");
+                setErrors(validated.error.flatten().fieldErrors);
+            }
+            return updatedData;
+        })
+    }
 
     return <div className="h-screen w-screen flex items-center justify-center">
         <Card className="w-[500px]">
@@ -58,11 +83,14 @@ export default function OnboardingForm() {
                                     type="firstName"
                                     name="firstName"
                                     placeholder="Aman"
-                                    defaultValue={serverState.inputs?.firstName}
+                                    onBlur={handleOnBlur}
+                                    onChange={handleOnChange}
+                                    // defaultValue={serverState.inputs?.firstName}
+                                    value={onboardingData.firstName}
                                 />
-                                {serverState.errors?.firstName
+                                {blurs.firstName && errors?.firstName
                                     && <div className="text-red-400 text-sm">
-                                        {serverState.errors.firstName[0]}
+                                        {errors.firstName[0]}
                                     </div>}
                             </div>
                             <div className="space-y-2 flex-1">
@@ -72,11 +100,15 @@ export default function OnboardingForm() {
                                     name="lastName"
                                     placeholder="Joshi"
                                     className="w-full"
-                                    defaultValue={serverState.inputs?.lastName}
+                                    onBlur={handleOnBlur}
+                                    onChange={handleOnChange}
+                                    // defaultValue={serverState.inputs?.lastname}
+                                    value={onboardingData.lastName}
+
                                 />
-                                {serverState.errors?.lastName
+                                {blurs.lastName && errors?.lastName
                                     && <div className="text-red-400 text-sm">
-                                        {serverState.errors.lastName[0]}
+                                        {errors.lastName[0]}
                                     </div>}
                             </div>
                         </div>
@@ -85,11 +117,14 @@ export default function OnboardingForm() {
                             <Input type="address"
                                 name="address"
                                 placeholder="Mayur vihar, Delhi"
-                                defaultValue={serverState.inputs?.address}
+                                onBlur={handleOnBlur}
+                                onChange={handleOnChange}
+                                // defaultValue={serverState.inputs?.address}
+                                value={onboardingData.address}
                             />
-                            {serverState.errors?.address
+                            {blurs.address && errors?.address
                                 && <div className="text-red-400 text-sm">
-                                    {serverState.errors.address[0]}
+                                    {errors.address[0]}
                                 </div>}
                         </div>
                         <div className="mt-4">
