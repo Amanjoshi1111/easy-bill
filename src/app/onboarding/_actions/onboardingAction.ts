@@ -1,28 +1,21 @@
 "use server";
+import { parseValidationError } from "@/lib/utils";
 import { userSession } from "../../../utils/sessionHook";
 import { onboardingFormSchema, OnboardingFormSchema, OnboardingFormState } from "./types";
 
-export const onboardingUserAction = async (prevState: OnboardingFormState, formData: FormData): Promise<OnboardingFormState> => {
+export const onboardingUserAction = async (rawData: OnboardingFormSchema): Promise<OnboardingFormState> => {
 
     await userSession();
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-    const rawData: OnboardingFormSchema = {
-        firstName: formData.get('firstName') as string,
-        lastName: formData.get("lastName") as string,
-        address: formData.get("address") as string
-    }
-
+    const validated = onboardingFormSchema.safeParse(rawData);
     try {
-        const validated = onboardingFormSchema.safeParse(rawData);
         if (!validated.success) {
-            return { success: false, errors: validated.error.flatten().fieldErrors, inputs: rawData };
+            return { success: false, errors: parseValidationError(validated.error) };
         } else {
-            console.log("CHiite suit te daag pe gye");
-            return { success: true};
+            return { success: true };
         }
     } catch (err) {
-        return { success: false, message: "INTERNAL SERVER ERROR", inputs: rawData };
+        return { success: false, message: "INTERNAL SERVER ERROR", inputs: rawData, errors: {} };
     }
-
-
 }

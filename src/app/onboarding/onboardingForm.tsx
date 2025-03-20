@@ -3,14 +3,14 @@ import { SubmitButton } from "@/components/submitButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { onboardingFormSchema, OnboardingFormSchema } from "./_actions/types";
 import { onboardingUserAction } from "./_actions/onboardingAction";
-import { OnboardingFormBlurs, OnboardingFormSchema, OnboardingFormState, OnboardingFromStateErrors } from "./_actions/types";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ArrowRightIcon, Loader } from "lucide-react";
 
-const initialState: OnboardingFormState = {
-    success: false,
-    errors: {}
-}
 
 const initialOnboardingData: OnboardingFormSchema = {
     firstName: "",
@@ -18,20 +18,32 @@ const initialOnboardingData: OnboardingFormSchema = {
     address: ""
 }
 
-const initialBlurs: OnboardingFormBlurs = {
-    firstName: false,
-    lastName: false,
-    address: false
-}
 export default function OnboardingForm() {
 
-    const [serverState, action] = useActionState(onboardingUserAction, initialState);
+    const router = useRouter();
 
-    useEffect(() => {
-        if (serverState.success) {
-            alert("YAY ONBOARDED");
+    const { register, handleSubmit, setError, formState: { isSubmitting, isValid, errors } } = useForm<OnboardingFormSchema>({
+        resolver: zodResolver(onboardingFormSchema),
+        defaultValues: initialOnboardingData,
+        mode: "onChange"
+    });
+
+    const onSubmitHandler = async (data: OnboardingFormSchema) => {
+
+        const { success, errors } = await onboardingUserAction(data);
+
+        if (success) {
+            alert("SUCCESS");
+            router.push("/dashboard");
+        } else {
+            Object.entries(errors!).forEach(([key, message]) => {
+                setError(key as keyof OnboardingFormSchema, {
+                    type: "server",
+                    message
+                })
+            })
         }
-    }, [serverState])
+    }
 
     return <div className="h-screen w-screen flex items-center justify-center">
         <Card className="w-[500px]">
@@ -40,57 +52,63 @@ export default function OnboardingForm() {
                 <CardDescription >Complete basic onboarding to access ourN dashboard</CardDescription>
             </CardHeader>
             <CardContent>
-                <form action={action}>
+                <form onSubmit={handleSubmit(onSubmitHandler)} method="post">
                     <div className="flex flex-col">
                         <div className="flex justify-between gap-4 space-y-4">
                             <div className="space-y-2 flex-1">
                                 <Label htmlFor="firstName">First Name</Label>
                                 <Input
                                     type="firstName"
-                                    name="firstName"
                                     placeholder="Aman"
-                                    defaultValue={serverState.inputs?.firstName}
+                                    {...register('firstName')}
                                 />
-                                {serverState.errors?.firstName
+                                {errors?.firstName
                                     && <div className="text-red-400 text-sm">
-                                        {serverState.errors.firstName[0]}
-                                    </div>}
+                                        {errors.firstName.message}
+                                    </div>
+                                }
                             </div>
                             <div className="space-y-2 flex-1">
                                 <Label htmlFor="lastName">Last Name</Label>
                                 <Input
                                     type="lastName"
-                                    name="lastName"
                                     placeholder="Joshi"
                                     className="w-full"
-                                    defaultValue={serverState.inputs?.lastName}
+                                    {...register("lastName")}
+                                // defaultValue={serverState.inputs?.lastName}
                                 />
-                                {serverState.errors?.lastName
+                                {errors?.lastName
                                     && <div className="text-red-400 text-sm">
-                                        {serverState.errors.lastName[0]}
+                                        {errors.lastName.message}
                                     </div>}
                             </div>
                         </div>
                         <div className="space-y-2 flex-1">
                             <Label htmlFor="address">Address</Label>
-                            <Input type="address"
-                                name="address"
+                            <Input
+                                type="address"
                                 placeholder="Mayur vihar, Delhi"
-                                defaultValue={serverState.inputs?.address}
+                                {...register("address")}
+                            // defaultValue={serverState.inputs?.address} 
                             />
-                            {serverState.errors?.address
+                            {errors?.address
                                 && <div className="text-red-400 text-sm">
-                                    {serverState.errors.address[0]}
-                                </div>}
+                                    {errors.address.message}
+                                </div>
+                            }
                         </div>
                         <div className="mt-4">
-                            <SubmitButton text={"Finish Onboarding"} loadingText={"Onboarding User"} />
+                            {isSubmitting
+                                ?
+                                <Button disabled className="w-full cursor-not-allowed">Loading<Loader className="animate-spin"></Loader></Button>
+                                :
+                                <Button type="submit" className="w-full cursor-pointer hover:underline">Finish Onboarding<ArrowRightIcon strokeWidth={1.75} /></Button>
+                            }
+                            {/* <SubmitButton text={"Finish Onboarding"} loadingText={"Onboarding User"} /> */}
                         </div>
                     </div>
-
                 </form>
             </CardContent>
         </Card>
-    </div>
-
+    </div >
 }

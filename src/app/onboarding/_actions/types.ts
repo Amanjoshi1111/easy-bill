@@ -1,4 +1,4 @@
-import z, { boolean } from "zod";
+import z from "zod";
 
 export const onboardingFormSchema = z.object({
     firstName: z.string()
@@ -17,7 +17,6 @@ export const onboardingFormSchema = z.object({
         .max(30, "Maximum length only 50 characters")
 })
 
-
 export type OnboardingFormState = {
     success: boolean,
     errors?: OnboardingFromStateErrors
@@ -27,5 +26,5 @@ export type OnboardingFormState = {
 }
 
 export type OnboardingFormSchema = z.infer<typeof onboardingFormSchema>
-export type OnboardingFromStateErrors = Partial<Record<keyof OnboardingFormSchema, string[]>>
+export type OnboardingFromStateErrors = Partial<Record<keyof OnboardingFormSchema, string>>
 export type OnboardingFormBlurs = Record<keyof OnboardingFormSchema, boolean>
