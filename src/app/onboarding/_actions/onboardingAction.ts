@@ -1,7 +1,7 @@
 "use server";
 import { parseValidationError } from "@/lib/utils";
 import { userSession } from "../../../utils/sessionHook";
-import { onboardingFormSchema, OnboardingFormSchema, OnboardingFormState } from "./types";
+import { onboardingFormSchema, OnboardingFormSchema, OnboardingFormState } from "../types";
 
 export const onboardingUserAction = async (rawData: OnboardingFormSchema): Promise<OnboardingFormState> => {
 
