@@ -3,7 +3,6 @@ import { Menu, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/app/favicon.ico";
-import DashboardLinks from "@/app/dashboard/dashboardLinks";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -11,6 +10,7 @@ import { links } from "@/lib/constants";
 import { signOut } from "@/auth";
 import isUserOnboarded from "@/hooks/onboardingCheck";
 import { redirect } from "next/navigation";
+import DashboardLinks from "./dashboard/dashboardLinks";
 
 
 

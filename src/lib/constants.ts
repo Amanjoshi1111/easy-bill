@@ -10,7 +10,7 @@ export const links = [
     {
         id: 2,
         name: "Invoices",
-        href: "/dashboard/invoices",
+        href: "/invoices",
         icon: ReceiptText
     }
 ]
