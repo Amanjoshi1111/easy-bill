@@ -22,7 +22,7 @@ export default function OnboardingForm() {
 
     const router = useRouter();
 
-    const { register, handleSubmit, setError, formState: { isSubmitting, isValid, errors } } = useForm<OnboardingFormSchema>({
+    const { register, handleSubmit, setError, formState: { isSubmitting, errors } } = useForm<OnboardingFormSchema>({
         resolver: zodResolver(onboardingFormSchema),
         defaultValues: initialOnboardingData,
         mode: "onChange"

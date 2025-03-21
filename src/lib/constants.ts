@@ -14,3 +14,8 @@ export const links = [
         icon: ReceiptText
     }
 ]
+
+export class Constants {
+    static INTERNAL_SERVER_ERROR = "INTERNAL SERVER ERROR";
+    static VALIDATION_ERROR = "INVALID DATA";
+}

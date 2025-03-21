@@ -1,5 +1,5 @@
 import { signOut } from "@/auth";
-import { userSession } from "../../utils/sessionHook";
+import { userSession } from "../../hooks/sessionHook";
 import { redirect } from "next/navigation";
 
 export default async function Dashboard() {

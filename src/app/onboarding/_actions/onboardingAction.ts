@@ -1,20 +1,33 @@
 "use server";
 import { parseValidationError } from "@/lib/utils";
-import { userSession } from "../../../utils/sessionHook";
 import { onboardingFormSchema, OnboardingFormSchema, OnboardingFormState } from "../types";
+import { userSession } from "@/hooks/sessionHook";
+import { prisma } from "@/db";
 
 export const onboardingUserAction = async (rawData: OnboardingFormSchema): Promise<OnboardingFormState> => {
 
-    await userSession();
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    const session = await userSession();
 
     const validated = onboardingFormSchema.safeParse(rawData);
     try {
         if (!validated.success) {
             return { success: false, errors: parseValidationError(validated.error) };
-        } else {
-            return { success: true };
         }
+
+        const data = await prisma.user.update({
+            where: {
+                id: session.user?.id
+            },
+            data: {
+                firstName: validated.data.firstName,
+                lastName: validated.data.lastName,
+                address: validated.data.address,
+                isOnboarded: true
+            }
+        });
+
+        return { success: true };
+
     } catch (err) {
         return { success: false, message: "INTERNAL SERVER ERROR", inputs: rawData, errors: {} };
     }

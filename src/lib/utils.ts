@@ -17,7 +17,3 @@ export function parseValidationError(error: ZodError) {
 
     return flattenError;
 }
-
-{
-    key: ["sdfdsafdsa"]
-}
