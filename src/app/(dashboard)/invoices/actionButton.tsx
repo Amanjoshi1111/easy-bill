@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function InvoiceActionButton() {
     return <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
             <Button className="hover:cursor-pointer"><Ellipsis /></Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

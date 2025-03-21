@@ -1,5 +1,7 @@
+import CreateInvoiceForm from "./createInvoiceForm";
+
 export default function createInvoicePage() {
     return <div>
-        Create Invoice
+        <CreateInvoiceForm />
     </div>
 }
