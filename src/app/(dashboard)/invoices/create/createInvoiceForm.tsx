@@ -29,7 +29,7 @@ export default function CreateInvoiceForm() {
                 <div className="flex flex-col gap-10">
                     <div className="flex flex-col sm:flex-row items-start  sm:items-center gap-2 w-fit">
                         <div className="flex justify-center items-center gap-2">
-                            <div className="border bg-gray-700 text-[15px] text-white px-2 py-0.4 rounded-xl">Draft</div>
+                            <div className="border bg-gray-700 text-[15px] text-white px-3 py-0.4 rounded-xl">Draft</div>
                             <Input placeholder="Draft Name" className="w-[200px]" />
                         </div>
                         <div className="ml-[-8px] flex text-[9px] text-yellow-600 sm:text-[10px] pl-2 sm:text-justify sm:max-w-[180px] break-words">
@@ -62,7 +62,7 @@ export default function CreateInvoiceForm() {
                         </div>
                         <div>
                             <Label>Currency</Label>
-                            <Select onValueChange={(currency: Currency) => setCurrency(currency)}>
+                            <Select defaultValue={Currency.INR} onValueChange={(currency: Currency) => setCurrency(currency)}>
                                 <SelectTrigger className="w-full mt-2">
                                     <SelectValue placeholder="Select" />
                                 </SelectTrigger>
@@ -131,24 +131,24 @@ function ItemRow(props: Item & {
             <Textarea defaultValue={props.description as string} />
         </TableCell>
         <TableCell className="col-span-2">
-            <div className="flex gap-2 items-center">
-                <Button className="hidden md:flex justify-center items-center rounded-full h-6 w-6" type="button"><Minus /></Button>
-                <Input className="text-center" defaultValue={props.quantity}></Input>
-                <Button className="hidden md:flex text-center rounded-full h-6 w-6" type="button"><Plus /></Button>
+            <div className="flex gap-2 items-center">   
+                <Button className="hidden md:flex justify-center items-center rounded-full h-6 w-6" type="button"><Minus className="size-3" /></Button>
+                <Input type="number" className="text-center" defaultValue={props.quantity}></Input>
+                <Button className="hidden md:flex text-center rounded-full h-6 w-6" type="button"><Plus className="size-3"/></Button>
             </div>
         </TableCell>
         <TableCell className="col-span-2">
-            <Input defaultValue={props.rate}></Input>
+            <Input type="number" defaultValue={props.rate}></Input>
         </TableCell>
         <TableCell className="col-span-2">
-            <Input defaultValue={props.amount}></Input>
+            <Input type="number" defaultValue={props.amount}></Input>
         </TableCell>
         <TableCell className="col-span-1 justify-center">
             <Button type="button" className="rounded-full h-6 w-6 hover:cursor-pointer" variant={"destructive"}
                 onClick={() => props.setItemList((list) =>
                     list.filter(item => item.id != props.id)
                 )
-                }><X className="size-4" /></Button>
+                }><X className="size-3" /></Button>
         </TableCell>
     </TableRow>
 }
