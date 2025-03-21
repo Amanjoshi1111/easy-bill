@@ -22,7 +22,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         redirect("/onboarded");
     }
 
-    return <div className="grid min-h-screen w-full md:grid-cols-[250px_1fr]
+    return <div className="grid min-h-screen w-full md:grid-cols-[300px_1fr]
      lg:grid-cols-[300px_1fr]">
         <div className="hidden border-r md:block bg-gray-100">
             <div className="flex flex-col items-center max-h-screen gap-2 h-full">
@@ -81,7 +81,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
                     </DropdownMenu>
                 </div>
             </header>
-            <main className="flex flex-1 px-6 py-4">
+            <main className=" px-6 py-4">
                 {children}
             </main>
         </div>
