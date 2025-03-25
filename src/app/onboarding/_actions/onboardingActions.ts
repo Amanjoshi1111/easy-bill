@@ -3,6 +3,7 @@ import { parseValidationError } from "@/lib/utils";
 import { onboardingFormSchema, OnboardingFormSchema, OnboardingFormState } from "../types";
 import { userSession } from "@/hooks/sessionHook";
 import { prisma } from "@/db";
+import { TURBOPACK_CLIENT_MIDDLEWARE_MANIFEST } from "next/dist/shared/lib/constants";
 
 export const onboardingUserAction = async (rawData: OnboardingFormSchema): Promise<OnboardingFormState> => {
 

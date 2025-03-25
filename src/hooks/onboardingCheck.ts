@@ -11,8 +11,8 @@ export default async function isUserOnboarded(userId: string) {
         }
     });
 
-    if (!data || !data.isOnboarded) {
-        false;
+    if(data?.isOnboarded == true){
+        return true;
     }
-    return true;
+    return false;
 }

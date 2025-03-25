@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { onboardingFormSchema, OnboardingFormSchema } from "./types";
-import { onboardingUserAction } from "./_actions/onboardingAction";
+import { onboardingUserAction } from "./_actions/onboardingActions";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon, Loader } from "lucide-react";

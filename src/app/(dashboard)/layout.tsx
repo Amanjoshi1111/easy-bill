@@ -17,9 +17,12 @@ import DashboardLinks from "./dashboard/dashboardLinks";
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 
     const session = await userSession();
-    const isOnboarded = isUserOnboarded(session.user?.id as string);
+    console.log("session ", session);
+    const isOnboarded = await isUserOnboarded(session.user?.id as string);
+    console.log("IS USER ONBOARDED : ", isOnboarded);
     if (!isOnboarded) {
-        redirect("/onboarded");
+
+        redirect("/onboarding");
     }
 
     return <div className="grid min-h-screen w-full md:grid-cols-[300px_1fr]
@@ -62,7 +65,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
                             <DropdownMenuLabel className="font-bold text-lg">My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             {links.map(link => (
-                                <DropdownMenuItem asChild className="text-base hover:cursor-pointer">
+                                <DropdownMenuItem key={link.id} asChild className="text-base hover:cursor-pointer">
                                     <Link href={link.href}>{link.name} </Link>
                                 </DropdownMenuItem>
                             ))}

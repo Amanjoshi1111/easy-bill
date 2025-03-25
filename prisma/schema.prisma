@@ -18,6 +18,7 @@ model User {
     image         String?
     createdAt     DateTime        @default(now())
     updatedAt     DateTime        @updatedAt
+    invoices      Invoice[]
     accounts      Account[]
     Authenticator Authenticator[]
     sessions      Session[]
@@ -71,4 +72,47 @@ model Authenticator {
     user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@id([userId, credentialID])
+}
+
+model Invoice {
+    id            String        @id @default(uuid())
+    invoiceNumber Int           @default(autoincrement())
+    invoiceName   String
+    dueDate       DateTime
+    currency      Currency
+    status        InvoiceStatus @default(PENDING)
+    fromName      String
+    fromEmail     String
+    fromAddress   String
+    toName        String
+    toEmail       String
+    toAddress     String
+    items         Item[]
+    subTotal      Decimal
+    discount      Decimal
+    total         Decimal
+    note          String?       @db.Text
+    createdAt     DateTime      @default(now())
+    user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId        String
+}
+
+model Item {
+    id          String  @unique @default(uuid())
+    description String
+    quantity    Int
+    rate        Decimal
+    amount      Decimal
+    invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+    invoiceId   String
+}
+
+enum Currency {
+    INR
+    USD
+}
+
+enum InvoiceStatus {
+    PAID
+    PENDING
 }
