@@ -17,11 +17,8 @@ import DashboardLinks from "./dashboard/dashboardLinks";
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 
     const session = await userSession();
-    console.log("session ", session);
     const isOnboarded = await isUserOnboarded(session.user?.id as string);
-    console.log("IS USER ONBOARDED : ", isOnboarded);
     if (!isOnboarded) {
-
         redirect("/onboarding");
     }
 

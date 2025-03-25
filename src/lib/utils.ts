@@ -1,7 +1,7 @@
 import { Currency } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { number, ZodError } from "zod"
+import { number, string, ZodError } from "zod"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -24,4 +24,8 @@ export function formatCurrency(amount: number, currency: Currency) {
         style: "currency",
         currency: currency
     }).format(amount);
+}
+
+export function capitalizeString(str: string) {
+    return str && str[0].toUpperCase() + str.substring(1, str.length);
 }
