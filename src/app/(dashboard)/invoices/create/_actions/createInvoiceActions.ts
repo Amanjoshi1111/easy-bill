@@ -4,6 +4,7 @@ import { CreateInvoiceFormSchema, createInvoiceFormSchema } from "../type";
 import { parseValidationError } from "@/lib/utils";
 import { prisma } from "@/db";
 import { redirect } from "next/navigation";
+import sendEmail from "@/lib/sendEmail";
 
 
 export async function createInvoice(formData: CreateInvoiceFormSchema) {
@@ -46,6 +47,24 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
         },
     });
 
+    const from = {
+        "email": "hello@example.com",
+        "name": "Mailtrap Test"
+    }
+    const to = [
+        {
+            "email": "aman.joshi1111@gmail.com"
+        }
+    ]
+
+    const sendEmailResponse = await sendEmail({
+        to: to,
+        from: from,
+        subject: "invoice from aman",
+        category: "Invoice Testing",
+        html: "<h1>Sending something in mail</h1>"
+    })
+    console.log(sendEmailResponse);
     redirect("/invoices");
 }
 
