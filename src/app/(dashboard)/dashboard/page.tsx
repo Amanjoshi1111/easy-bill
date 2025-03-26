@@ -3,7 +3,7 @@ import { userSession } from "@/hooks/sessionHook";
 
 export default async function Dashboard() {
 
-    const session = await userSession();
+    await userSession();
 
     return <div>
         <h1>dashboard dfsdffd</h1>

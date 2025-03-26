@@ -1,10 +1,9 @@
 import { auth } from "@/auth";
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Mail } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
 
 export default async function Verify() {
 

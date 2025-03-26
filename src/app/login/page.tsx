@@ -31,7 +31,7 @@ export default async function Login() {
                         <Label htmlFor="email" className="block text-center">Email address</Label>
                         {/* TODO: INSERT EMAIL ICON IN LEFT SIDE OF INPUT */}
                         <Input type="email" name="email" required className="focus-visible:ring-0" placeholder="abcd@gmail.com" />
-                        <p className="text-xs px-2 text-center text-muted-foreground">We'll send you a secure login link to your email</p>
+                        <p className="text-xs px-2 text-center text-muted-foreground">We&apos;ll  send you a secure login link to your email</p>
                         <CardFooter className="w-full px-0 pt-4">
                             <div className="w-full flex justify-center">
                                 <SubmitButton text={"Continue with email"} loadingText={"Signing In"} />
