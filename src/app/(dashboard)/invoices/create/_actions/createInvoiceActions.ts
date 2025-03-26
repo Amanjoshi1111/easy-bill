@@ -16,7 +16,7 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
         return { success: false, errors: parseValidationError(validationObj.error) }
     }
     const validatedData = validationObj.data;
-    const data = await prisma.invoice.create({
+    await prisma.invoice.create({
         data: {
             invoiceName: validatedData.invoiceName,
             dueDate: validatedData.dueDate,

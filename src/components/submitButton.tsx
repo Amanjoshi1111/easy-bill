@@ -4,8 +4,8 @@ import { Button } from "./ui/button";
 import { ArrowRightIcon, Loader } from "lucide-react";
 
 type SubmitButtonProp = {
-    text: String,
-    loadingText: String
+    text: string,
+    loadingText: string
 }
 export function SubmitButton({ text, loadingText }: SubmitButtonProp) {
 

@@ -1,7 +1,7 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Delete, DeleteIcon, Download, Ellipsis, LucideDelete, Mail, Pencil, SquareCheckBig, TicketCheck, Trash } from "lucide-react";
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Download, Ellipsis, Mail, Pencil, SquareCheckBig, Trash } from "lucide-react";
 import Link from "next/link";
 
 export default function InvoiceActionButton() {

@@ -8,11 +8,11 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CalendarDays, CodeSquare, Minus, Plus, X } from "lucide-react";
+import { CalendarDays, Plus, X } from "lucide-react";
 import { createInvoiceFormSchema, CreateInvoiceFormSchema, Item } from "./type";
 import { Textarea } from "@/components/ui/textarea";
 import { Currency } from "@prisma/client";
-import { FieldErrors, SetFieldValue, SetValueConfig, TriggerConfig, useFieldArray, UseFieldArrayRemove, useForm, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
+import { FieldErrors, useFieldArray, UseFieldArrayRemove, useForm, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
 import { createInvoice } from "./_actions/createInvoiceActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatCurrency } from "@/lib/utils";
@@ -33,7 +33,7 @@ export default function CreateInvoiceForm() {
         setValue("dueDate", today.toISOString()!);
     }, []);
 
-    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { defaultValues, isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
+    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
         resolver: zodResolver(createInvoiceFormSchema),
         defaultValues: {
             dueDate: new Date().toISOString(),
@@ -50,7 +50,7 @@ export default function CreateInvoiceForm() {
     const total = useWatch({ control, name: "total" });
     const onSubmit = async (data: CreateInvoiceFormSchema) => {
 
-        const { success, errors } = await createInvoice(data);
+        const { errors } = await createInvoice(data);
         if (errors) {
             Object.entries(errors!).forEach(([key, message]) => {
                 setError(key as keyof CreateInvoiceFormSchema, {
@@ -105,7 +105,7 @@ export default function CreateInvoiceForm() {
                                         selected={dueDate}
                                         onSelect={(date) => {
                                             setdueDate(date);
-                                            setValue("dueDate", dueDate?.toISOString()!)
+                                            setValue("dueDate", dueDate?.toISOString() as string)
                                         }}
                                         fromDate={new Date()}
                                     />
@@ -248,7 +248,7 @@ function ItemRow(props: Item & {
     errors: FieldErrors<CreateInvoiceFormSchema>
     register: UseFormRegister<CreateInvoiceFormSchema>
 }) {
-    const { id, index, watch, trigger, getValues, remove, setValue, register, errors } = props;
+    const { index, watch, trigger, getValues, remove, setValue, register, errors } = props;
 
     return <TableRow className="grid grid-cols-12 [&>*]:flex [&>*]:items-center">
 

@@ -1,5 +1,3 @@
-import axios from "axios";
-import { RequestOptions } from "https";
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
 
 type To = {
