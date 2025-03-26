@@ -28,7 +28,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <div className="flex flex-col items-center max-h-screen gap-2 h-full">
                 <div className="h-20 flex pl-6 items-center border-b w-full">
                     <Link href={"/"} className=" flex items-center gap-2 text-3xl font-bold">
-                        <Image src={Logo} alt="Logo" className="size-10"></Image>
+                        <Image src={Logo} alt="Logo" className="size-10 rotate-90"></Image>
                         <p>Easy<span className="text-orange-500">Billing</span></p>
                     </Link>
                 </div>

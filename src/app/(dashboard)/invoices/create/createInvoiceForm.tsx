@@ -16,6 +16,7 @@ import { FieldErrors, SetFieldValue, SetValueConfig, TriggerConfig, useFieldArra
 import { createInvoice } from "./_actions/createInvoiceActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatCurrency } from "@/lib/utils";
+import { RHFSubmitButton } from "@/components/submitButton";
 
 export default function CreateInvoiceForm() {
 
@@ -32,7 +33,7 @@ export default function CreateInvoiceForm() {
         setValue("dueDate", today.toISOString()!);
     }, []);
 
-    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { defaultValues, errors } } = useForm<CreateInvoiceFormSchema>({
+    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { defaultValues, isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
         resolver: zodResolver(createInvoiceFormSchema),
         defaultValues: {
             dueDate: new Date().toISOString(),
@@ -222,7 +223,8 @@ export default function CreateInvoiceForm() {
                             <Label>Note</Label>
                             <Textarea placeholder="Some additional notes..." className="w-[400px]" />
                         </div>
-                        <Button type="submit" className="flex-1 hover:cursor-pointer ml-auto">Generate Invoice</Button>
+                        <RHFSubmitButton text={"Generate Invoice"} loadingText={"Loading..."} isSubmitting={isSubmitting} />
+                        {/* <Button type="submit" className="flex-1 hover:cursor-pointer ml-auto">Generate Invoice</Button> */}
                     </div>
                 </div>
             </form>

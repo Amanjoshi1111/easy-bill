@@ -45,9 +45,9 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
             }
         },
     });
-    return redirect("/invoices");
-}
 
+    redirect("/invoices");
+}
 
 export const getDefaultFormData = async () => {
 
