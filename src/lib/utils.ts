@@ -29,3 +29,13 @@ export function formatCurrency(amount: number, currency: Currency) {
 export function capitalizeString(str: string) {
     return str && str[0].toUpperCase() + str.substring(1, str.length);
 }
+
+export function invoiceNumberString(invoiceNumber: number) {
+    return `#${String(invoiceNumber).padStart(5, "0")}`;
+}
+
+export function formatDate(date: Date) {
+    return new Intl.DateTimeFormat("en-IN", {
+        dateStyle: "full"
+    }).format(date).toString()
+}

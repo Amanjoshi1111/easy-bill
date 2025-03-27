@@ -15,13 +15,12 @@ import { Currency } from "@prisma/client";
 import { FieldErrors, useFieldArray, UseFieldArrayRemove, useForm, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
 import { createInvoice } from "./_actions/createInvoiceActions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { RHFSubmitButton } from "@/components/submitButton";
 
 export default function CreateInvoiceForm() {
 
     const identifier = useRef(0);
-    const [currency, setCurrency] = useState<keyof typeof Currency>(Currency.INR);
     const [dueDate, setdueDate] = useState<Date>();
 
     //Need to do this because of hydration issue i was getting
@@ -33,14 +32,15 @@ export default function CreateInvoiceForm() {
         setValue("dueDate", today.toISOString()!);
     }, []);
 
-    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
+    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { defaultValues, isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
         resolver: zodResolver(createInvoiceFormSchema),
         defaultValues: {
             dueDate: new Date().toISOString(),
             items: [],
             subTotal: 0,
             discount: 0,
-            total: 0
+            total: 0,
+            currency: Currency.INR
         },
         mode: "all",
         reValidateMode: "onChange"
@@ -48,6 +48,8 @@ export default function CreateInvoiceForm() {
     const { fields, remove, append } = useFieldArray({ control, name: "items" });
     const subTotal = useWatch({ control, name: "subTotal" });
     const total = useWatch({ control, name: "total" });
+    const currency = useWatch({ control, name: "currency" });
+
     const onSubmit = async (data: CreateInvoiceFormSchema) => {
 
         const { errors } = await createInvoice(data);
@@ -92,9 +94,7 @@ export default function CreateInvoiceForm() {
                                 <PopoverTrigger asChild>
                                     <Button className="mt-2 w-full overflow-hidden" variant={"outline"}>
                                         {dueDate
-                                            ? new Intl.DateTimeFormat("en-IN", {
-                                                dateStyle: "full"
-                                            }).format(dueDate)
+                                            ? formatDate(dueDate)
                                             : <div className="flex justify-center items-center gap-2"><CalendarDays /> Select Date</div>
                                         }
                                     </Button>
@@ -105,7 +105,7 @@ export default function CreateInvoiceForm() {
                                         selected={dueDate}
                                         onSelect={(date) => {
                                             setdueDate(date);
-                                            setValue("dueDate", dueDate?.toISOString() as string)
+                                            setValue("dueDate", date?.toISOString() as string)
                                         }}
                                         fromDate={new Date()}
                                     />
@@ -116,9 +116,11 @@ export default function CreateInvoiceForm() {
                         <div>
                             <Label>Currency</Label>
                             <Input type="hidden" {...register("currency")} value={currency} />
-                            <Select {...register("currency")}
-                                defaultValue={Currency.INR}
-                                onValueChange={(currency: Currency) => setCurrency(currency)}>
+                            <Select
+                                defaultValue={defaultValues?.currency as string}
+                                onValueChange={(currency: Currency) => {
+                                    setValue("currency", currency);
+                                }}>
                                 <SelectTrigger className="w-full mt-2">
                                     <SelectValue placeholder="Select" />
                                 </SelectTrigger>
@@ -191,7 +193,7 @@ export default function CreateInvoiceForm() {
                         <div className="flex flex-col gap-4">
                             <div className="flex justify-between text-lg">
                                 <Input hidden {...register("subTotal")} />
-                                <div>Subtotal</div>
+                                <div>Sub Total</div>
                                 <div>{formatCurrency(subTotal, currency)} </div>
                             </div>
                             <div className="flex gap-4 max-w-full flex-col md:flex-row items-center justify-end">
@@ -229,11 +231,11 @@ export default function CreateInvoiceForm() {
                 </div>
             </form>
             {/* DEBUGGING BUTTON */}
-            {/* <Button hidden onClick={() => {
+            <Button onClick={() => {
                 console.log(getValues());
                 console.log(errors);
                 console.log(errors.items?.message);
-            }}>CLICKME</Button> */}
+            }}>CLICKME</Button>
         </CardContent>
     </Card >
 }

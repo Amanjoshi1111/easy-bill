@@ -1,10 +1,11 @@
 "use server";
 import { userSession } from "@/hooks/sessionHook";
 import { CreateInvoiceFormSchema, createInvoiceFormSchema } from "../type";
-import { parseValidationError } from "@/lib/utils";
+import { formatCurrency, formatDate, invoiceNumberString, parseValidationError } from "@/lib/utils";
 import { prisma } from "@/db";
 import { redirect } from "next/navigation";
 import sendEmail from "@/lib/sendEmail";
+import { sendInvoiceHtml } from "@/lib/emailTemplates/sendInvoice";
 
 
 export async function createInvoice(formData: CreateInvoiceFormSchema) {
@@ -16,7 +17,7 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
         return { success: false, errors: parseValidationError(validationObj.error) }
     }
     const validatedData = validationObj.data;
-    await prisma.invoice.create({
+    const data = await prisma.invoice.create({
         data: {
             invoiceName: validatedData.invoiceName,
             dueDate: validatedData.dueDate,
@@ -62,7 +63,13 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
         from: from,
         subject: "invoice from aman",
         category: "Invoice Testing",
-        html: "<h1>Sending something in mail</h1>"
+        html: sendInvoiceHtml({
+            toName: data.toName,
+            invoiceNumber: invoiceNumberString(data.invoiceNumber),
+            dueDate: formatDate(data.dueDate),
+            invoiceDate: formatDate(data.createdAt),
+            totalAmount: formatCurrency(Number(data.total), data.currency)
+        })
     })
     console.log(sendEmailResponse);
     redirect("/invoices");
