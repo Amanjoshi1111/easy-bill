@@ -58,6 +58,7 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
         }
     ]
 
+    const invoiceHref = `http://localhost:3000/api/invoice/${data.id}`;
     const sendEmailResponse = await sendEmail({
         to: to,
         from: from,
@@ -68,7 +69,8 @@ export async function createInvoice(formData: CreateInvoiceFormSchema) {
             invoiceNumber: invoiceNumberString(data.invoiceNumber),
             dueDate: formatDate(data.dueDate),
             invoiceDate: formatDate(data.createdAt),
-            totalAmount: formatCurrency(Number(data.total), data.currency)
+            totalAmount: formatCurrency(Number(data.total), data.currency),
+            invoiceHref: invoiceHref
         })
     })
     console.log(sendEmailResponse);

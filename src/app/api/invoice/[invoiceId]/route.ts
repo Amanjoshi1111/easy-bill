@@ -77,22 +77,22 @@ export async function GET(request: NextRequest,
         .text("INVOICE", x, y, { align: 'left' })
         .setFont("Roboto", "normal");
     doc.setFontSize(18)
-    doc.text(`${capitalizeString(data.fromName)}`, x + 190, y, { align: "right", maxWidth: 50 });
+    doc.text(`${capitalizeString(data.fromName)}`, x + 190, y, { align: "right", maxWidth: 100 });
 
     //Invoice Number & To address
     y = y + 10;
     doc.setFontSize(12)
         .text(`Invoice No. : ${invoiceNumberString(data.invoiceNumber)}`, 10, y);
-    doc.text(data.fromAddress, x + 190, y, { align: "right", maxWidth: 60 });
+    doc.text(data.fromAddress, x + 190, y, { align: "right", maxWidth: 100 });
 
     //Issue Date
     y = y + 6;
     doc.text(`Issue Date : ${formatPDFDate(data.createdAt)}`, x, y);
+    doc.text(data.fromEmail, x + 190, y, { align: "right" , maxWidth: 60});
 
     //Due Date
     y = y + 6;
     doc.text(`Due Date : ${formatPDFDate(data.dueDate)}`, x, y);
-    doc.text(data.fromEmail, x + 190, y, { align: "right" });
 
     //Bill To
     y = y + 15;

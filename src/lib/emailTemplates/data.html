@@ -1,16 +1,4 @@
-import { capitalizeString } from "../utils"
-
-export function sendInvoiceHtml({
-    toName, invoiceNumber, invoiceDate, dueDate, totalAmount, invoiceHref
-}: {
-    toName: string,
-    invoiceNumber: string,
-    invoiceDate: string,
-    dueDate: string,
-    totalAmount: string,
-    invoiceHref: string
-}) {
-    return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -39,7 +27,7 @@ export function sendInvoiceHtml({
         border-radius: 10px;
     }
 
-    a:hover {
+    button:a {
         background-color: #203CC0;
         cursor: pointer;
     }
@@ -59,12 +47,15 @@ export function sendInvoiceHtml({
         <li>Total Amount : ${totalAmount}</li>
     </ul>
     <div>You can download the invoice using the button below: </div>
-    <a href='${invoiceHref}'"
-    >Download invoice</a>
+    <a type="button" href=`${invoiceLink}`>Download invoice</a>
     <div>
         Thank you for your business and continued trust.
     </div>
+    <!-- <script>
+        document.getElementById("downloadBtn").onclick = () => {
+            location.href = `${hostname}/api/invoice/${invoiceId}`
+        }
+    </script> -->
 </body>
 
-</html>`
-}
+</html>
