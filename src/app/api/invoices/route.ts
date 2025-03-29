@@ -26,6 +26,5 @@ export async function GET() {
             currency: true
         }
     });
-
     return data;
 }

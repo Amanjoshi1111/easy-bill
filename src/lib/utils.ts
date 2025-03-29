@@ -39,3 +39,7 @@ export function formatDate(date: Date) {
         dateStyle: "full"
     }).format(date).toString()
 }
+
+export function formatPDFDate(date: Date){
+    return date.toISOString().split("T")[0];
+}

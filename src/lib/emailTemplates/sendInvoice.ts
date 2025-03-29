@@ -37,6 +37,7 @@ export function sendInvoiceHtml({
     }
 
     button:hover {
+        background-color: #203CC0
         cursor: pointer;
     }
 </style>
