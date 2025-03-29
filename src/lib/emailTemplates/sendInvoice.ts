@@ -1,8 +1,10 @@
 import { capitalizeString } from "../utils"
 
 export function sendInvoiceHtml({
-    toName, invoiceNumber, invoiceDate, dueDate, totalAmount, invoiceHref
+
+    toName, invoiceNumber, invoiceDate, dueDate, totalAmount, invoiceHref, isEditAction = false
 }: {
+    isEditAction?: boolean
     toName: string,
     invoiceNumber: string,
     invoiceDate: string,
@@ -10,6 +12,8 @@ export function sendInvoiceHtml({
     totalAmount: string,
     invoiceHref: string
 }) {
+
+    console.log(isEditAction);
     return `<!DOCTYPE html>
 <html lang="en">
 
@@ -45,9 +49,13 @@ export function sendInvoiceHtml({
     }
 </style>
 
-<body>
-    <h1>Invoice For ${capitalizeString(toName)}</h1>
-    <div>
+<body>` +
+        `${isEditAction
+            ? `<h1> Updated Invoice For ${capitalizeString(toName)}</h1>`
+            : `<h1> Invoice For ${capitalizeString(toName)}</h1>`
+        } `
+        +
+        `<div>
         Dear ${capitalizeString(toName)},<br>
         I hope you're doing well. Please find attached your invoice.
     </div>

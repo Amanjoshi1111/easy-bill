@@ -42,7 +42,7 @@ const editInvoice: FormServerAction = async (formData, invoiceId) => {
                     id: { notIn: presentIds }
                 },
                 upsert: validatedData.items.map(item => ({
-                    where: {id: item.id || ""},
+                    where: { id: item.id || "" },
                     update: {
                         description: item.description,
                         quantity: item.quantity,
@@ -81,6 +81,7 @@ const editInvoice: FormServerAction = async (formData, invoiceId) => {
         subject: "invoice from aman",
         category: "Invoice Testing",
         html: sendInvoiceHtml({
+            isEditAction: true,
             toName: data.toName,
             invoiceNumber: invoiceNumberString(data.invoiceNumber),
             dueDate: formatDate(data.dueDate),
