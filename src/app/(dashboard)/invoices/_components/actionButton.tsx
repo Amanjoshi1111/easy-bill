@@ -4,7 +4,7 @@ import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/co
 import { Download, Ellipsis, Mail, Pencil, SquareCheckBig, Trash } from "lucide-react";
 import Link from "next/link";
 
-export default function InvoiceActionButton() {
+export default function InvoiceActionButton({ id }: { id: string }) {
 
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -12,8 +12,8 @@ export default function InvoiceActionButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
             <DropdownMenuItem>
-                <Link href={""} className="flex items-center justify-between">
-                    <Pencil className="text-black size-4 mr-2" /> Pencil
+                <Link href={`invoices/${id}`} className="flex items-center justify-between">
+                    <Pencil className="text-black size-4 mr-2" /> Edit Invoice
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>

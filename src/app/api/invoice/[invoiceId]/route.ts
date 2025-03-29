@@ -111,7 +111,7 @@ function createInvoicePdf(data: FindUniqueInvoiceType) {
     y = y + 15;
     doc.setFontSize(15).setFont("Roboto", "bold").text("Bill To: ", x, y, {});
     y = y + 8;
-    doc.setFontSize(14).setFont("Roboto", "bold").text(capitalizeString(data.toName), x, y);
+    doc.setFontSize(13).setFont("Roboto", "bold").text(capitalizeString(data.toName), x, y);
     y = y + 6;
     doc.setFontSize(12).setFont("Roboto", "normal").text(data.toAddress, x, y, { maxWidth: 50 });
 

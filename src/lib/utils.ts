@@ -41,5 +41,7 @@ export function formatDate(date: Date) {
 }
 
 export function formatPDFDate(date: Date){
-    return date.toISOString().split("T")[0];
+    return new Intl.DateTimeFormat("en-IN", {
+        dateStyle: "short"
+    }).format(date).toString().replaceAll("/", "-");
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,33 +9,27 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CalendarDays, Plus, X } from "lucide-react";
-import { createInvoiceFormSchema, CreateInvoiceFormSchema, Item } from "./type";
+import { createInvoiceFormSchema, CreateInvoiceFormSchema, Item } from "../type";
 import { Textarea } from "@/components/ui/textarea";
 import { Currency } from "@prisma/client";
 import { FieldErrors, useFieldArray, UseFieldArrayRemove, useForm, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
-import { createInvoice } from "./_actions/createInvoiceActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { RHFSubmitButton } from "@/components/submitButton";
+import { FormServerAction } from "../type";
 
-export default function CreateInvoiceForm() {
-
+export default function CreateInvoiceForm({ title, data, serverAction, invoiceId, submitButtonText }: {
+    title: string,
+    submitButtonText: string
+    invoiceId?: string,
+    data?: CreateInvoiceFormSchema,
+    serverAction: FormServerAction
+}) {
+    //For unique identifier for items list (key)
     const identifier = useRef(0);
-    const [dueDate, setdueDate] = useState<Date>();
-
-    //Need to do this because of hydration issue i was getting
-    useEffect(() => {
-        //Reason to create this variable is because stateChange is async 
-        // and took time to propogate, took me 30 min to solve this bc
-        const today = new Date();
-        setdueDate(today);
-        setValue("dueDate", today.toISOString()!);
-    }, []);
-
     const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { defaultValues, isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
         resolver: zodResolver(createInvoiceFormSchema),
-        defaultValues: {
-            dueDate: new Date().toISOString(),
+        defaultValues: (data) ? data : {
             items: [],
             subTotal: 0,
             discount: 0,
@@ -49,10 +43,19 @@ export default function CreateInvoiceForm() {
     const subTotal = useWatch({ control, name: "subTotal" });
     const total = useWatch({ control, name: "total" });
     const currency = useWatch({ control, name: "currency" });
+    const dueDate = watch("dueDate");
+
+    //Need to do this because of hydration issue i was getting
+    useEffect(() => {
+        //If check is not applied it will throw hyderation error,
+        //  wasted a lot of time in this 
+        if (!data) {
+            setValue("dueDate", new Date());
+        }
+    }, []);
 
     const onSubmit = async (data: CreateInvoiceFormSchema) => {
-
-        const { errors } = await createInvoice(data);
+        const { errors } = await serverAction(data, invoiceId);
         if (errors) {
             Object.entries(errors!).forEach(([key, message]) => {
                 setError(key as keyof CreateInvoiceFormSchema, {
@@ -65,7 +68,7 @@ export default function CreateInvoiceForm() {
 
     return <Card className="mx-auto max-w-5xl">
         <CardHeader>
-            <CardTitle className="text-3xl">Generate Invoice</CardTitle>
+            <CardTitle className="text-3xl">{title}</CardTitle>
         </CardHeader>
         <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -87,7 +90,7 @@ export default function CreateInvoiceForm() {
                             <Label>Due Date</Label>
                             <Input
                                 type="hidden"
-                                value={dueDate ? dueDate.toISOString() : ""}
+                                value={formatDate(dueDate)}
                                 {...register("dueDate")}
                             />
                             <Popover>
@@ -104,8 +107,7 @@ export default function CreateInvoiceForm() {
                                         mode="single"
                                         selected={dueDate}
                                         onSelect={(date) => {
-                                            setdueDate(date);
-                                            setValue("dueDate", date?.toISOString() as string)
+                                            setValue("dueDate", date!)
                                         }}
                                         fromDate={new Date()}
                                     />
@@ -185,7 +187,12 @@ export default function CreateInvoiceForm() {
                                     amount: 0
                                 }
                                 identifier.current += 1;
-                                append(item);
+                                append({
+                                    description: item.description,
+                                    quantity: item.quantity,
+                                    rate: item.rate,
+                                    amount: item.amount
+                                });
 
                             }
                             }
@@ -225,7 +232,7 @@ export default function CreateInvoiceForm() {
                             <Label>Note</Label>
                             <Textarea placeholder="Some additional notes..." className="w-[400px]" />
                         </div>
-                        <RHFSubmitButton text={"Generate Invoice"} loadingText={"Loading..."} isSubmitting={isSubmitting} />
+                        <RHFSubmitButton text={submitButtonText} loadingText={"Loading..."} isSubmitting={isSubmitting} />
                         {/* <Button type="submit" className="flex-1 hover:cursor-pointer ml-auto">Generate Invoice</Button> */}
                     </div>
                 </div>

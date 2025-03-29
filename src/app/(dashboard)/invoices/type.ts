@@ -1,8 +1,10 @@
 import { Currency, InvoiceStatus } from "@prisma/client";
 import { z } from "zod";
+import { getInvoices } from "./actions";
+
 
 const item = z.object({
-    id: z.number(),
+    id: z.string().uuid().optional(),
     description: z.string()
         .min(5, "Minimum length should be 5 characters")
         .max(50, "Maximum length can only be 50 characters"),
@@ -24,7 +26,7 @@ export const createInvoiceFormSchema = z.object({
     invoiceName: z.string()
         .min(5, "Minimum length should be 5 characters")
         .max(25, "Maximum length can only be 25 characters"),
-    dueDate: z.string().min(1, "Due date is required"),
+    dueDate: z.coerce.date(),
     currency: z.nativeEnum(Currency, {
         required_error: "Currency is required",
         invalid_type_error: "Invalid currency type"
@@ -57,7 +59,14 @@ export const createInvoiceFormSchema = z.object({
     note: z.string().max(10000).optional()
 })
 
-
-
 export type CreateInvoiceFormSchema = z.infer<typeof createInvoiceFormSchema>;
 export type Item = z.infer<typeof item>;
+
+export type GetInvoicesType = Awaited<ReturnType<typeof getInvoices>>;
+export type InvoiceItemType = GetInvoicesType[0];
+
+export type FormServerAction = (data: CreateInvoiceFormSchema, id?: string) => FormServerActionResponse;
+export type FormServerActionResponse = Promise<{
+    success: boolean,
+    errors: Record<string, string>
+}>

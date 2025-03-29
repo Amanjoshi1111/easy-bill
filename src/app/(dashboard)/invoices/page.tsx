@@ -4,11 +4,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { InvoiceStatus } from "@prisma/client";
-import InvoiceActionButton from "./actionButton";
+import InvoiceActionButton from "./_components/actionButton";
 import { userSession } from "@/hooks/sessionHook";
 import { getInvoices } from "./actions";
-import { capitalizeString, formatCurrency } from "@/lib/utils";
-import { GetInvoicesType, InvoiceItemType } from "./types";
+import { capitalizeString, formatCurrency, formatDate } from "@/lib/utils";
+import { GetInvoicesType, InvoiceItemType } from "./type";
 
 export default async function InvoicePage() {
 
@@ -62,13 +62,9 @@ function InvoiceRow({ data }: { data: InvoiceItemType }) {
         <TableCell>{capitalizeString(data.fromName)}</TableCell>
         <TableCell>{formatCurrency(Number(data.total), data.currency)}</TableCell>
         <TableCell><StatusTag status={data.status} /></TableCell>
-        <TableCell>{
-            new Intl.DateTimeFormat("en-IN", {
-                dateStyle: "full"
-            }).format(data.dueDate)}
-        </TableCell>
+        <TableCell>{formatDate(data.dueDate)}</TableCell>
         <TableCell className="text-right">
-            <InvoiceActionButton />
+            <InvoiceActionButton id={data.id} />
         </TableCell>
     </TableRow>
 }
