@@ -40,8 +40,12 @@ export function formatDate(date: Date) {
     }).format(date).toString()
 }
 
-export function formatPDFDate(date: Date){
+export function formatPDFDate(date: Date) {
     return new Intl.DateTimeFormat("en-IN", {
         dateStyle: "short"
     }).format(date).toString().replaceAll("/", "-");
+}
+
+export function invoicePdfHref(id: string) {
+    return `http://localhost:3000/api/invoice/${id}`;
 }

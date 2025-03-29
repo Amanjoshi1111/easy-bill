@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { invoicePdfHref } from "@/lib/utils";
 import { Download, Ellipsis, Mail, Pencil, SquareCheckBig, Trash } from "lucide-react";
 import Link from "next/link";
 
@@ -17,7 +18,7 @@ export default function InvoiceActionButton({ id }: { id: string }) {
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Link href={""} className="flex items-center justify-between">
+                <Link target="_blank" href={invoicePdfHref(id)} className="flex items-center justify-between">
                     <Download className="text-black size-4 mr-2" /> Download Invoice
                 </Link>
             </DropdownMenuItem>

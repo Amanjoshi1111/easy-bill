@@ -1,7 +1,7 @@
 "use server";
 import { userSession } from "@/hooks/sessionHook";
 import { createInvoiceFormSchema } from "../type";
-import { formatCurrency, formatDate, invoiceNumberString, parseValidationError } from "@/lib/utils";
+import { formatCurrency, formatDate, invoiceNumberString, invoicePdfHref, parseValidationError } from "@/lib/utils";
 import { prisma } from "@/db";
 import { redirect } from "next/navigation";
 import sendEmail from "@/lib/sendEmail";
@@ -59,7 +59,7 @@ const createInvoice: FormServerAction = async (formData) => {
         }
     ]
 
-    const invoiceHref = `http://localhost:3000/api/invoice/${data.id}`;
+    const invoiceHref = invoicePdfHref(data.id);
     await sendEmail({
         to: to,
         from: from,
