@@ -58,6 +58,19 @@ export async function GET(request: NextRequest,
         return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
     }
 
+    //Function that will create pdf for us
+    const doc = createInvoicePdf(data);
+
+    const pdfBuffer = doc.output("arraybuffer");
+    return new NextResponse(pdfBuffer, {
+        headers: {
+            "Content-Type": "application/pdf",
+            "Content-Disposable": "inline"
+        }
+    });
+}
+
+function createInvoicePdf(data: FindUniqueInvoiceType) {
     const doc = new jsPDF();
 
     //Adding roboto font as it support ₹ character (utf-8)
@@ -88,7 +101,7 @@ export async function GET(request: NextRequest,
     //Issue Date
     y = y + 6;
     doc.text(`Issue Date : ${formatPDFDate(data.createdAt)}`, x, y);
-    doc.text(data.fromEmail, x + 190, y, { align: "right" , maxWidth: 60});
+    doc.text(data.fromEmail, x + 190, y, { align: "right", maxWidth: 60 });
 
     //Due Date
     y = y + 6;
@@ -130,7 +143,7 @@ export async function GET(request: NextRequest,
             }
             if (data.cell.section == "head" && data.column.index == 0) {
                 doc.setDrawColor("red");
-                doc.setLineWidth(0.6);
+                doc.setLineWidth(0.4);
                 doc.line(x, y + 7, 210 - x, y + 7);
                 doc.line(x, y, 210 - x, y);
                 doc.setDrawColor("black");
@@ -162,23 +175,15 @@ export async function GET(request: NextRequest,
     y = y + 15;
     doc.line(x, y, 210 - x, y);
 
-
     //Notes
     y = y + 10;
     if (data.note) {
         doc.text("Additional Note: ", x, y);
         doc.setFont("Roboto", "normal").setFontSize(12);
-        doc.text(data.note, x, y + 5, {maxWidth: 150-x});
+        doc.text(data.note, x, y + 5, { maxWidth: 150 - x });
     }
 
-
-    const pdfBuffer = doc.output("arraybuffer");
-    return new NextResponse(pdfBuffer, {
-        headers: {
-            "Content-Type": "application/pdf",
-            "Content-Disposable": "inline"
-        }
-    });
+    return doc;
 }
 
 function getItemsList(data: FindUniqueInvoiceType) {
