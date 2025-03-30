@@ -6,6 +6,7 @@ import { capitalizeString, formatCurrency, formatPDFDate, invoiceNumberString } 
 import robotoNormalFont from "@/fonts/robotoNormalFont";
 import robotoBoldFont from "@/fonts/robotoBoldFont";
 import { Prisma } from "@prisma/client";
+import { userSession } from "@/hooks/sessionHook";
 
 type FindUniqueInvoiceType = Prisma.InvoiceGetPayload<{
     select: {
@@ -30,10 +31,13 @@ type FindUniqueInvoiceType = Prisma.InvoiceGetPayload<{
 export async function GET(request: NextRequest,
     { params }: { params: Promise<{ invoiceId: string }> }
 ) {
+    const session = await userSession();
+
     const invoiceId = (await params).invoiceId;
     const data: FindUniqueInvoiceType | null = await prisma.invoice.findUnique({
         where: {
-            id: invoiceId
+            id: invoiceId,
+            userId: session.user?.id
         },
         select: {
             invoiceName: true,
