@@ -1,11 +1,9 @@
 import { capitalizeString } from "../utils"
 
-//Use for both create/edit invoice
-export function sendInvoiceHtml({
+export function sendReminderHtml({
 
-    toName, invoiceNumber, invoiceDate, dueDate, totalAmount, invoiceHref, isEditAction = false
+    toName, invoiceNumber, invoiceDate, dueDate, totalAmount, invoiceHref
 }: {
-    isEditAction?: boolean
     toName: string,
     invoiceNumber: string,
     invoiceDate: string,
@@ -14,7 +12,6 @@ export function sendInvoiceHtml({
     invoiceHref: string
 }) {
 
-    console.log(isEditAction);
     return `<!DOCTYPE html>
 <html lang="en">
 
@@ -51,10 +48,7 @@ export function sendInvoiceHtml({
 </style>
 
 <body>` +
-        `${isEditAction
-            ? `<h1> Updated Invoice For ${capitalizeString(toName)}</h1>`
-            : `<h1> Invoice For ${capitalizeString(toName)}</h1>`
-        } `
+        ` <h1> Reminder Invoice For ${capitalizeString(toName)}</h1>`
         +
         `<div>
         Dear ${capitalizeString(toName)},<br>

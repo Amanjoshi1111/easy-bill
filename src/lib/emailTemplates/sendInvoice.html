@@ -1,21 +1,4 @@
-import { capitalizeString } from "../utils"
-
-//Use for both create/edit invoice
-export function sendInvoiceHtml({
-
-    toName, invoiceNumber, invoiceDate, dueDate, totalAmount, invoiceHref, isEditAction = false
-}: {
-    isEditAction?: boolean
-    toName: string,
-    invoiceNumber: string,
-    invoiceDate: string,
-    dueDate: string,
-    totalAmount: string,
-    invoiceHref: string
-}) {
-
-    console.log(isEditAction);
-    return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -44,19 +27,15 @@ export function sendInvoiceHtml({
         border-radius: 10px;
     }
 
-    a:hover {
+    button:a {
         background-color: #203CC0;
         cursor: pointer;
     }
 </style>
 
-<body>` +
-        `${isEditAction
-            ? `<h1> Updated Invoice For ${capitalizeString(toName)}</h1>`
-            : `<h1> Invoice For ${capitalizeString(toName)}</h1>`
-        } `
-        +
-        `<div>
+<body>
+    <h1>Invoice For ${capitalizeString(toName)}</h1>
+    <div>
         Dear ${capitalizeString(toName)},<br>
         I hope you're doing well. Please find attached your invoice.
     </div>
@@ -68,12 +47,15 @@ export function sendInvoiceHtml({
         <li>Total Amount : ${totalAmount}</li>
     </ul>
     <div>You can download the invoice using the button below: </div>
-    <a href='${invoiceHref}'"
-    >Download invoice</a>
+    <a type="button" href=`${invoiceLink}`>Download invoice</a>
     <div>
         Thank you for your business and continued trust.
     </div>
+    <!-- <script>
+        document.getElementById("downloadBtn").onclick = () => {
+            location.href = `${hostname}/api/invoice/${invoiceId}`
+        }
+    </script> -->
 </body>
 
-</html>`
-}
+</html>

@@ -38,16 +38,6 @@ export default async function InvoicePage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {/* <TableRow>
-                        <TableCell>01</TableCell>
-                        <TableCell>rahul</TableCell>
-                        <TableCell>&#8377;400</TableCell>
-                        <TableCell>Pending</TableCell>
-                        <TableCell>22/04/2025</TableCell>
-                        <TableCell className="text-right">
-                            <InvoiceActionButton />
-                        </TableCell>
-                    </TableRow> */}
                     {invoiceList.map(invoice => <InvoiceRow key={invoice.id} data={invoice} />)}
                 </TableBody>
             </Table>

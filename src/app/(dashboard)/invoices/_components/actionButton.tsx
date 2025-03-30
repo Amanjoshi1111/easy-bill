@@ -1,11 +1,35 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { invoicePdfHref } from "@/lib/utils";
+import { invoicePdfHref, reminderEmailHref } from "@/lib/utils";
 import { Download, Ellipsis, Mail, Pencil, SquareCheckBig, Trash } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function InvoiceActionButton({ id }: { id: string }) {
+
+    const sendRemianderMail = async () => {
+
+        toast.promise(
+            // new Promise(resolve => setTimeout(resolve, 2000))
+            fetch(reminderEmailHref(id), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(async (response) => {
+                if (response.status != 200) {
+                    const data: { error?: string } = await response.json();
+                    throw new Error(data.error);
+                }
+            })
+            , {
+                loading: <span> Loading...</span>,
+                success: <span>Reminder Email Sent</span>,
+                error: (err) => err.message
+            })
+    }
 
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -22,10 +46,10 @@ export default function InvoiceActionButton({ id }: { id: string }) {
                     <Download className="text-black size-4 mr-2" /> Download Invoice
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-                <Link href={""} className="flex items-center justify-between">
+            <DropdownMenuItem onClick={sendRemianderMail}>
+                <div className="flex items-center justify-between hover:cursor-pointer">
                     <Mail className="text-black size-4 mr-2" /> Reminder Email
-                </Link>
+                </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
                 <Link href={""} className="flex items-center justify-between">
@@ -33,9 +57,9 @@ export default function InvoiceActionButton({ id }: { id: string }) {
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Link href={""} className="flex items-center justify-between">
+                <div className="flex items-center justify-between hover:cursor-pointer">
                     <SquareCheckBig className="text-black size-4 mr-2" /> Mark as paid
-                </Link>
+                </div>
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>

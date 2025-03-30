@@ -11,7 +11,7 @@ import { signOut } from "@/auth";
 import isUserOnboarded from "@/hooks/onboardingCheck";
 import { redirect } from "next/navigation";
 import DashboardLinks from "./dashboard/dashboardLinks";
-
+import { Toaster } from "react-hot-toast";
 
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -85,5 +85,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 {children}
             </main>
         </div>
+        <Toaster />
     </div>
 }

@@ -49,3 +49,7 @@ export function formatPDFDate(date: Date) {
 export function invoicePdfHref(id: string) {
     return `http://localhost:3000/api/invoice/${id}`;
 }
+
+export function reminderEmailHref(id: string) {
+    return `http://localhost:3000/api/email/${id}`;
+}

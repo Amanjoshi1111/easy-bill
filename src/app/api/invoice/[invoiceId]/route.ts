@@ -32,8 +32,8 @@ export async function GET(request: NextRequest,
     { params }: { params: Promise<{ invoiceId: string }> }
 ) {
     const session = await userSession();
-
-    const invoiceId = (await params).invoiceId;
+    const { invoiceId } = await params;
+    
     const data: FindUniqueInvoiceType | null = await prisma.invoice.findUnique({
         where: {
             id: invoiceId,
