@@ -77,11 +77,28 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                     <Download className="text-black size-4 mr-2" /> Download Invoice
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleSendRemainderMail}>
-                <div className="flex items-center justify-between hover:cursor-pointer">
-                    <Mail className="text-black size-4 mr-2" /> Reminder Email
-                </div>
-            </DropdownMenuItem>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <DropdownMenuItem onSelect={(e)=> e.preventDefault()}>
+                        <div className="flex items-center justify-between hover:cursor-pointer">
+                            <Mail className="text-black size-4 mr-2" /> Reminder Email
+                        </div>
+                    </DropdownMenuItem>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Reminder Email</DialogTitle>
+                        <DialogDescription>
+                            {`Do you really want to send reminder email?`}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button onClick={handleSendRemainderMail} className="hover:cursor-pointer">Yes</Button>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
             <Dialog>
                 <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
@@ -94,7 +111,7 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                     <DialogHeader>
                         <DialogTitle>Delete Invoice</DialogTitle>
                         <DialogDescription>
-                            {`Do you really want to delete this invoice`}
+                            {`Do you really want to delete this invoice?`}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
@@ -116,7 +133,7 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                     <DialogHeader>
                         <DialogTitle>Mark As Pending</DialogTitle>
                         <DialogDescription>
-                            {`Do you really want to mark this invoice as ${getStatus(status)} ?`}
+                            {`Do you really want to mark this invoice as ${getStatus(status)}?`}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
