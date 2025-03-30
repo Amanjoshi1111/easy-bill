@@ -33,7 +33,7 @@ export async function GET(request: NextRequest,
 ) {
     const session = await userSession();
     const { invoiceId } = await params;
-    
+
     const data: FindUniqueInvoiceType | null = await prisma.invoice.findUnique({
         where: {
             id: invoiceId,

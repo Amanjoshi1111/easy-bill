@@ -2,7 +2,6 @@ import { Currency, InvoiceStatus } from "@prisma/client";
 import { z } from "zod";
 import { getInvoices } from "./actions";
 
-
 const item = z.object({
     id: z.string().uuid().optional(),
     description: z.string()
@@ -70,3 +69,4 @@ export type FormServerActionResponse = Promise<{
     success: boolean,
     errors: Record<string, string>
 }>
+

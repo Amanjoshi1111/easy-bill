@@ -54,7 +54,7 @@ function InvoiceRow({ data }: { data: InvoiceItemType }) {
         <TableCell><StatusTag status={data.status} /></TableCell>
         <TableCell>{formatDate(data.dueDate)}</TableCell>
         <TableCell className="text-right">
-            <InvoiceActionButton id={data.id} />
+            <InvoiceActionButton id={data.id} status={data.status} />
         </TableCell>
     </TableRow>
 }

@@ -1,34 +1,47 @@
-"use client";
+"use client";   
 import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { invoicePdfHref, reminderEmailHref } from "@/lib/utils";
+import { capitalizeString, invoicePdfHref } from "@/lib/utils";
 import { Download, Ellipsis, Mail, Pencil, SquareCheckBig, Trash } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { markAsPaid, sendRemainderMail } from "../actions";
+import { InvoiceStatus } from "@prisma/client";
 
-export default function InvoiceActionButton({ id }: { id: string }) {
+export default function InvoiceActionButton({ id, status }: { id: string, status: InvoiceStatus }) {
 
-    const sendRemianderMail = async () => {
-
+    const handleSendRemainderMail = () => {
         toast.promise(
-            // new Promise(resolve => setTimeout(resolve, 2000))
-            fetch(reminderEmailHref(id), {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(async (response) => {
-                if (response.status != 200) {
-                    const data: { error?: string } = await response.json();
-                    throw new Error(data.error);
-                }
-            })
-            , {
-                loading: <span> Loading...</span>,
-                success: <span>Reminder Email Sent</span>,
+            () => sendRemainderMail(id)
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.msg);
+                    }
+                    return data.msg;
+                }),
+            {
+                loading: "Sending Email ...",
+                success: (msg) => msg,
                 error: (err) => err.message
-            })
+            }
+        )
+    }
+    const handleMarkAsRead = () => {
+        toast.promise(
+            () => markAsPaid(id, status)
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.msg);
+                    }
+                    return data.msg;
+                }),
+            {
+                loading: "Updating Status",
+                success: (msg) => msg,
+                error: (err) => err.message
+            },
+        )
     }
 
     return <DropdownMenu>
@@ -46,7 +59,7 @@ export default function InvoiceActionButton({ id }: { id: string }) {
                     <Download className="text-black size-4 mr-2" /> Download Invoice
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={sendRemianderMail}>
+            <DropdownMenuItem onClick={handleSendRemainderMail}>
                 <div className="flex items-center justify-between hover:cursor-pointer">
                     <Mail className="text-black size-4 mr-2" /> Reminder Email
                 </div>
@@ -56,9 +69,9 @@ export default function InvoiceActionButton({ id }: { id: string }) {
                     <Trash className="text-black size-4 mr-2" /> Delete
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleMarkAsRead} >
                 <div className="flex items-center justify-between hover:cursor-pointer">
-                    <SquareCheckBig className="text-black size-4 mr-2" /> Mark as paid
+                    <SquareCheckBig className="text-black size-4 mr-2" /> Mark As {(status == InvoiceStatus.PAID) ? capitalizeString(InvoiceStatus.PENDING.toLowerCase()) : capitalizeString(InvoiceStatus.PAID.toLowerCase())}
                 </div>
             </DropdownMenuItem>
         </DropdownMenuContent>
