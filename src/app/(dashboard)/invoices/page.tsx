@@ -49,7 +49,7 @@ function InvoiceRow({ data }: { data: InvoiceItemType }) {
 
     return <TableRow>
         <TableCell>{invoiceNumberString(data.invoiceNumber)}</TableCell>
-        <TableCell>{capitalizeString(data.fromName)}</TableCell>
+        <TableCell>{capitalizeString(data.toName)}</TableCell>
         <TableCell>{formatCurrency(Number(data.total), data.currency)}</TableCell>
         <TableCell><StatusTag status={data.status} /></TableCell>
         <TableCell>{formatDate(data.dueDate)}</TableCell>

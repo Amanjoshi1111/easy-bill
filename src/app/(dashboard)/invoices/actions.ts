@@ -22,7 +22,7 @@ export const getInvoices = async () => {
         select: {
             id: true,
             invoiceNumber: true,
-            fromName: true,
+            toName: true,
             total: true,
             status: true,
             dueDate: true,
