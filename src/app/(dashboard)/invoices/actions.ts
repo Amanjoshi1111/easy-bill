@@ -1,7 +1,7 @@
 "use server";
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
-import { INTERNAL_SERVER_ERROR, INVOICE_NOT_FOUND, REMAINDER_EMAIL_SENT } from "@/lib/constant";
+import { INTERNAL_SERVER_ERROR, INVOICE_DELETED, INVOICE_NOT_FOUND, P2025, REMAINDER_EMAIL_SENT } from "@/lib/constant";
 import { sendReminderHtml } from "@/lib/emailTemplates/ReminderInvoice";
 import sendEmail from "@/lib/sendEmail";
 import { capitalizeString, formatCurrency, formatDate, invoiceNumberString, invoicePdfHref } from "@/lib/utils";
@@ -32,7 +32,7 @@ export const getInvoices = async () => {
     return data;
 }
 
-export const markAsPaid = async (invoiceId: string, status: InvoiceStatus) => {
+export const updateInvoiceStatus = async (invoiceId: string, status: InvoiceStatus) => {
     const session = await userSession();
     const newStatus = (status == InvoiceStatus.PAID)
         ? InvoiceStatus.PENDING
@@ -55,6 +55,26 @@ export const markAsPaid = async (invoiceId: string, status: InvoiceStatus) => {
         }
         return { msg: INTERNAL_SERVER_ERROR, success: false }
     }
+}
+
+export const deleteInvoice = async (invoiceId: string) => {
+    const session = await userSession();
+    try {
+        await prisma.invoice.delete({
+            where: {
+                userId: session.user?.id,
+                id: invoiceId
+            }
+        })
+        revalidatePath("/");
+        return { msg: INVOICE_DELETED, success: true };
+    } catch (err) {
+        if (err instanceof PrismaClientKnownRequestError && err.code == P2025) {
+            return { msg: INVOICE_NOT_FOUND, success: false };
+        }
+        return { msg: INTERNAL_SERVER_ERROR, success: false };
+    }
+
 }
 
 export const sendRemainderMail = async (invoiceId: string) => {

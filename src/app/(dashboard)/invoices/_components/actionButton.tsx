@@ -1,4 +1,4 @@
-"use client";   
+"use client";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -6,8 +6,10 @@ import { capitalizeString, invoicePdfHref } from "@/lib/utils";
 import { Download, Ellipsis, Mail, Pencil, SquareCheckBig, Trash } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { markAsPaid, sendRemainderMail } from "../actions";
+import { deleteInvoice, sendRemainderMail, updateInvoiceStatus } from "../actions";
 import { InvoiceStatus } from "@prisma/client";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 export default function InvoiceActionButton({ id, status }: { id: string, status: InvoiceStatus }) {
 
@@ -27,9 +29,9 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
             }
         )
     }
-    const handleMarkAsRead = () => {
+    const handleInvoiceStatus = () => {
         toast.promise(
-            () => markAsPaid(id, status)
+            () => updateInvoiceStatus(id, status)
                 .then(data => {
                     if (!data.success) {
                         throw new Error(data.msg);
@@ -41,6 +43,22 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                 success: (msg) => msg,
                 error: (err) => err.message
             },
+        )
+    }
+    const handleDeleteInvoice = () => {
+        toast.promise(
+            () => deleteInvoice(id)
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.msg);
+                    }
+                    return data.msg;
+                }),
+            {
+                loading: "Deleting Invoice",
+                success: (msg) => msg,
+                error: (err) => err.message
+            }
         )
     }
 
@@ -64,16 +82,54 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                     <Mail className="text-black size-4 mr-2" /> Reminder Email
                 </div>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-                <Link href={""} className="flex items-center justify-between">
-                    <Trash className="text-black size-4 mr-2" /> Delete
-                </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleMarkAsRead} >
-                <div className="flex items-center justify-between hover:cursor-pointer">
-                    <SquareCheckBig className="text-black size-4 mr-2" /> Mark As {(status == InvoiceStatus.PAID) ? capitalizeString(InvoiceStatus.PENDING.toLowerCase()) : capitalizeString(InvoiceStatus.PAID.toLowerCase())}
-                </div>
-            </DropdownMenuItem>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
+                        <div className=" flex items-center justify-between hover:cursor-pointer">
+                            <Trash className="text-black size-4 mr-2" />Delete
+                        </div>
+                    </DropdownMenuItem>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Delete Invoice</DialogTitle>
+                        <DialogDescription>
+                            {`Do you really want to delete this invoice`}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button onClick={handleDeleteInvoice} className="hover:cursor-pointer">Yes</Button>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
+                        <div className="flex items-center justify-between hover:cursor-pointer">
+                            <SquareCheckBig className="text-black size-4 mr-2" /> Mark As {getStatus(status)}
+                        </div>
+                    </DropdownMenuItem>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Mark As Pending</DialogTitle>
+                        <DialogDescription>
+                            {`Do you really want to mark this invoice as ${getStatus(status)} ?`}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button onClick={handleInvoiceStatus} className="hover:cursor-pointer">Yes</Button>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </DropdownMenuContent>
     </DropdownMenu>
+}
+
+function getStatus(status: string) {
+    return (status == InvoiceStatus.PAID) ? capitalizeString(InvoiceStatus.PENDING.toLowerCase()) : capitalizeString(InvoiceStatus.PAID.toLowerCase())
 }
