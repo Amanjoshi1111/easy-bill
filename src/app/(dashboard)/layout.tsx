@@ -10,7 +10,7 @@ import { links } from "@/lib/constants";
 import { signOut } from "@/auth";
 import isUserOnboarded from "@/hooks/onboardingCheck";
 import { redirect } from "next/navigation";
-import DashboardLinks from "./dashboard/dashboardLinks";
+import DashboardLinks from "./dashboard/_components/dashboardLinks";
 import { Toaster } from "react-hot-toast";
 
 
@@ -26,7 +26,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
      lg:grid-cols-[300px_1fr]">
         <div className="hidden border-r md:block bg-gray-100">
             <div className="flex flex-col items-center max-h-screen gap-2 h-full">
-                <div className="h-20 flex pl-6 items-center border-b w-full">
+                <div className="h-16 flex pl-6 items-center border-b w-full">
                     <Link href={"/"} className=" flex items-center gap-2 text-3xl font-bold">
                         <Image src={Logo} alt="Logo" className="size-10 rotate-90"></Image>
                         <p>Easy<span className="text-orange-500">Billing</span></p>
@@ -40,7 +40,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </div>
         </div>
         <div className="flex flex-col ">
-            <header className="flex px-4 md:px-6 items-center h-20 border-b bg-gray-100">
+            <header className="flex px-4 md:px-6 items-center h-16 border-b bg-gray-100">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" className="md:hidden"><Menu className="size-5" /></Button>
