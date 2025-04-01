@@ -53,3 +53,7 @@ export function invoicePdfHref(id: string) {
 export function reminderEmailHref(id: string) {
     return `http://localhost:3000/api/email/${id}`;
 }
+
+export function dashboardDataHref(id: number) {
+    return `http://localhost:3000/api/dashboard/?id=${id}`;
+}

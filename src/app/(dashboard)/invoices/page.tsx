@@ -19,7 +19,7 @@ export default async function InvoicePage() {
         <CardHeader>
             <div className="flex items-center justify-between">
                 <div>
-                    <CardTitle className="text-2xl font-bold">Invoices</CardTitle>
+                    <CardTitle className="text-4xl font-bold">Invoices</CardTitle>
                     <CardDescription>Manage your invoices here</CardDescription>
                 </div>
                 <Link href={"/invoices/create"} className={buttonVariants()}> <Plus /> Create Invoice</Link>
