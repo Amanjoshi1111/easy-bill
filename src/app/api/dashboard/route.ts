@@ -18,15 +18,13 @@ export async function GET(request: NextRequest) {
 
     const days = getAnalyticsDayFromTimeline(id);
 
-
-    console.log({ id, days });
     const lowerDate = new Date();
     lowerDate.setDate(lowerDate.getDate() - days);
 
     const data = await prisma.invoice.findMany({
         where: {
             userId: session.user?.id,
-            createdAt: { gte: lowerDate }
+            createdAt: (days == Number.MAX_SAFE_INTEGER) ? {} : { gte: lowerDate }
         },
         select: {
             total: true,

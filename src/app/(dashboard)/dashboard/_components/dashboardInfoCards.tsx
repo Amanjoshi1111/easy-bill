@@ -29,10 +29,10 @@ export function DashboardInfoCards({ dashboardCardData, btnIndex }: {
     const unpaidInvoices = Number(dashboardCardData?.unpaidInvoices || 0);
     const paidInvoices = invoiceIssued - unpaidInvoices;
 
-    const paidInvoicesAmount = Number(dashboardCardData?.paidInvoicesAmount);
+    // const paidInvoicesAmount = Number(dashboardCardData?.paidInvoicesAmount);
     const unpaidInvoicesAmount = Number(dashboardCardData?.totalPendingAmount);
 
-    const percentagePaid = ((paidInvoices) / invoiceIssued * 100).toFixed(2);
+    const percentagePaid = (invoiceIssued == 0) ? (0.00).toFixed(2)  : ((paidInvoices) / invoiceIssued * 100).toFixed(2);
 
     const cardInfo: DashboarCardProps[] = [
         {
@@ -48,9 +48,11 @@ export function DashboardInfoCards({ dashboardCardData, btnIndex }: {
             idx: 1,
             title: "Invoice Issued",
             amount: invoiceIssued.toString(),
-            footer: (averageInvoicePerDay < 1) ?
-                "<1 per day" :
-                (averageInvoicePerDay == 1) ? `Average 1 invoice per day` : `Average ${Math.floor(invoiceIssued / days)} invoices per day`,
+            footer: (averageInvoicePerDay < 1)
+                ? "<1 per day"
+                : (averageInvoicePerDay == 1)
+                    ? `Average 1 invoice per day`
+                    : `Average ${Math.floor(invoiceIssued / days)} invoices per day`,
             icon: <FileText color="white" />,
             color: "bg-gradient-to-r from-blue-500 to-blue-600",
             hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-green-100"
