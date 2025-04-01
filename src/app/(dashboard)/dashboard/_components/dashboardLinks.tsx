@@ -17,7 +17,7 @@ export default function DashboardLinks() {
                     ? "bg-gray-200"
                     : "hover:bg-gray-100")}
                 href={link.href} key={link.id} >
-                <div className="text-md font-[450]">{link.name}</div>
+                <div className="text-md font-[500]">{link.name}</div>
             </Link>
         })}
     </>
