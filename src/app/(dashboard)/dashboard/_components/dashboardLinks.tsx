@@ -1,5 +1,6 @@
 "use client";
 import { links } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,12 +13,11 @@ export default function DashboardLinks() {
     return <>
         {links.map(link => {
             return <Link
-                className={`flex items-center pl-6 h-10 md:h-12 space-x-3 rounded-sm w-full`.concat(" ").concat((pathname == link.href)
-                    ? "text-primary bg-primary/10"
-                    : "text-muted-foreground hover:text-foreground")}
+                className={cn(`flex  rounded-sm items-center px-4 py-1 `, (pathname == link.href)
+                    ? "bg-gray-200"
+                    : "hover:bg-gray-100")}
                 href={link.href} key={link.id} >
-                <div><link.icon className="size-5 md:size-6"></link.icon></div>
-                <div className="text-lg md:text-xl">{link.name}</div>
+                <div className="text-md font-[450]">{link.name}</div>
             </Link>
         })}
     </>

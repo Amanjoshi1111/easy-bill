@@ -66,7 +66,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
         }
     }
 
-    return <Card className="mx-auto max-w-5xl">
+    return <Card>
         <CardHeader>
             <CardTitle className="text-3xl">{title}</CardTitle>
         </CardHeader>

@@ -9,10 +9,10 @@ export default function TimelineButton({ setBtnIndex, btnIndex }: {
 }) {
 
     return <div className="flex gap-2 px-2 py-2 border rounded-md shadow-lg 
-    [&>*]:hover:cursor-pointer [&>*]:hover:text-white">
+    [&>*]:hover:cursor-pointer">
         {Object.keys(TIMELINE_BUTTON_TEXTS).map((text, idx) => (
             <Button
-                className={`${btnIndex == idx ? "" : "hover:bg-gray-700"}`}
+                className={`${btnIndex == idx ? "" : "hover:bg-gray-300 "}`}
                 variant={`${btnIndex == idx ? "default" : "outline"}`}
                 key={idx}
                 onClick={() => setBtnIndex(idx)}
