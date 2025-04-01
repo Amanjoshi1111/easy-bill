@@ -2,6 +2,7 @@ import { Currency } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { ZodError } from "zod"
+import { TIMELINE_BUTTON_TEXTS } from "./constant";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -19,7 +20,7 @@ export function parseValidationError(error: ZodError) {
     return flattenError;
 }
 
-export function formatCurrency(amount: number, currency: Currency) {
+export function formatCurrency(amount: number, currency: Currency = Currency.USD) {
     return new Intl.NumberFormat('en-IN', {
         style: "currency",
         currency: currency
@@ -56,4 +57,12 @@ export function reminderEmailHref(id: string) {
 
 export function dashboardDataHref(id: number) {
     return `http://localhost:3000/api/dashboard/?id=${id}`;
+}
+
+export function getAnalyticsDayFromTimeline(timeline: number) {
+    return Object.values(TIMELINE_BUTTON_TEXTS).find((value, idx) => {
+        if (idx == timeline) {
+            return value;
+        }
+    }) || Number.MAX_SAFE_INTEGER;
 }

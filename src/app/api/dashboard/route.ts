@@ -1,9 +1,9 @@
 
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
-import { idParamValidator } from "@/lib/types";
+import { DashboardCardData, idParamValidator } from "@/lib/types";
+import { getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { InvoiceStatus } from "@prisma/client";
-import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -13,20 +13,15 @@ export async function GET(request: NextRequest) {
     const id = Number(searchParams.get("id"));
     const { success } = idParamValidator.safeParse(id);
     if (!success) {
-        return notFound();
+        return NextResponse.json({ success: false, msg: "Invalid parameter" }, { status: 404 });
     }
 
-    let day = 0;
-    switch (id) {
-        case 0: day = 4;
-            break;
-        case 1: day = 5;
-            break;
-        default: day = 7;
-    }
-    console.log({ id, day });
+    const days = getAnalyticsDayFromTimeline(id);
+
+
+    console.log({ id, days });
     const lowerDate = new Date();
-    lowerDate.setDate(lowerDate.getDate() - day);
+    lowerDate.setDate(lowerDate.getDate() - days);
 
     const data = await prisma.invoice.findMany({
         where: {
@@ -35,32 +30,26 @@ export async function GET(request: NextRequest) {
         },
         select: {
             total: true,
-            status: true
+            status: true,
         }
     })
 
-    const invoiceIssued = data.length;
-    let totalRevenue = 0;
-    let paidInvoicesAmount = 0;
-    let unpaidInvoices = 0;
-    let totalPendingAmount = 0;
-
+    const dashboardCardData: DashboardCardData = {
+        invoiceIssued: data.length,
+        totalRevenue: 0,
+        paidInvoicesAmount: 0,
+        unpaidInvoices: 0,
+        totalPendingAmount: 0
+    }
     for (let i = 0; i < data.length; i++) {
         const entry = data[i];
-        totalRevenue += Number(entry.total);
+        dashboardCardData.totalRevenue += Number(entry.total);
         if (entry.status == InvoiceStatus.PAID) {
-            paidInvoicesAmount += Number(entry.total);
+            dashboardCardData.paidInvoicesAmount += Number(entry.total);
         } else {
-            unpaidInvoices++;
-            totalPendingAmount += Number(entry.total);
+            dashboardCardData.unpaidInvoices++;
+            dashboardCardData.totalPendingAmount += Number(entry.total);
         }
     }
-    const response = {
-        invoiceIssued,
-        totalRevenue,
-        paidInvoicesAmount,
-        unpaidInvoices,
-        totalPendingAmount
-    }
-    return NextResponse.json(response, {status:200});
+    return NextResponse.json({ success: true, data: dashboardCardData }, { status: 200 });
 }
