@@ -1,7 +1,11 @@
+import { Currency } from "@prisma/client";
 import { z } from "zod";
 
-export const idParamValidator = z.number().min(0).max(3);
-export type IdParamValidator = typeof idParamValidator;
+export const dashboardQueryParamValidator = z.object({
+    id: z.number().min(0).max(3),
+    currency: z.nativeEnum(Currency)
+})
+export type IdParamValidator = typeof dashboardQueryParamValidator;
 
 export type DashboardCardData = {
     invoiceIssued: number,

@@ -2,7 +2,7 @@ import { Currency } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { ZodError } from "zod"
-import { TIMELINE_BUTTON_TEXTS } from "./constant";
+import { currencyConversionMap, TIMELINE_BUTTON_TEXTS } from "./constant";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -20,7 +20,7 @@ export function parseValidationError(error: ZodError) {
     return flattenError;
 }
 
-export function formatCurrency(amount: number, currency: Currency = Currency.USD) {
+export function formatCurrency(amount: number, currency: Currency) {
     return new Intl.NumberFormat('en-IN', {
         style: "currency",
         currency: currency
@@ -55,8 +55,8 @@ export function reminderEmailHref(id: string) {
     return `http://localhost:3000/api/email/${id}`;
 }
 
-export function dashboardDataHref(id: number) {
-    return `http://localhost:3000/api/dashboard/?id=${id}`;
+export function dashboardDataHref(id: number, selectIndex: string) {
+    return `http://localhost:3000/api/dashboard/?id=${id}&currency=${selectIndex}`;
 }
 
 export function getAnalyticsDayFromTimeline(timeline: number) {
@@ -65,4 +65,15 @@ export function getAnalyticsDayFromTimeline(timeline: number) {
             return value;
         }
     }) || Number.MAX_SAFE_INTEGER;
+}
+
+export function convertCurrency(amount: number, currentCurrency: Currency, toCurrency: Currency) {
+
+    if (currentCurrency == toCurrency)
+        return amount;
+
+    if (!currencyConversionMap[currentCurrency] || !currencyConversionMap[toCurrency]) {
+        throw new Error("We don't offer conversion to this currency as of now, please contact sales team");
+    }
+    return (amount / currencyConversionMap[currentCurrency]) * currencyConversionMap[toCurrency];
 }

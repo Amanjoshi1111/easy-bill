@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { DashboardCardData } from "@/lib/types";
 import { cn, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
+import { Currency } from "@prisma/client";
 import { Banknote, CircleCheckBig, CircleX, FileText } from "lucide-react";
 
 type DashboarCardProps = {
@@ -13,7 +14,8 @@ type DashboarCardProps = {
     hoverColor: string
 }
 
-export function DashboardInfoCards({ dashboardCardData, btnIndex }: {
+export function DashboardInfoCards({ selectIndex, dashboardCardData, btnIndex }: {
+    selectIndex: Currency,
     dashboardCardData: DashboardCardData | undefined
     btnIndex: number
 }) {
@@ -32,14 +34,14 @@ export function DashboardInfoCards({ dashboardCardData, btnIndex }: {
     // const paidInvoicesAmount = Number(dashboardCardData?.paidInvoicesAmount);
     const unpaidInvoicesAmount = Number(dashboardCardData?.totalPendingAmount);
 
-    const percentagePaid = (invoiceIssued == 0) ? (0.00).toFixed(2)  : ((paidInvoices) / invoiceIssued * 100).toFixed(2);
+    const percentagePaid = (invoiceIssued == 0) ? (0.00).toFixed(2) : ((paidInvoices) / invoiceIssued * 100).toFixed(2);
 
     const cardInfo: DashboarCardProps[] = [
         {
             idx: 0,
             title: "Total Revenue",
-            amount: formatCurrency(totalRevenue),
-            footer: `Average daily revenue : ${formatCurrency(averageDailyRevenue)}`,
+            amount: formatCurrency(totalRevenue, selectIndex),
+            footer: `Average daily revenue : ${formatCurrency(averageDailyRevenue, selectIndex)}`,
             icon: <Banknote color="white" />,
             color: "bg-gradient-to-r from-green-500 to-green-600",
             hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-green-100"
@@ -70,7 +72,7 @@ export function DashboardInfoCards({ dashboardCardData, btnIndex }: {
             idx: 3,
             title: "Unpaid Invoices",
             amount: unpaidInvoices.toString(),
-            footer: `Total pending amount: ${formatCurrency(unpaidInvoicesAmount)}`,
+            footer: `Total pending amount: ${formatCurrency(unpaidInvoicesAmount, selectIndex)}`,
             icon: <CircleX color="white" />,
             color: "bg-gradient-to-r from-red-500 to-red-600",
             hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-red-100"
