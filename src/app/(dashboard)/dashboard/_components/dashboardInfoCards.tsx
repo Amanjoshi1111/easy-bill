@@ -61,7 +61,7 @@ export function DashboardInfoCards({ dashboardCardData, btnIndex }: {
             idx: 2,
             title: "Paid Invoices",
             amount: paidInvoices.toString(),
-            footer: `${percentagePaid} payment success rate`,
+            footer: `${percentagePaid}% payment success rate`,
             icon: <CircleCheckBig color="white" />,
             color: "bg-gradient-to-r from-purple-500 to-purple-600",
             hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-green-100"
