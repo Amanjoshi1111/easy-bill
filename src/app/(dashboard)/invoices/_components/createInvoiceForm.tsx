@@ -227,7 +227,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-between items-end gap-40">
+                    <div className="flex justify-between items-end gap-40 mt-[-30px]">
                         <div className="flex flex-col flex-3 gap-2 w-1/4">
                             <Label>Note</Label>
                             <Textarea placeholder="Some additional notes..." className="w-[400px]" />
@@ -238,11 +238,11 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
                 </div>
             </form>
             {/* DEBUGGING BUTTON */}
-            <Button onClick={() => {
+            {/* <Button onClick={() => {
                 console.log(getValues());
                 console.log(errors);
                 console.log(errors.items?.message);
-            }}>CLICKME</Button>
+            }}>CLICKME</Button> */}
         </CardContent>
     </Card >
 }
