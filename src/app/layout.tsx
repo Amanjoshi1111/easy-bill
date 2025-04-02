@@ -48,7 +48,7 @@ export default async function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <div className="h-16 w-full border-b"></div>
-                <div className="h-screen relative m-auto w-[1300px] z-10 bottom-16 ">
+                <div className="h-screen relative m-auto w-[1200px] z-10 bottom-16 ">
                     <div className="h-16 w-full flex items-center justify-between px-4 shrink-0">
                         <div className="flex items-center gap-2 text-3xl font-bold w-60">
                             <Image src={Logo} alt="Logo" className="size-10 rotate-90"></Image>
