@@ -10,11 +10,10 @@ import { notFound } from "next/navigation";
 
 export default function Dashboard() {
 
-    const [btnIndex, setBtnIndex] = useState<number>(1);
+    const [btnIndex, setBtnIndex] = useState<number>(0);
     const [dashboardCardData, setDashboardCardData] = useState<DashboardCardData>();
 
     useEffect(() => {
-        console.log("TIMELINE : ", btnIndex);
         async function getDashboardData() {
             const response = await fetch(dashboardDataHref(btnIndex));
             const data: DashboardApiResponse = await response.json();

@@ -9,3 +9,16 @@ export const TIMELINE_BUTTON_TEXTS = {
     "90d": 10,
     "Lifetime": Number.MAX_SAFE_INTEGER
 }
+export const NODEMAILER_CONFIG= {
+    server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: Number(process.env.EMAIL_SERVER_PORT),
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_SERVER_USER,
+            pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+    },
+    from: process.env.EMAIL_SERVER_USER,
+    
+}

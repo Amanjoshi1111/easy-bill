@@ -98,6 +98,7 @@ export const sendRemainderMail = async (invoiceId: string) => {
         ]
 
         const invoiceHref = invoicePdfHref(invoiceId);
+        console.log("hey aman");
         await sendEmail({
             to: to,
             from: from,

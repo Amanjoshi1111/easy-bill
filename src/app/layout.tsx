@@ -1,19 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { userSession } from "@/hooks/sessionHook";
-import Logo from "@/app/favicon.ico";
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { links } from "@/lib/constants";
-import { signOut } from "@/auth";
-import isUserOnboarded from "@/hooks/onboardingCheck";
-import { redirect } from "next/navigation";
-import { Toaster } from "react-hot-toast";
-import DashboardLinks from "./(dashboard)/dashboard/_components/dashboardLinks";
-import { User2 } from "lucide-react";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -35,64 +22,13 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
-    const session = await userSession();
-    const isOnboarded = await isUserOnboarded(session.user?.id as string);
-    if (!isOnboarded) {
-        redirect("/onboarding");
-    }
-
-    return (
-        <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-                <div className="h-16 w-full border-b"></div>
-                <div className="h-screen relative m-auto w-[1200px] z-10 bottom-16 ">
-                    <div className="h-16 w-full flex items-center justify-between px-4 shrink-0">
-                        <div className="flex items-center gap-2 text-3xl font-bold w-60">
-                            <Image src={Logo} alt="Logo" className="size-10 rotate-90"></Image>
-                            <p>Easy<span className="text-orange-500">Billing</span></p>
-                        </div>
-                        <div className="flex w-50 justify-between gap-2">
-                            <DashboardLinks />
-                        </div>
-                        <div className="w-60 flex justify-end ">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild className="hover:cursor-pointer">
-                                    <Button variant="outline" className="rounded-full size-11" size="icon">
-                                        <User2 className="size-6" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="min-w-[10rem]">
-                                    <DropdownMenuLabel className="font-bold text-lg">My Account</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    {links.map(link => (
-                                        <DropdownMenuItem key={link.id} asChild className="text-base hover:cursor-pointer">
-                                            <Link href={link.href}>{link.name} </Link>
-                                        </DropdownMenuItem>
-                                    ))}
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem asChild>
-                                        <form action={async () => {
-                                            "use server";
-                                            await signOut({
-                                                redirectTo: "/login"
-                                            });
-                                        }}>
-                                            <button className="text-base hover:cursor-pointer w-full text-left" >Logout</button>
-                                        </form>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-                    </div>
-                    <div className="h-min-screen p-4 ">
-                        {children}
-                    </div>
-                </div>
-                <Toaster />
-            </body>
-        </html>
-    );
+        return (
+            <html lang="en">
+                <body
+                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                >
+                    {children}
+                </body>
+            </html>
+        );
 }

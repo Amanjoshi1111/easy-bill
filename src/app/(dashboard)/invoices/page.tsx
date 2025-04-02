@@ -5,14 +5,13 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { InvoiceStatus } from "@prisma/client";
 import InvoiceActionButton from "./_components/actionButton";
-import { userSession } from "@/hooks/sessionHook";
 import { getInvoices } from "./actions";
 import { capitalizeString, formatCurrency, formatDate } from "@/lib/utils";
 import { GetInvoicesType, InvoiceItemType } from "./type";
 
 export default async function InvoicePage() {
 
-    await userSession();
+    // await userSession();
     const invoiceList: GetInvoicesType = await getInvoices();
 
     return <Card >
