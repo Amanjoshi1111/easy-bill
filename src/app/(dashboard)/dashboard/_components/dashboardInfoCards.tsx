@@ -24,6 +24,8 @@ export function DashboardInfoCards({ currency, dashboardCardData, btnIndex }: {
 
     const [showMore, setShowMore] = useState<boolean>(false);
 
+
+    //If this grows extract it to a new function.
     const days = getAnalyticsDayFromTimeline(btnIndex);
     const totalRevenue = formatCurrency(dashboardCardData.totalRevenue, currency);
     const avgRevenue = formatCurrency(dashboardCardData.avgDailyRevenue, currency);
