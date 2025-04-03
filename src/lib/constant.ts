@@ -36,9 +36,8 @@ export const defaultDashboardCardData = {
     overDueRevenue: 0,
     currency: Currency.INR,
 }
-export type DashboardCardData = typeof defaultDashboardCardData;
 //Hardcoded as of now
 export const currencyConversionMap = {
     USD: 1,
-    INR: 100
+    INR: 85.3
 }

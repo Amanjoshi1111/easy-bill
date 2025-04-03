@@ -16,7 +16,7 @@ export default async function RootLayout({
 
     return (<>
         <div className="h-16 w-full border-b"></div>
-        <div className="h-screen relative m-auto w-[1200px] z-10 bottom-16 ">
+        <div className="h-screen relative m-auto w-[1000px] z-10 bottom-16 ">
             <div className="h-16 w-full flex items-center justify-between px-4 shrink-0">
                 <div>
                     <LogoSection />

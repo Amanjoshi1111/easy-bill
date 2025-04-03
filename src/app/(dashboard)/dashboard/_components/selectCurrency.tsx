@@ -3,19 +3,19 @@ import { SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, Sel
 import { Currency } from "@prisma/client";
 import React, { Dispatch, SetStateAction } from "react";
 
-export default function SelectCurrency({ selectIndex, setSelectIndex }: {
-    selectIndex: string,
-    setSelectIndex: Dispatch<SetStateAction<Currency>>
+export default function SelectCurrency({ currency, setCurrency }: {
+    currency: string,
+    setCurrency: Dispatch<SetStateAction<Currency>>
 }) {
 
-    return <Select defaultValue={selectIndex} onValueChange={(value) => setSelectIndex(value as Currency)} >
+    return <Select defaultValue={currency} onValueChange={(value) => setCurrency(value as Currency)} >
         <SelectTrigger>
             <SelectValue />
         </SelectTrigger>
         <SelectContent>
             <SelectGroup>
                 <SelectLabel></SelectLabel>
-                {Object.values(Currency).map((key, idx) => (<SelectItem key={idx} value={key}>{key}</SelectItem>))}
+                {Object.values(Currency).map((key, idx) => (<SelectItem key={idx} value={key}>{`${key} ($)`}</SelectItem>))}
             </SelectGroup>
         </SelectContent>
     </Select>
