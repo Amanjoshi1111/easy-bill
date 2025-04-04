@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { DashboardCardData } from "@/lib/types";
-import { cn, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
+import { DashboardApiResponse } from "@/lib/types";
+import { cn, dashboardDataHref, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { userStore } from "@/store/store";
 import { Banknote, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock10, FileText } from "lucide-react";
-import { useState } from "react";
+import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type DashboarCardProps = {
     idx: number,
@@ -16,13 +17,28 @@ type DashboarCardProps = {
     hoverColor: string,
     className?: string
 }
-export function DashboardInfoCards({ dashboardCardData }: {
-    dashboardCardData: DashboardCardData
-}) {
+export function DashboardInfoCards() {
 
     const [showMore, setShowMore] = useState<boolean>(false);
     const btnIndex = userStore(state => state.btnIndex);
     const currency = userStore(state => state.currency);
+    const setDashboardCardData = userStore(state => state.setDashboardCardData);
+
+    useEffect(() => {
+        async function getDashboardData() {
+            const response = await fetch(dashboardDataHref(btnIndex, currency));
+            const data: DashboardApiResponse = await response.json();
+            if (!data.success) {
+                notFound();
+            }
+            console.log(data.data);
+            setDashboardCardData(data.data);
+        }
+        getDashboardData();
+    }, [btnIndex, currency, setDashboardCardData]);
+
+
+    const dashboardCardData = userStore(state => state.dashboardCardData);
 
     //If this grows extract it to a new function.
     const days = getAnalyticsDayFromTimeline(btnIndex);
