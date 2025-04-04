@@ -2,7 +2,7 @@
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
 import { defaultDashboardCardData } from "@/lib/constant";
-import { dashboardQueryParamValidator } from "@/lib/types";
+import { dashboardCardQueryParamValidator } from "@/lib/types";
 import { convertCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { InvoiceStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
     const session = await userSession();
     const searchParams = request.nextUrl.searchParams;
-    const { success, data } = dashboardQueryParamValidator.safeParse({
+    const { success, data } = dashboardCardQueryParamValidator.safeParse({
         id: Number(searchParams.get("id")),
         currency: searchParams.get("currency")?.toUpperCase()
     });
