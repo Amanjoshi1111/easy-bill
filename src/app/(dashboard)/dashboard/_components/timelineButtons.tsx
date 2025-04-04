@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { TIMELINE_BUTTON_TEXTS } from "@/lib/constant";
-import { Dispatch, SetStateAction } from "react";
+import { userStore } from "@/store/store";
 
-export default function TimelineButton({ setBtnIndex, btnIndex }: {
-    btnIndex: number
-    setBtnIndex: Dispatch<SetStateAction<number>>,
-}) {
+export default function TimelineButton() {
+
+    const btnIndex = userStore(state => state.btnIndex);
+    const setBtnIndex = userStore(state => state.setBtnIndex);
 
     return <>
         {Object.keys(TIMELINE_BUTTON_TEXTS).map((text, idx) => (

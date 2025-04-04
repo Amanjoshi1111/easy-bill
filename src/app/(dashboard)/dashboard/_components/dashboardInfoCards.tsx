@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { DashboardCardData } from "@/lib/types";
 import { cn, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
+import { userStore } from "@/store/store";
 import { Currency } from "@prisma/client";
-import { Banknote, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock10, FileText} from "lucide-react";
+import { Banknote, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock10, FileText } from "lucide-react";
 import { useState } from "react";
 
 type DashboarCardProps = {
@@ -16,14 +17,13 @@ type DashboarCardProps = {
     hoverColor: string,
     className?: string
 }
-export function DashboardInfoCards({ currency, dashboardCardData, btnIndex }: {
+export function DashboardInfoCards({ currency, dashboardCardData }: {
     currency: Currency,
     dashboardCardData: DashboardCardData
-    btnIndex: number
 }) {
 
     const [showMore, setShowMore] = useState<boolean>(false);
-
+    const btnIndex = userStore(state => state.btnIndex);    
 
     //If this grows extract it to a new function.
     const days = getAnalyticsDayFromTimeline(btnIndex);
