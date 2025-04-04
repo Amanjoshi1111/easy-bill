@@ -1,20 +1,18 @@
-
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
-import { defaultDashboardCardData } from "@/lib/constant";
-import { dashboardCardQueryParamValidator} from "@/lib/types";
+import { DashboardGraphDataEntry, dashboardGraphQueryParamValidator } from "@/lib/types";
 import { convertCurrency, getLowerDate } from "@/lib/utils";
-import { InvoiceStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
 
     const session = await userSession();
     const searchParams = request.nextUrl.searchParams;
-    const { success, data } = dashboardCardQueryParamValidator.safeParse({
+    const { success, data } = dashboardGraphQueryParamValidator.safeParse({
         id: Number(searchParams.get("id")),
-        currency: searchParams.get("currency")?.toUpperCase()
-    });
+        currency: searchParams.get("currency")?.toUpperCase(),
+        range: searchParams.get("range")?.toUpperCase()
+    })
     if (!success) {
         return NextResponse.json({ success: false, msg: "Invalid parameter" }, { status: 404 });
     }
@@ -31,38 +29,27 @@ export async function GET(request: NextRequest) {
             currency: true,
             total: true,
             status: true,
-            dueDate: true
+            dueDate: true,
+            createdAt: true
+        },
+        orderBy: {
+            createdAt: "asc"
         }
     });
 
-    const responseData = { ...defaultDashboardCardData };
-    responseData.totalInvoices = dbData.length;
-
+    const responseData: DashboardGraphDataEntry[] = [];
     for (let i = 0; i < dbData.length; i++) {
         const data = dbData[i];
-
         let amount: number = 0;
         try {
             amount = convertCurrency(Number(data.total), data.currency, requiredCurrency);
+
         } catch (err) {
             if (err instanceof Error) {
                 return NextResponse.json({ success: false, msg: err }, { status: 404 });
             }
         }
-        responseData.totalRevenue += amount;
-        if (data.status == InvoiceStatus.PAID) {
-            responseData.paidInvoices++;
-            responseData.paidRevenue += amount;
-        } else {
-            responseData.unpaidInvoices++;
-            responseData.unpaidRevenue += amount;
-            if (new Date() > new Date(data.dueDate)) {
-                responseData.overDueInvoices++;
-                responseData.overDueRevenue += amount;
-            }
-        }
+        responseData.push({ time: data.createdAt.toISOString(), amount: amount });
     }
-    responseData.avgDailyRevenue = (days > 0) ? responseData.totalRevenue / days : 0;
-
     return NextResponse.json({ success: true, data: responseData }, { status: 200 });
 }

@@ -56,7 +56,11 @@ export function reminderEmailHref(id: string) {
 }
 
 export function dashboardCardHref(id: number, selectIndex: string) {
-    return `http://localhost:3000/api/dashboard/?id=${id}&currency=${selectIndex}`;
+    return `http://localhost:3000/api/dashboard/cards/?id=${id}&currency=${selectIndex}`;
+}
+
+export function dashboardGraphHref(id: number, selectIndex: string, range: string) {
+    return `http://localhost:3000/api/dashboard/graph/?id=${id}&currency=${selectIndex}&range=${range}`;
 }
 
 export function getAnalyticsDayFromTimeline(timeline: number) {
@@ -65,6 +69,14 @@ export function getAnalyticsDayFromTimeline(timeline: number) {
             return value;
         }
     }) || Number.MAX_SAFE_INTEGER;
+}
+
+export function getLowerDate(id: number) {
+    //Optimize it further by date not by time 
+    const lowerDate = new Date();
+    const days = getAnalyticsDayFromTimeline(id);
+    lowerDate.setDate(lowerDate.getDate() - days);
+    return { lowerDate, days };
 }
 
 export function convertCurrency(amount: number, currentCurrency: Currency, toCurrency: Currency) {

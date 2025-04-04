@@ -25,7 +25,7 @@ export function DashboardInfoCards() {
     const setDashboardCardData = userStore(state => state.setDashboardCardData);
 
     useEffect(() => {
-        async function getDashboardData() {
+        async function getCardsData() {
             const response = await fetch(dashboardCardHref(btnIndex, currency));
             const data: DashboardCardApiResponse = await response.json();
             if (!data.success) {
@@ -34,7 +34,7 @@ export function DashboardInfoCards() {
             console.log(data.data);
             setDashboardCardData(data.data);
         }
-        getDashboardData();
+        getCardsData();
     }, [btnIndex, currency, setDashboardCardData]);
 
 

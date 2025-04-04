@@ -36,8 +36,17 @@ export const defaultDashboardCardData = {
     overDueRevenue: 0,
     currency: Currency.INR,
 }
+export const defaultGraphDataEntry = {
+    time: "0", amount: 0
+}
 //Hardcoded as of now
 export const currencyConversionMap = {
     USD: 1,
     INR: 85.3
 }
+
+export enum TIME_SCALE {
+    DAILY = "DAILY",
+    WEEKLY = "WEEKLY",
+    MONTHLY = "MONTHLY"
+} 
