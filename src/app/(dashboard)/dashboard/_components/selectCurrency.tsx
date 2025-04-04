@@ -1,12 +1,13 @@
 import { Select } from "@/components/ui/select"
 import { SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { userStore } from "@/store/store";
 import { Currency } from "@prisma/client";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 
-export default function SelectCurrency({ currency, setCurrency }: {
-    currency: string,
-    setCurrency: Dispatch<SetStateAction<Currency>>
-}) {
+export default function SelectCurrency() {
+
+    const currency = userStore((state) => state.currency);
+    const setCurrency = userStore((state) => state.setCurrency);
 
     return <Select defaultValue={currency} onValueChange={(value) => setCurrency(value as Currency)} >
         <SelectTrigger>

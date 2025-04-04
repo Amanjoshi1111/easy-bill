@@ -8,16 +8,15 @@ import { dashboardDataHref } from "@/lib/utils";
 import { DashboardApiResponse, DashboardCardData } from "@/lib/types";
 import { notFound } from "next/navigation";
 import SelectCurrency from "./selectCurrency";
-import { Currency } from "@prisma/client";
 import { defaultDashboardCardData } from "@/lib/constant";
 import { userStore } from "@/store/store";
 
 export default function Dashboard() {
 
-    const [currency, setCurrency] = useState<Currency>("INR");
     const [dashboardCardData, setDashboardCardData] = useState<DashboardCardData>(defaultDashboardCardData);
 
     const id = userStore(state => state.btnIndex);
+    const currency = userStore(state => state.currency);
     useEffect(() => {
         async function getDashboardData() {
             const response = await fetch(dashboardDataHref(id, currency));
@@ -39,7 +38,7 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center gap-5">
                 <div>
-                    <SelectCurrency currency={currency} setCurrency={setCurrency} />
+                    <SelectCurrency  />
                 </div>
                 <div className="flex gap-2 px-2 py-2 border rounded-md shadow-lg &>*]:hover:cursor-pointer">
                     <TimelineButton />
@@ -47,7 +46,7 @@ export default function Dashboard() {
             </div>
 
         </div>
-        <DashboardInfoCards currency={currency} dashboardCardData={dashboardCardData} />
+        <DashboardInfoCards dashboardCardData={dashboardCardData} />
         <div className="grid grid-cols-[1fr] lg:grid-cols-[2.9fr_1.1fr] gap-4 pt-4">
             <UserGraph />
             <PaidInvoiceTable />
