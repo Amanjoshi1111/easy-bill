@@ -9,7 +9,7 @@ export const dashboardQueryParamValidator = z.object({
 export type IdParamValidator = typeof dashboardQueryParamValidator;
 export type DashboardCardData = typeof defaultDashboardCardData;
 
-export type DashboardApiResponse = {
+export type DashboardCardApiResponse = {
     success: boolean,
     data: DashboardCardData
 }
