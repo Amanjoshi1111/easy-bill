@@ -33,7 +33,7 @@ export default function Dashboard() {
     return <>
         <div className="flex justify-between items-center pt-4 pb-8">
             <div className="flex flex-col gap-2">
-                <div className="text-4xl font-bold">Analytic Hub</div>
+                <div className="text-4xl font-bold">Dashboard</div>
                 <div className="text-muted-foreground">Stay on top of your metrics</div>
             </div>
             <div className="flex items-center gap-5">

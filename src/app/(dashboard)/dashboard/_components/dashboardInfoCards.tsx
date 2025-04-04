@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { DashboardCardData } from "@/lib/types";
 import { cn, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { Currency } from "@prisma/client";
-import { Banknote, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock10, FileText, Timer, TimerIcon } from "lucide-react";
+import { Banknote, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock10, FileText} from "lucide-react";
 import { useState } from "react";
 
 type DashboarCardProps = {
@@ -30,7 +30,7 @@ export function DashboardInfoCards({ currency, dashboardCardData, btnIndex }: {
     const totalRevenue = formatCurrency(dashboardCardData.totalRevenue, currency);
     const avgRevenue = formatCurrency(dashboardCardData.avgDailyRevenue, currency);
     const unpaidRevenue = formatCurrency(dashboardCardData.unpaidRevenue, currency);
-    const paidRevenue = formatCurrency(dashboardCardData.paidRevenue, currency);
+    // const paidRevenue = formatCurrency(dashboardCardData.paidRevenue, currency);
     const overDueRevenue = formatCurrency(dashboardCardData.overDueRevenue, currency);
     const totalInvoices = dashboardCardData.totalInvoices;
     const paidInvoices = dashboardCardData.paidInvoices;

@@ -7,9 +7,6 @@ import { convertCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { InvoiceStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-
-
-
 export async function GET(request: NextRequest) {
 
     const session = await userSession();
@@ -21,7 +18,6 @@ export async function GET(request: NextRequest) {
     if (!success) {
         return NextResponse.json({ success: false, msg: "Invalid parameter" }, { status: 404 });
     }
-
 
     const { id, currency: requiredCurrency } = data;
 
@@ -54,7 +50,7 @@ export async function GET(request: NextRequest) {
             total = convertCurrency(Number(data.total), data.currency, requiredCurrency);
         } catch (err) {
             if (err instanceof Error) {
-                return { success: false, msg: err.message };
+                return NextResponse.json({ success: false, msg: err }, { status: 404 });
             }
         }
         responseData.totalRevenue += total;
