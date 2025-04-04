@@ -55,7 +55,7 @@ export function reminderEmailHref(id: string) {
     return `http://localhost:3000/api/email/${id}`;
 }
 
-export function dashboardDataHref(id: number, selectIndex: string) {
+export function dashboardCardHref(id: number, selectIndex: string) {
     return `http://localhost:3000/api/dashboard/?id=${id}&currency=${selectIndex}`;
 }
 

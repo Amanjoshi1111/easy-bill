@@ -15,7 +15,6 @@ export function UserGraph() {
         { month: "April", desktop: 200 },
         { month: "May", desktop: 90 },
         { month: "June", desktop: 100},
-
     ]
 
     const chartConfig = {

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { DashboardApiResponse } from "@/lib/types";
-import { cn, dashboardDataHref, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
+import { cn, dashboardCardHref, formatCurrency, getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { userStore } from "@/store/store";
 import { Banknote, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock10, FileText } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -26,7 +26,7 @@ export function DashboardInfoCards() {
 
     useEffect(() => {
         async function getDashboardData() {
-            const response = await fetch(dashboardDataHref(btnIndex, currency));
+            const response = await fetch(dashboardCardHref(btnIndex, currency));
             const data: DashboardApiResponse = await response.json();
             if (!data.success) {
                 notFound();
