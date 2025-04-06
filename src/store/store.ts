@@ -1,5 +1,5 @@
-import { defaultDashboardCardData, defaultGraphDataEntry } from "@/lib/constant";
-import { Currency, DashboardCardData, DashboardGraphDataEntry } from "@/lib/types";
+import { defaultDashboardCardData } from "@/lib/constant";
+import { Currency, DashboardCardData } from "@/lib/types";
 import { create } from "zustand";
 
 interface UserState {
@@ -7,7 +7,7 @@ interface UserState {
     currency: string,
     currencyList: Currency[],
     dashboardCardData: DashboardCardData,
-    graphData: DashboardGraphDataEntry[]
+    // graphData: DashboardGraphDataEntry[]
 }
 
 interface Actions {
@@ -15,7 +15,7 @@ interface Actions {
     setCurrency: (currency: string) => void,
     setCurrencyList: (currenyList: Currency[]) => void,
     setDashboardCardData: (dashboardCardData: DashboardCardData) => void,
-    setGraphData: (graphData: DashboardGraphDataEntry[]) => void
+    // setGraphData: (graphData: DashboardGraphDataEntry[]) => void
 }
 
 export const userStore = create<UserState & Actions>((set) => ({
@@ -32,6 +32,6 @@ export const userStore = create<UserState & Actions>((set) => ({
     dashboardCardData: defaultDashboardCardData,
     setDashboardCardData: (dashboardCardData) => set({ dashboardCardData }),
     //Graph data
-    graphData: [defaultGraphDataEntry],
-    setGraphData: (graphData) => set({ graphData })
+    // graphData: [defaultGraphDataEntry],
+    // setGraphData: (graphData) => set({ graphData })
 }))

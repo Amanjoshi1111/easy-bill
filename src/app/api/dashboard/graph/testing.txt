@@ -13,13 +13,15 @@ steps in my head
 3. put then into json
 
 SELECT 
+CAST("createdAt" as DATE) as date,
 SUM(CASE WHEN "status"='PAID' THEN ROUND("total",
 2) ELSE 0 END) AS "paidRevenue",
 SUM(CASE WHEN "status"='PENDING' THEN ROUND("total",
 2) ELSE 0 END) AS "pendingRevenue",
-SUM(ROUND("total",2)) AS "revenue",
-"currency"
-FROM "Invoice" GROUP BY CAST("createdAt" AS DATE);
+SUM(ROUND("total",2)) AS "revenue"
+FROM "Invoice"
+GROUP BY CAST("createdAt" AS DATE);
+
 
 
 SELECT 

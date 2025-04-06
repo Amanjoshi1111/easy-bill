@@ -41,37 +41,38 @@ export async function GET(request: NextRequest) {
 
     // type GraphData:
 
-    // const dbData2 = await prisma.$queryRaw<[]>`
-    //     SELECT CAST("createdAt" as DATE) as "date",
-    //     json_agg(
-    //     json_build_object (
-    //         'currency', "currency",
-    //         'amount', ROUND("total",2),
-    //         'status', "status",
-    //         'dueDate', "dueDate"
-    //     ))
-    //     AS "invoices"
-    //     FROM "Invoice"
-    //     GROUP BY CAST("createdAt" AS DATE)
-    //     ORDER BY CAST("createdAt" AS DATE) ASC;
-    // `;
+    const dbData2: DashboardGraphDataEntry[] = await prisma.$queryRaw<[]>`
+        SELECT 
+        CAST("createdAt" as DATE) as date,
+        SUM(CASE WHEN "status"='PAID' THEN ROUND("total",
+        2) ELSE 0 END) AS "paidRevenue",
+        SUM(CASE WHEN "status"='PENDING' THEN ROUND("total",
+        2) ELSE 0 END) AS "pendingRevenue",
+        SUM(ROUND("total",2)) AS "totalRevenue" 
+        FROM "Invoice" AS i
+        JOIN "Currency" AS c
+        ON i."currencyId"=c.id
+        WHERE c."name"='USD'
+        GROUP BY CAST("createdAt" AS DATE)
+        ORDER BY CAST("createdAt" AS DATE) ASC;
+    `;
 
-    // console.log({ dbData2 });
-    // return NextResponse.json({ success: true, data: dbData2 });
+    console.log(dbData2);
+    return NextResponse.json({ success: true, data: dbData2 });
 
-    const responseData: DashboardGraphDataEntry[] = [];
-    for (let i = 0; i < dbData.length; i++) {
-        const data = dbData[i];
-        let amount: number = 0;
-        try {
-            amount = convertCurrency(currenyList, Number(data.total), data.currency?.name as string, requiredCurrency);
+    // const responseData: DashboardGraphDataEntry[] = [];
+    // for (let i = 0; i < dbData.length; i++) {
+    //     const data = dbData[i];
+    //     let amount: number = 0;
+    //     try {
+    //         amount = convertCurrency(currenyList, Number(data.total), data.currency?.name as string, requiredCurrency);
 
-        } catch (err) {
-            if (err instanceof Error) {
-                return NextResponse.json({ success: false, msg: err }, { status: 404 });
-            }
-        }
-        responseData.push({ time: data.createdAt.toISOString(), amount: amount });
-    }
-    return NextResponse.json({ success: true, data: responseData }, { status: 200 });
+    //     } catch (err) {
+    //         if (err instanceof Error) {
+    //             return NextResponse.json({ success: false, msg: err }, { status: 404 });
+    //         }
+    //     }
+    //     responseData.push({ time: data.createdAt.toISOString(), amount: amount });
+    // }
+    // return NextResponse.json({ success: true, data: responseData }, { status: 200 });
 }

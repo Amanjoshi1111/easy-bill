@@ -79,8 +79,8 @@ model Invoice {
     invoiceNumber Int           @default(autoincrement())
     invoiceName   String
     dueDate       DateTime
-    currency      Currency?     @relation(fields: [currencyId], references: [id], onDelete: Restrict)
-    currencyId    Int?
+    currency      Currency     @relation(fields: [currencyId], references: [id], onDelete: Restrict)
+    currencyId    Int
     status        InvoiceStatus @default(PENDING)
     fromName      String
     fromEmail     String

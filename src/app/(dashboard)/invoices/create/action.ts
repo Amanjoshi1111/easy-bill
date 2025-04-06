@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import sendEmail from "@/lib/sendEmail";
 import { sendInvoiceHtml } from "@/lib/emailTemplates/sendInvoice";
 import { FormServerAction } from "../type";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import toast from "react-hot-toast";
 
 
 const createInvoice: FormServerAction = async (formData) => {
@@ -18,11 +20,27 @@ const createInvoice: FormServerAction = async (formData) => {
         return { success: false, errors: parseValidationError(validationObj.error) }
     }
     const validatedData = validationObj.data;
+    let currencyName: string = "";
+    try {
+        const currencyData = await prisma.currency.findUniqueOrThrow({
+            where: { id: validatedData.currency },
+            select: { name: true }
+        });
+        currencyName = currencyData.name;
+    } catch (err) {
+        if (err instanceof PrismaClientKnownRequestError) {
+            toast(`${err.message}`, {
+                duration: 3000,
+                position: "top-center"
+            });
+            redirect("/invoice");
+        }
+    }
+
     const data = await prisma.invoice.create({
         data: {
             invoiceName: validatedData.invoiceName,
             dueDate: validatedData.dueDate,
-            currencyId: validatedData,
             fromName: validatedData.fromName,
             fromEmail: validatedData.fromEmail,
             fromAddress: validatedData.fromAddress,
@@ -44,6 +62,11 @@ const createInvoice: FormServerAction = async (formData) => {
             user: {
                 connect: {
                     id: session.user?.id
+                }
+            },
+            currency: {
+                connect: {
+                    id: validatedData.currency
                 }
             }
         },
@@ -70,7 +93,7 @@ const createInvoice: FormServerAction = async (formData) => {
             invoiceNumber: invoiceNumberString(data.invoiceNumber),
             dueDate: formatDate(data.dueDate),
             invoiceDate: formatDate(data.createdAt),
-            totalAmount: formatCurrency(Number(data.total), data.currency),
+            totalAmount: formatCurrency(Number(data.total), currencyName),
             invoiceHref: invoiceHref
         })
     })

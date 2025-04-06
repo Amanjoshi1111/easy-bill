@@ -53,26 +53,6 @@ export function formatPDFDate(date: Date) {
     }).format(date).toString().replaceAll("/", "-");
 }
 
-export function invoicePdfHref(id: string) {
-    return `http://localhost:3000/api/invoice/${id}`;
-}
-
-export function reminderEmailHref(id: string) {
-    return `http://localhost:3000/api/email/${id}`;
-}
-
-export function dashboardCardHref(id: number, selectIndex: string) {
-    return `http://localhost:3000/api/dashboard/cards/?id=${id}&currency=${selectIndex}`;
-}
-
-export function dashboardGraphHref(id: number, selectIndex: string, range: string) {
-    return `http://localhost:3000/api/dashboard/graph/?id=${id}&currency=${selectIndex}&range=${range}`;
-}
-
-export function currencyListHref() {
-    return `http://localhost:3000/api/listCurrencies`;
-}
-
 export function getAnalyticsDayFromTimeline(timeline: number) {
     return Object.values(TIMELINE_BUTTON_TEXTS).find((value, idx) => {
         if (idx == timeline) {
@@ -103,4 +83,24 @@ export function convertCurrency(currencyData: Currency[], amount: number, curren
         throw new Error("We don't offer conversion to this currency as of now, please contact sales team");
     }
     return (amount / currencyConversionMap[currentCurrency]) * currencyConversionMap[toCurrency];
+}
+
+export function invoicePdfHref(id: string) {
+    return `http://localhost:3000/api/invoice/${id}`;
+}
+
+export function reminderEmailHref(id: string) {
+    return `http://localhost:3000/api/email/${id}`;
+}
+
+export function dashboardCardHref(id: number, selectIndex: string) {
+    return `http://localhost:3000/api/dashboard/cards/?id=${id}&currency=${selectIndex}`;
+}
+
+export function dashboardGraphHref(id: number, selectIndex: string, range: string) {
+    return `http://localhost:3000/api/dashboard/graph/?id=${id}&currency=${selectIndex}&range=${range}`;
+}
+
+export function currencyListHref() {
+    return `http://localhost:3000/api/listCurrencies`;
 }

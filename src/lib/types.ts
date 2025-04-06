@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defaultDashboardCardData, defaultGraphDataEntry, TIME_SCALE } from "./constant";
+import { defaultDashboardCardData, TIME_SCALE } from "./constant";
 
 //Currency Type
 
@@ -26,7 +26,12 @@ export const dashboardGraphQueryParamValidator = z.object({
     ...dashboardCardQueryParamValidator.shape,
     range: z.nativeEnum(TIME_SCALE)
 })
-export type DashboardGraphDataEntry = typeof defaultGraphDataEntry;
+export type DashboardGraphDataEntry = {
+    date: string,
+    totalRevenue: number,
+    paidRevenue: number,
+    pendingRevenue: number
+}
 export type DashboardGraphApiResponse = {
     success: boolean,
     data: [DashboardGraphDataEntry]

@@ -34,9 +34,6 @@ export const defaultDashboardCardData = {
     overDueRevenue: 0,
     currency: '',
 }
-export const defaultGraphDataEntry = {
-    time: "0", amount: 0
-}
 //Hardcoded as of now
 export const currencyConversionMap = {
     USD: 1,
