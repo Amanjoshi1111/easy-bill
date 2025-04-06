@@ -54,8 +54,8 @@ export async function GET(request: NextRequest) {
             responseData.paidInvoices++;
             responseData.paidRevenue += amount;
         } else {
-            responseData.unpaidInvoices++;
-            responseData.unpaidRevenue += amount;
+            responseData.pendingInvoices++;
+            responseData.pendingRevenue += amount;
             if (new Date() > new Date(data.dueDate)) {
                 responseData.overDueInvoices++;
                 responseData.overDueRevenue += amount;

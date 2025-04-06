@@ -44,12 +44,12 @@ export function DashboardInfoCards() {
     const days = getAnalyticsDayFromTimeline(btnIndex);
     const totalRevenue = formatCurrency(dashboardCardData.totalRevenue, currency);
     const avgRevenue = formatCurrency(dashboardCardData.avgDailyRevenue, currency);
-    const unpaidRevenue = formatCurrency(dashboardCardData.unpaidRevenue, currency);
+    const pendingRevenue = formatCurrency(dashboardCardData.pendingRevenue, currency);
     // const paidRevenue = formatCurrency(dashboardCardData.paidRevenue, currency);
     const overDueRevenue = formatCurrency(dashboardCardData.overDueRevenue, currency);
     const totalInvoices = dashboardCardData.totalInvoices;
     const paidInvoices = dashboardCardData.paidInvoices;
-    const unpaidInvoices = dashboardCardData.unpaidInvoices;
+    const pendingInvoices = dashboardCardData.pendingInvoices;
     const overDueInvoices = dashboardCardData.overDueInvoices;
     const successPercentage = ((totalInvoices > 0) ? (paidInvoices / totalInvoices) * 100 : 0).toFixed(2);
     const averageInvoicePerDay = Number(((days > 0) ? (totalInvoices / days) : 0).toPrecision(1));
@@ -89,8 +89,8 @@ export function DashboardInfoCards() {
         {
             idx: 3,
             title: "Unpaid Invoices",
-            number: unpaidInvoices.toString(),
-            footer: `Total pending amount: ${unpaidRevenue}`,
+            number: pendingInvoices.toString(),
+            footer: `Total pending amount: ${pendingRevenue}`,
             icon: <CircleX color="white" />,
             color: "bg-gradient-to-r from-orange-500 to-orange-600",
             hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-red-100"
