@@ -1,8 +1,8 @@
-import { Currency } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { ZodError } from "zod"
-import { currencyConversionMap, TIMELINE_BUTTON_TEXTS } from "./constant";
+import { TIMELINE_BUTTON_TEXTS } from "./constant";
+import { Currency } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -20,7 +20,13 @@ export function parseValidationError(error: ZodError) {
     return flattenError;
 }
 
-export function formatCurrency(amount: number, currency: Currency) {
+export function getCurrencyNameFromId(currencyData: Currency[], currencyId: number) {
+    return currencyData.find((data) => data.id == currencyId)?.name;
+}
+
+export function formatCurrency(amount: number, currency: string) {
+    if (currency == "" || currency == undefined)
+        currency = "USD";
     return new Intl.NumberFormat('en-IN', {
         style: "currency",
         currency: currency
@@ -63,6 +69,10 @@ export function dashboardGraphHref(id: number, selectIndex: string, range: strin
     return `http://localhost:3000/api/dashboard/graph/?id=${id}&currency=${selectIndex}&range=${range}`;
 }
 
+export function currencyListHref() {
+    return `http://localhost:3000/api/listCurrencies`;
+}
+
 export function getAnalyticsDayFromTimeline(timeline: number) {
     return Object.values(TIMELINE_BUTTON_TEXTS).find((value, idx) => {
         if (idx == timeline) {
@@ -79,7 +89,12 @@ export function getLowerDate(id: number) {
     return { lowerDate, days };
 }
 
-export function convertCurrency(amount: number, currentCurrency: Currency, toCurrency: Currency) {
+export function convertCurrency(currencyData: Currency[], amount: number, currentCurrency: string, toCurrency: string) {
+
+    const currencyConversionMap: Record<string, number> = {};
+    currencyData.forEach(data => {
+        currencyConversionMap[data.name] = data.rate
+    });
 
     if (currentCurrency == toCurrency)
         return amount;

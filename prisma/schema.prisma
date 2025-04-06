@@ -79,7 +79,8 @@ model Invoice {
     invoiceNumber Int           @default(autoincrement())
     invoiceName   String
     dueDate       DateTime
-    currency      Currency
+    currency      Currency?     @relation(fields: [currencyId], references: [id], onDelete: Restrict)
+    currencyId    Int?
     status        InvoiceStatus @default(PENDING)
     fromName      String
     fromEmail     String
@@ -97,6 +98,14 @@ model Invoice {
     userId        String
 }
 
+model Currency {
+    id      Int       @unique @default(autoincrement())
+    name    String    @unique
+    title   String?
+    rate    Float
+    Invoice Invoice[]
+}
+
 model Item {
     id          String  @unique @default(uuid())
     description String
@@ -105,11 +114,6 @@ model Item {
     amount      Decimal
     invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
     invoiceId   String
-}
-
-enum Currency {
-    INR
-    USD
 }
 
 enum InvoiceStatus {

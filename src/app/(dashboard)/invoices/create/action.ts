@@ -22,7 +22,7 @@ const createInvoice: FormServerAction = async (formData) => {
         data: {
             invoiceName: validatedData.invoiceName,
             dueDate: validatedData.dueDate,
-            currency: validatedData.currency,
+            currencyId: validatedData,
             fromName: validatedData.fromName,
             fromEmail: validatedData.fromEmail,
             fromAddress: validatedData.fromAddress,

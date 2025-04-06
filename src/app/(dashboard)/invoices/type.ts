@@ -1,4 +1,4 @@
-import { Currency, InvoiceStatus } from "@prisma/client";
+import { InvoiceStatus } from "@prisma/client";
 import { z } from "zod";
 import { getInvoices } from "./actions";
 
@@ -26,10 +26,7 @@ export const createInvoiceFormSchema = z.object({
         .min(5, "Minimum length should be 5 characters")
         .max(25, "Maximum length can only be 25 characters"),
     dueDate: z.coerce.date(),
-    currency: z.nativeEnum(Currency, {
-        required_error: "Currency is required",
-        invalid_type_error: "Invalid currency type"
-    }),
+    currency: z.number(),
     status: z.nativeEnum(InvoiceStatus, {
         invalid_type_error: "Invalid currency type"
     }).default(InvoiceStatus.PENDING),

@@ -1,0 +1,53 @@
+[
+    {
+        "date": "xyz",
+        "totalRevenue": 23,
+        "paidRevenue": 20,
+        "pendingRevenue": 3
+    }
+]
+
+steps in my head
+1. group by date
+2. sum 3 fields, totalRevenue, paidRevenue, pendingRevenue
+3. put then into json
+
+SELECT 
+SUM(CASE WHEN "status"='PAID' THEN ROUND("total",
+2) ELSE 0 END) AS "paidRevenue",
+SUM(CASE WHEN "status"='PENDING' THEN ROUND("total",
+2) ELSE 0 END) AS "pendingRevenue",
+SUM(ROUND("total",2)) AS "revenue",
+"currency"
+FROM "Invoice" GROUP BY CAST("createdAt" AS DATE);
+
+
+SELECT 
+  CAST("createdAt" AS DATE) AS "date", "currency"
+  json_build_object(
+    'totalRevenue', SUM(ROUND("total", 2)),
+    'paidRevenue', SUM(CASE WHEN "status" = 'PAID' THEN ROUND("total", 2) ELSE 0 END),
+    'pendingRevenue', SUM(CASE WHEN "status" = 'PENDING' THEN ROUND("total", 2) ELSE 0 END)
+  ) AS "graphData"
+FROM "Invoice"
+GROUP BY CAST("createdAt" AS DATE)
+ORDER BY CAST("createdAt" AS DATE) ASC;
+
+
+
+SELECT CAST("createdAt" as DATE) as "date", 
+        json_agg(
+        json_build_object (
+            'currency',
+"currency",
+            'amount', ROUND("total",
+2),
+            'status',
+"status",
+            'dueDate',
+"dueDate"
+        ))
+        AS "invoices"
+        FROM "Invoice"
+        GROUP BY CAST("createdAt" AS DATE)
+        ORDER BY CAST("createdAt" AS DATE) ASC;

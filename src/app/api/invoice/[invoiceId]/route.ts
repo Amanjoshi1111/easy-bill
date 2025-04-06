@@ -163,7 +163,7 @@ function createInvoicePdf(data: FindUniqueInvoiceType) {
     //Subtotal
     y = y + 15;
     doc.text("Subtotal: ", 210 - (x + 85), y);
-    doc.text(formatCurrency(Number(data.subTotal), data.currency), 210 - (x + 30), y, { align: "left", maxWidth: x + 30 });
+    doc.text(formatCurrency(Number(data.subTotal), data.currency?.name as string), 210 - (x + 30), y, { align: "left", maxWidth: x + 30 });
     doc.setLineWidth(0.05);
 
     y = y + 10;
@@ -173,7 +173,7 @@ function createInvoicePdf(data: FindUniqueInvoiceType) {
     y = y + 10;
     doc.setFont("Roboto", "bold").setFontSize(13);
     doc.text("Total: ", 210 - (x + 85), y);
-    doc.text(formatCurrency(Number(data.total), data.currency), 210 - (x + 30), y, { align: "left", maxWidth: x + 30 });
+    doc.text(formatCurrency(Number(data.total), data.currency?.name as string), 210 - (x + 30), y, { align: "left", maxWidth: x + 30 });
 
     //Draw line
     y = y + 15;
@@ -197,7 +197,7 @@ function getItemsList(data: FindUniqueInvoiceType) {
         Object.entries(item).forEach(([key, value]) => {
             if (["description", "quantity", "rate", "amount"].includes(key)) {
                 if (key == "rate" || key == "amount") {
-                    tableRow.push(formatCurrency(Number(value), data.currency) as string)
+                    tableRow.push(formatCurrency(Number(value), data.currency?.name as string) as string)
                 } else {
                     tableRow.push(value.toString());
                 }

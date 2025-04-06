@@ -1,5 +1,6 @@
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
+import { getCurrencyList } from "@/lib/dbHelpers";
 import { DashboardGraphDataEntry, dashboardGraphQueryParamValidator } from "@/lib/types";
 import { convertCurrency, getLowerDate } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
@@ -20,6 +21,7 @@ export async function GET(request: NextRequest) {
     const { id, currency: requiredCurrency } = data;
     const { lowerDate, days } = getLowerDate(id);
 
+    const currenyList = await getCurrencyList();
     const dbData = await prisma.invoice.findMany({
         where: {
             userId: session.user?.id,
@@ -37,12 +39,32 @@ export async function GET(request: NextRequest) {
         }
     });
 
+    // type GraphData:
+
+    // const dbData2 = await prisma.$queryRaw<[]>`
+    //     SELECT CAST("createdAt" as DATE) as "date",
+    //     json_agg(
+    //     json_build_object (
+    //         'currency', "currency",
+    //         'amount', ROUND("total",2),
+    //         'status', "status",
+    //         'dueDate', "dueDate"
+    //     ))
+    //     AS "invoices"
+    //     FROM "Invoice"
+    //     GROUP BY CAST("createdAt" AS DATE)
+    //     ORDER BY CAST("createdAt" AS DATE) ASC;
+    // `;
+
+    // console.log({ dbData2 });
+    // return NextResponse.json({ success: true, data: dbData2 });
+
     const responseData: DashboardGraphDataEntry[] = [];
     for (let i = 0; i < dbData.length; i++) {
         const data = dbData[i];
         let amount: number = 0;
         try {
-            amount = convertCurrency(Number(data.total), data.currency, requiredCurrency);
+            amount = convertCurrency(currenyList, Number(data.total), data.currency?.name as string, requiredCurrency);
 
         } catch (err) {
             if (err instanceof Error) {

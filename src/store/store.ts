@@ -1,20 +1,21 @@
 import { defaultDashboardCardData, defaultGraphDataEntry } from "@/lib/constant";
-import { DashboardCardData, DashboardGraphDataEntry } from "@/lib/types";
-import { Currency } from "@prisma/client";
+import { Currency, DashboardCardData, DashboardGraphDataEntry } from "@/lib/types";
 import { create } from "zustand";
 
 interface UserState {
     btnIndex: number,
-    currency: Currency,
+    currency: string,
+    currencyList: Currency[],
     dashboardCardData: DashboardCardData,
-    graphData: [DashboardGraphDataEntry]
+    graphData: DashboardGraphDataEntry[]
 }
 
 interface Actions {
     setBtnIndex: (updatedIndex: number) => void,
-    setCurrency: (currency: Currency) => void,
+    setCurrency: (currency: string) => void,
+    setCurrencyList: (currenyList: Currency[]) => void,
     setDashboardCardData: (dashboardCardData: DashboardCardData) => void,
-    setGraphData: (graphData: [DashboardGraphDataEntry]) => void
+    setGraphData: (graphData: DashboardGraphDataEntry[]) => void
 }
 
 export const userStore = create<UserState & Actions>((set) => ({
@@ -22,8 +23,11 @@ export const userStore = create<UserState & Actions>((set) => ({
     btnIndex: 0,
     setBtnIndex: (btnIndex) => set({ btnIndex }),
     //Currency select button
-    currency: Currency.INR,
+    currency: "USD",
     setCurrency: (currency) => set({ currency }),
+    //Currency list 
+    currencyList: [],
+    setCurrencyList: (currencyList) => set({ currencyList }),
     //Dashboard cards info
     dashboardCardData: defaultDashboardCardData,
     setDashboardCardData: (dashboardCardData) => set({ dashboardCardData }),

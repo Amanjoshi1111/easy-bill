@@ -2,7 +2,8 @@
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
 import { defaultDashboardCardData } from "@/lib/constant";
-import { dashboardCardQueryParamValidator} from "@/lib/types";
+import { getCurrencyList } from "@/lib/dbHelpers";
+import { dashboardCardQueryParamValidator } from "@/lib/types";
 import { convertCurrency, getLowerDate } from "@/lib/utils";
 import { InvoiceStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,21 +20,31 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ success: false, msg: "Invalid parameter" }, { status: 404 });
     }
 
+    console.log("HELLO WORLD");
     const { id, currency: requiredCurrency } = data;
     const { lowerDate, days } = getLowerDate(id);
 
+    const currencyData = await getCurrencyList();
     const dbData = await prisma.invoice.findMany({
         where: {
             userId: session.user?.id,
-            createdAt: (days == Number.MAX_SAFE_INTEGER) ? {} : { gte: lowerDate }
+            createdAt: (days == Number.MAX_SAFE_INTEGER) ? {} : { gte: lowerDate },
         },
         select: {
-            currency: true,
             total: true,
             status: true,
-            dueDate: true
-        }
+            currencyId: true,
+            dueDate: true,
+            currency: {
+                select: {
+                    name: true
+                },
+
+            }
+        },
     });
+
+    console.log(dbData);
 
     const responseData = { ...defaultDashboardCardData };
     responseData.totalInvoices = dbData.length;
@@ -43,7 +54,8 @@ export async function GET(request: NextRequest) {
 
         let amount: number = 0;
         try {
-            amount = convertCurrency(Number(data.total), data.currency, requiredCurrency);
+            amount = convertCurrency(currencyData, Number(data.total), data.currency?.name as string, requiredCurrency);
+            console.log({ amount, initialCurrency: data.currency?.name, requiredCurrency });
         } catch (err) {
             if (err instanceof Error) {
                 return NextResponse.json({ success: false, msg: err }, { status: 404 });

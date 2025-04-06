@@ -11,30 +11,31 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CalendarDays, Plus, X } from "lucide-react";
 import { createInvoiceFormSchema, CreateInvoiceFormSchema, Item } from "../type";
 import { Textarea } from "@/components/ui/textarea";
-import { Currency } from "@prisma/client";
 import { FieldErrors, useFieldArray, UseFieldArrayRemove, useForm, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, getCurrencyNameFromId } from "@/lib/utils";
 import { RHFSubmitButton } from "@/components/submitButton";
 import { FormServerAction } from "../type";
+import { Currency } from "@/lib/types";
 
-export default function CreateInvoiceForm({ title, data, serverAction, invoiceId, submitButtonText }: {
+export default function CreateInvoiceForm({ title, data, serverAction, invoiceId, submitButtonText, currencyData }: {
     title: string,
     submitButtonText: string
     invoiceId?: string,
     data?: CreateInvoiceFormSchema,
+    currencyData: Currency[]
     serverAction: FormServerAction
 }) {
     //For unique identifier for items list (key)
     const identifier = useRef(0);
-    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { defaultValues, isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
+    const { register, setValue, control, trigger, watch, getValues, handleSubmit, setError, formState: { isSubmitting, errors } } = useForm<CreateInvoiceFormSchema>({
         resolver: zodResolver(createInvoiceFormSchema),
         defaultValues: (data) ? data : {
             items: [],
             subTotal: 0,
             discount: 0,
             total: 0,
-            currency: Currency.INR
+            currency: currencyData[0].id
         },
         mode: "all",
         reValidateMode: "onChange"
@@ -44,6 +45,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
     const total = useWatch({ control, name: "total" });
     const currency = useWatch({ control, name: "currency" });
     const dueDate = watch("dueDate");
+    const currencyName = getCurrencyNameFromId(currencyData, currency);
 
     //Need to do this because of hydration issue i was getting
     useEffect(() => {
@@ -119,17 +121,16 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
                             <Label>Currency</Label>
                             <Input type="hidden" {...register("currency")} value={currency} />
                             <Select
-                                defaultValue={defaultValues?.currency as string}
-                                onValueChange={(currency: Currency) => {
-                                    setValue("currency", currency);
+                                defaultValue={currencyData[0].id.toString()}
+                                onValueChange={(currencyId: string) => {
+                                    setValue("currency", Number(currencyId));
                                 }}>
                                 <SelectTrigger className="w-full mt-2">
                                     <SelectValue placeholder="Select" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectItem value={Currency.INR}>INR - Indian Rupee</SelectItem>
-                                        <SelectItem value={Currency.USD}>USD - United States Dollar</SelectItem>
+                                        {currencyData.map((data, idx) => <SelectItem key={idx} value={data.id.toString()} >{data.name}</SelectItem>)}
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -201,7 +202,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
                             <div className="flex justify-between text-lg">
                                 <Input hidden {...register("subTotal")} />
                                 <div>Sub Total</div>
-                                <div>{formatCurrency(subTotal, currency)} </div>
+                                <div>{formatCurrency(subTotal, currencyName as string)} </div>
                             </div>
                             <div className="flex gap-4 max-w-full flex-col md:flex-row items-center justify-end">
                                 <label className="border flex items-center bg-gray-700 text-[15px] text-white h-6 px-3 py-0.4 rounded-2xl">Discount</label>
@@ -223,7 +224,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
                             </div>
                             <div className="flex justify-between text-lg border-t">
                                 <div>Total</div>
-                                <div className="underline">{formatCurrency(total, currency)}</div>
+                                <div className="underline">{formatCurrency(total, currencyName as string)}</div>
                             </div>
                         </div>
                     </div>

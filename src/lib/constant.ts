@@ -1,5 +1,3 @@
-import { Currency } from "@prisma/client";
-
 export const INTERNAL_SERVER_ERROR = "Internal Server Error";
 export const INVOICE_NOT_FOUND = "Invoice Not Found";
 export const REMAINDER_EMAIL_SENT = "Remainder Email Sent";
@@ -34,7 +32,7 @@ export const defaultDashboardCardData = {
     pendingRevenue: 0,
     overDueInvoices: 0,
     overDueRevenue: 0,
-    currency: Currency.INR,
+    currency: '',
 }
 export const defaultGraphDataEntry = {
     time: "0", amount: 0
