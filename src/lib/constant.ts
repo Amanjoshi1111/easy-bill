@@ -4,10 +4,10 @@ export const REMAINDER_EMAIL_SENT = "Remainder Email Sent";
 export const INVOICE_DELETED = "Invoice Deleted";
 export const P2025 = "P2025";
 export const TIMELINE_BUTTON_TEXTS = {
-    "7d": 4,
-    "30d": 5,
-    "90d": 10,
-    "Lifetime": Number.MAX_SAFE_INTEGER
+    "7d": 10,
+    "30d": 15,
+    "90d": 30,
+    "Lifetime": 1000
 }
 export const NODEMAILER_CONFIG = {
     server: {

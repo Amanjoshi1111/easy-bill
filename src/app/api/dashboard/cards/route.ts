@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         },
     });
 
-    console.log(dbData);
+    // console.log(dbData);
 
     const responseData = { ...defaultDashboardCardData };
     responseData.totalInvoices = dbData.length;
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
         let amount: number = 0;
         try {
             amount = convertCurrency(currencyData, Number(data.total), data.currency?.name as string, requiredCurrency);
-            console.log({ amount, initialCurrency: data.currency?.name, requiredCurrency });
+            // console.log({ amount, initialCurrency: data.currency?.name, requiredCurrency });
         } catch (err) {
             if (err instanceof Error) {
                 return NextResponse.json({ success: false, msg: err }, { status: 404 });
