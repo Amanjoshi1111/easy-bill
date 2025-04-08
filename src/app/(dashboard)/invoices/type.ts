@@ -67,3 +67,10 @@ export type FormServerActionResponse = Promise<{
     errors: Record<string, string>
 }>
 
+export type FormCurrencyData = {
+    rate: number;
+    name: string;
+    id: number;
+    title: string;
+}[]
+

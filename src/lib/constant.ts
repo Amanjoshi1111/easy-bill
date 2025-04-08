@@ -4,7 +4,7 @@ export const REMAINDER_EMAIL_SENT = "Remainder Email Sent";
 export const INVOICE_DELETED = "Invoice Deleted";
 export const P2025 = "P2025";
 export const TIMELINE_BUTTON_TEXTS = {
-    "7d": 10,
+    "7d": 5,
     "30d": 15,
     "90d": 30,
     "Lifetime": 1000
@@ -31,8 +31,7 @@ export const defaultDashboardCardData = {
     pendingInvoices: 0,
     pendingRevenue: 0,
     overDueInvoices: 0,
-    overDueRevenue: 0,
-    currency: '',
+    overDueRevenue: 0
 }
 //Hardcoded as of now
 export const currencyConversionMap = {

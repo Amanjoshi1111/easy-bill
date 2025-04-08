@@ -14,8 +14,7 @@ steps in my head
 
 SELECT 
 CAST("createdAt" as DATE) as date,
-SUM(CASE WHEN "status"='PAID' THEN ROUND("total",
-2) ELSE 0 END) AS "paidRevenue",
+SUM(CASE WHEN "status"='PAID' THEN ROUND("total",2) ELSE 0 END) AS "paidRevenue",
 SUM(CASE WHEN "status"='PENDING' THEN ROUND("total",
 2) ELSE 0 END) AS "pendingRevenue",
 SUM(ROUND("total",2)) AS "revenue"
@@ -53,3 +52,23 @@ SELECT CAST("createdAt" as DATE) as "date",
         FROM "Invoice"
         GROUP BY CAST("createdAt" AS DATE)
         ORDER BY CAST("createdAt" AS DATE) ASC;
+
+
+SELECT 
+        CAST("createdAt" as DATE) as date,
+        ROUND(SUM(CASE WHEN "status"='PAID' THEN ("total"/cc."rate")*dc."rate"
+        ELSE 0 END),2) AS "paidRevenue",
+        ROUND(SUM(CASE WHEN "status"='PENDING' THEN ("total"/cc."rate")*dc."rate"
+        ELSE 0 END),2) AS "pendingRevenue",
+        ROUND(SUM(("total"/cc."rate")*dc."rate"),2) AS "totalRevenue" 
+        FROM "Invoice" AS i
+        JOIN "Currency" AS cc ON i."currencyId"=cc.id
+        JOIN "Currency" AS dc ON dc."id"=3
+        GROUP BY CAST("createdAt" AS DATE)
+        ORDER BY CAST("createdAt" AS DATE) ASC;
+
+
+select i."total", i."createdAt", c."name"
+FROM "Invoice" as i
+JOIN "Currency" as c ON c."id"=i."currencyId"
+ORDER BY "createAt" DESC;

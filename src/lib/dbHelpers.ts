@@ -1,7 +1,8 @@
 import { prisma } from "@/db";
-import { Currency } from "./types";
+import { Currency } from "@prisma/client";
 
-export async function getCurrencyList() {
-    const currencyData: Currency[] = await prisma.currency.findMany();
+export async function getCurrencyList(): Promise<Currency[]> {
+    const currencyData = await prisma.currency.findMany();
+
     return currencyData;
 }

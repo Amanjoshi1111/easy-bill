@@ -103,7 +103,7 @@ export function UserGraph() {
                                 });
                             }}
                         />
-                        <YAxis domain={[0, 10000]} dataKey={"totalRevenue"} />
+                        <YAxis dataKey={"totalRevenue"} />
                         <ChartTooltip>
 
                         </ChartTooltip>

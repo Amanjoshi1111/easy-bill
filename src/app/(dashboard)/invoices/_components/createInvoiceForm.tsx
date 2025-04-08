@@ -9,21 +9,20 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CalendarDays, Plus, X } from "lucide-react";
-import { createInvoiceFormSchema, CreateInvoiceFormSchema, Item } from "../type";
+import { createInvoiceFormSchema, CreateInvoiceFormSchema, FormCurrencyData, Item } from "../type";
 import { Textarea } from "@/components/ui/textarea";
 import { FieldErrors, useFieldArray, UseFieldArrayRemove, useForm, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatCurrency, formatDate, getCurrencyNameFromId } from "@/lib/utils";
 import { RHFSubmitButton } from "@/components/submitButton";
 import { FormServerAction } from "../type";
-import { Currency } from "@/lib/types";
 
 export default function CreateInvoiceForm({ title, data, serverAction, invoiceId, submitButtonText, currencyData }: {
     title: string,
     submitButtonText: string
     invoiceId?: string,
     data?: CreateInvoiceFormSchema,
-    currencyData: Currency[]
+    currencyData: FormCurrencyData
     serverAction: FormServerAction
 }) {
     //For unique identifier for items list (key)
@@ -130,7 +129,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        {currencyData.map((data, idx) => <SelectItem key={idx} value={data.id.toString()} >{data.name}</SelectItem>)}
+                                        {currencyData.map((data, idx) => <SelectItem key={idx} value={data.id.toString()} >{`${data.name} (${data.title})`}</SelectItem>)}
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>

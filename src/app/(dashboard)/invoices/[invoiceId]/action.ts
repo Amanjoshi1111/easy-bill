@@ -30,7 +30,7 @@ const editInvoice: FormServerAction = async (formData, invoiceId) => {
         data: {
             invoiceName: validatedData.invoiceName,
             dueDate: validatedData.dueDate,
-            currency: validatedData.currency,
+            currencyId: validatedData.currency,
             fromName: validatedData.fromName,
             fromEmail: validatedData.fromEmail,
             fromAddress: validatedData.fromAddress,
@@ -64,6 +64,12 @@ const editInvoice: FormServerAction = async (formData, invoiceId) => {
         },
     });
 
+    const currency = await prisma.currency.findUnique({
+        where: {
+            id: data.currencyId
+        }
+    })
+
     const from = {
         "email": "hello@example.com",
         "name": "Mailtrap Test"
@@ -86,7 +92,7 @@ const editInvoice: FormServerAction = async (formData, invoiceId) => {
             invoiceNumber: invoiceNumberString(data.invoiceNumber),
             dueDate: formatDate(data.dueDate),
             invoiceDate: formatDate(data.createdAt),
-            totalAmount: formatCurrency(Number(data.total), data.currency),
+            totalAmount: formatCurrency(Number(data.total), currency?.name as string),
             invoiceHref: invoiceHref
         })
     })

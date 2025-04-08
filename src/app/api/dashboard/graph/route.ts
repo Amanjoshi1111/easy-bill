@@ -1,6 +1,5 @@
 import { prisma } from "@/db";
 import { userSession } from "@/hooks/sessionHook";
-import { getCurrencyList } from "@/lib/dbHelpers";
 import { DashboardGraphDataEntry, dashboardGraphQueryParamValidator } from "@/lib/types";
 import { getLowerDate } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
@@ -18,41 +17,23 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ success: false, msg: "Invalid parameter" }, { status: 404 });
     }
 
-    const { id, currency: requiredCurrency } = data;
-    const { lowerDate, days } = getLowerDate(id);
+    const { id, currency } = data;
+    const { lowerDate, } = getLowerDate(id);
+    // const currenyList = await getCurrencyList();
 
-    const currenyList = await getCurrencyList();
-    // const dbData = await prisma.invoice.findMany({
-    //     where: {
-    //         userId: session.user?.id,
-    //         createdAt: (days == Number.MAX_SAFE_INTEGER) ? {} : { gte: lowerDate }
-    //     },
-    //     select: {
-    //         currency: true,
-    //         total: true,
-    //         status: true,
-    //         dueDate: true,
-    //         createdAt: true
-    //     },
-    //     orderBy: {
-    //         createdAt: "asc"
-    //     }
-    // });
 
-    // type GraphData:
 
     const dbData2: DashboardGraphDataEntry[] = await prisma.$queryRaw<[]>`
         SELECT 
         CAST("createdAt" as DATE) as date,
-        SUM(CASE WHEN "status"='PAID' THEN ROUND("total",
-        2) ELSE 0 END) AS "paidRevenue",
-        SUM(CASE WHEN "status"='PENDING' THEN ROUND("total",
-        2) ELSE 0 END) AS "pendingRevenue",
-        SUM(ROUND("total",2)) AS "totalRevenue" 
+        ROUND(SUM(CASE WHEN "status"='PAID' THEN ("total"/cc."rate")*dc."rate"
+        ELSE 0 END),2) AS "paidRevenue",
+        ROUND(SUM(CASE WHEN "status"='PENDING' THEN ("total"/cc."rate")*dc."rate"
+        ELSE 0 END),2) AS "pendingRevenue",
+        ROUND(SUM(("total"/cc."rate")*dc."rate"),2) AS "totalRevenue" 
         FROM "Invoice" AS i
-        JOIN "Currency" AS c
-        ON i."currencyId"=c.id
-        WHERE c."name"=${requiredCurrency} 
+        JOIN "Currency" AS cc ON i."currencyId"=cc.id
+        JOIN "Currency" AS dc ON dc."name"=${currency}
         AND CAST("createdAt" as DATE) > ${lowerDate}
         AND i."userId"=${session.user?.id}
         GROUP BY CAST("createdAt" AS DATE)

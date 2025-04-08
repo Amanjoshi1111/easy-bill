@@ -6,6 +6,7 @@ import { getCurrencyList } from "@/lib/dbHelpers";
 import { dashboardCardQueryParamValidator } from "@/lib/types";
 import { convertCurrency, getLowerDate } from "@/lib/utils";
 import { InvoiceStatus } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -25,36 +26,51 @@ export async function GET(request: NextRequest) {
     const { lowerDate, days } = getLowerDate(id);
 
     const currencyData = await getCurrencyList();
-    const dbData = await prisma.invoice.findMany({
-        where: {
-            userId: session.user?.id,
-            createdAt: (days == Number.MAX_SAFE_INTEGER) ? {} : { gte: lowerDate },
-        },
-        select: {
-            total: true,
-            status: true,
-            currencyId: true,
-            dueDate: true,
-            currency: {
-                select: {
-                    name: true
-                },
+    // let dbData = await prisma.invoice.findMany({
+    //     where: {
+    //         userId: session.user?.id,
+    //         createdAt: (days == Number.MAX_SAFE_INTEGER) ? {} : { gte: lowerDate },
+    //     },
+    //     select: {
+    //         total: true,
+    //         status: true,
+    //         currencyId: true,
+    //         dueDate: true,
+    //         currency: {
+    //             select: {
+    //                 name: true
+    //             }
+    //         }
+    //     },
+    // });
 
-            }
-        },
-    });
+    const dbData = await prisma.$queryRaw<{
+        total: Decimal,
+        status: string,
+        dueDate: Date,
+        currency: string
+    }[]>`
+        SELECT ROUND(i."total",2) as "total" , i."status",  i."dueDate", c."name" as "currency"
+        FROM "Invoice" AS i
+        JOIN "Currency" AS c ON c."id" = i."currencyId"
+        AND CAST(i."createdAt" as DATE) > ${lowerDate}
+        AND i."userId"=${session.user?.id}
+        ORDER BY i."createdAt" DESC;
+    `
 
-    // console.log(dbData);
+    console.log(dbData);
 
     const responseData = { ...defaultDashboardCardData };
     responseData.totalInvoices = dbData.length;
+
+    console.log('here 1');
 
     for (let i = 0; i < dbData.length; i++) {
         const data = dbData[i];
 
         let amount: number = 0;
         try {
-            amount = convertCurrency(currencyData, Number(data.total), data.currency?.name as string, requiredCurrency);
+            amount = convertCurrency(currencyData, Number(data.total), data.currency, requiredCurrency);
             // console.log({ amount, initialCurrency: data.currency?.name, requiredCurrency });
         } catch (err) {
             if (err instanceof Error) {
@@ -76,5 +92,6 @@ export async function GET(request: NextRequest) {
     }
     responseData.avgDailyRevenue = (days > 0) ? responseData.totalRevenue / days : 0;
 
+    console.log("BBBYYEEE");
     return NextResponse.json({ success: true, data: responseData }, { status: 200 });
 }

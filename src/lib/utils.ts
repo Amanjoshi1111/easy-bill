@@ -2,8 +2,10 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { ZodError } from "zod"
 import { TIMELINE_BUTTON_TEXTS } from "./constant";
-import { Currency } from "./types";
-
+import { Currency } from "@prisma/client";
+import { prisma } from "@/db";
+import { notFound } from "next/navigation";
+import { FormCurrencyData } from "@/app/(dashboard)/invoices/type";
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
@@ -20,7 +22,23 @@ export function parseValidationError(error: ZodError) {
     return flattenError;
 }
 
-export function getCurrencyNameFromId(currencyData: Currency[], currencyId: number) {
+export async function getCurrencyData(): Promise<FormCurrencyData> {
+    const data = await prisma.currency.findMany();
+
+    if (data.length == 0) {
+        console.log("NO CURRENCY FOUND INSIDE DATABASE");
+        notFound();
+    }
+
+    const currencyData = data.map(entry => ({
+        ...entry,
+        rate: Number(entry.rate)
+    }))
+    return currencyData;
+}
+
+export function getCurrencyNameFromId(currencyData: FormCurrencyData, currencyId: number) {
+    console.log("data", currencyData);
     return currencyData.find((data) => data.id == currencyId)?.name;
 }
 
@@ -73,7 +91,7 @@ export function convertCurrency(currencyData: Currency[], amount: number, curren
 
     const currencyConversionMap: Record<string, number> = {};
     currencyData.forEach(data => {
-        currencyConversionMap[data.name] = data.rate
+        currencyConversionMap[data.name] = Number(data.rate)
     });
 
     if (currentCurrency == toCurrency)
