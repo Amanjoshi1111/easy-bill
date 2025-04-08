@@ -102,7 +102,7 @@ model Currency {
     id      Int       @unique @default(autoincrement())
     name    String    @unique
     title   String?
-    rate    Float
+    rate    Decimal
     Invoice Invoice[]
 }
 
