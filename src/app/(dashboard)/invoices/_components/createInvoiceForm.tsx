@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,13 +47,13 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
     const currencyName = getCurrencyNameFromId(currencyData, currency);
 
     //Need to do this because of hydration issue i was getting
-    useEffect(() => {
-        //If check is not applied it will throw hyderation error,
-        //  wasted a lot of time in this 
-        if (!data) {
-            setValue("dueDate", new Date());
-        }
-    }, []);
+    // useEffect(() => {
+    //     //If check is not applied it will throw hyderation error,
+    //     //  wasted a lot of time in this 
+    //     if (!data) {
+    //         setValue("dueDate", new Date());
+    //     }
+    // }, []);
 
     const onSubmit = async (data: CreateInvoiceFormSchema) => {
         const { errors } = await serverAction(data, invoiceId);
