@@ -1,11 +1,10 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { TIME_SCALE } from "@/lib/constant";
 import { DashboardGraphApiResponse, DashboardGraphDataEntry } from "@/lib/types";
 import { dashboardGraphHref, formatCurrency, formatDate } from "@/lib/utils";
 import { userStore } from "@/store/store";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Bar, CartesianGrid, XAxis, YAxis, BarChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
