@@ -1,13 +1,15 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { TIME_SCALE } from "@/lib/constant";
 import { DashboardGraphApiResponse, DashboardGraphDataEntry } from "@/lib/types";
-import { dashboardGraphHref, formatCurrency } from "@/lib/utils";
+import { dashboardGraphHref, formatCurrency, formatDate } from "@/lib/utils";
 import { userStore } from "@/store/store";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Bar, CartesianGrid, XAxis, YAxis, BarChart, ResponsiveContainer } from "recharts";
+import { Bar, CartesianGrid, XAxis, YAxis, BarChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
+import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 export function UserGraph() {
 
@@ -37,15 +39,19 @@ export function UserGraph() {
     const chartConfig = useMemo(() => ({
         totalRevenue: {
             label: "Total Revenue",
-            color: "hsl(var(--chart-1))"
+            color: "var(--chart-2)"
         },
         paidRevenue: {
             label: "Paid Revenue",
-            color: "hsl(var(--chart-2))"
+            color: "var(--chart-3)"
         },
         pendingRevenue: {
             label: "Pending Revenue",
-            color: "hsl(var(--chart-3))"
+            color: "var(--chart-1)"
+        },
+        amount: {
+            label: "Amount",
+            color: "black"
         }
     } satisfies ChartConfig
     ), []);
@@ -104,13 +110,45 @@ export function UserGraph() {
                             }}
                         />
                         <YAxis dataKey={"totalRevenue"} />
-                        <ChartTooltip>
-
-                        </ChartTooltip>
-                        <Bar dataKey={activeChart} fill={`var(--color-${"totalAmount"})`} />
+                        <Tooltip content={<CustomToolTip />} />
+                        {/* <ChartTooltip content={
+                            <ChartTooltipContent
+                                className="w-[200px] text-md"
+                                nameKey="amount"
+                                labelFormatter={(value) => {
+                                    return new Date(value).toLocaleDateString("en-In", {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                    })
+                                }}
+                            />
+                        } /> */}
+                        <Bar dataKey={activeChart} fill={`${chartConfig[activeChart].color}`} />
                     </BarChart>
                 </ResponsiveContainer>
             </ChartContainer>
         </CardContent>
     </Card>
+}
+
+function CustomToolTip({ active, payload, label,  }: TooltipProps<ValueType, NameType>) {
+
+    const currency = userStore((state) => state.currency);
+
+    console.log("BHAI BHAI BHAI", payload?.[0]);
+
+    if (active && payload && payload.length) {
+        return <div className="flex flex-col bg-white p-2 rounded-md shadow-2xl shadow-gray-800 gap-2">
+            <div className="font-bold">{formatDate(new Date(label))}</div>
+            <div className="flex justify-between gap-4">
+                <div className="flex justify-between items-center gap-1">
+                    <div className={` h-2.5 w-2.5 flex items-center justify-center bg-[color:${payload[0].fill}] rounded-xs`}></div>
+                    <div className="font-medium text-muted-foreground">Amount</div>
+                </div>
+                <div>{formatCurrency(Number(payload[0].value), currency)}</div>
+            </div>
+        </div>
+    }
+    return null;
 }
