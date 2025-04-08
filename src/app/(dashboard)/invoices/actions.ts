@@ -87,6 +87,15 @@ export const sendRemainderMail = async (invoiceId: string) => {
             }
         });
 
+        const currencyData = await prisma.currency.findUniqueOrThrow({
+            where: {
+                id: data.currencyId
+            },
+            select: {
+                name: true
+            }
+        })
+
         const from = {
             "email": "hello@example.com",
             "name": "Mailtrap Test"
@@ -109,7 +118,7 @@ export const sendRemainderMail = async (invoiceId: string) => {
                 invoiceNumber: invoiceNumberString(data.invoiceNumber),
                 dueDate: formatDate(data.dueDate),
                 invoiceDate: formatDate(data.createdAt),
-                totalAmount: formatCurrency(Number(data.total), data.currency),
+                totalAmount: formatCurrency(Number(data.total), currencyData.name),
                 invoiceHref: invoiceHref
             })
         })
