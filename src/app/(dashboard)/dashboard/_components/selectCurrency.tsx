@@ -1,5 +1,5 @@
 import { Select } from "@/components/ui/select"
-import { SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { currencyListHref } from "@/lib/utils";
 import { userStore } from "@/store/store";
 import React, { useEffect } from "react";
@@ -23,12 +23,11 @@ export default function SelectCurrency() {
 
 
     return <Select defaultValue={currency} onValueChange={(value) => setCurrency(value)} >
-        <SelectTrigger>
+        <SelectTrigger className="bg-white">
             <SelectValue />
         </SelectTrigger>
         <SelectContent>
             <SelectGroup>
-                <SelectLabel></SelectLabel>
                 {currencyList.map((data, idx) => (<SelectItem value={data.name} key={idx} >{`${data.name}`}</SelectItem>))}
                 {/* {Object.values(Currency).map((key, idx) => (<SelectItem key={idx} value={key}>{`${key} ($)`}</SelectItem>))} */}
             </SelectGroup>
