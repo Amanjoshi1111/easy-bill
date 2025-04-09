@@ -61,8 +61,8 @@ export function UserGraph() {
         pendingRevenue: chartData.reduce((acc, d) => acc + d.pendingRevenue, 0)
     }), [chartData]);
 
-    return <Card>
-        <CardHeader className="flex flex-col items-stretch space-y-0 border p-0 sm:flex-row">
+    return <Card className="pt-0">
+        <CardHeader className="flex flex-col items-stretch space-y-0 border-b-1 p-0 sm:flex-row">
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
                 <CardTitle>Bar Chart - Interactive</CardTitle>
                 <CardDescription>
