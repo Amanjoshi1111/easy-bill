@@ -23,7 +23,7 @@ export default function Dashboard() {
         </div>
         <div className="px-2">
             <DashboardInfoCards />
-            <div className="grid grid-cols-[1fr] lg:grid-cols-[3fr_1fr] gap-4 pt-4">
+            <div className="grid grid-cols-[1fr] gap-4 pt-4">
                 <UserGraph />
                 <PaidInvoiceTable />
             </div>

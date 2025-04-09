@@ -9,14 +9,14 @@ export default function TimelineButton() {
     const setBtnIndex = userStore(state => state.setBtnIndex);
 
     return <>
-        {Object.keys(TIMELINE_BUTTON_TEXTS).map((text, idx) => (
+        {TIMELINE_BUTTON_TEXTS.map((data, idx) => (
             <Button
                 className={`${btnIndex == idx ? "" : "hover:bg-gray-300 "}` + "h-7 px-4"}
                 variant={`${btnIndex == idx ? "default" : "outline"}`}
                 key={idx}
                 onClick={() => setBtnIndex(idx)}
             >
-                {text}
+                {data.text}
             </Button>))}
     </>
 }

@@ -72,19 +72,19 @@ export function formatPDFDate(date: Date) {
     }).format(date).toString().replaceAll("/", "-");
 }
 
-export function getAnalyticsDayFromTimeline(timeline: number) {
-    return Object.values(TIMELINE_BUTTON_TEXTS).find((value, idx) => {
-        if (idx == timeline) {
+export function getAnalyticsDayFromTimeline(idx: number) {
+    return TIMELINE_BUTTON_TEXTS.find((value, index) => {
+        if (index == idx) {
             return value;
         }
-    }) || Number.MAX_SAFE_INTEGER;
+    });
 }
 
 export function getLowerDate(id: number) {
     //Optimize it further by date not by time 
     const lowerDate = new Date();
-    const days = getAnalyticsDayFromTimeline(id);
-    lowerDate.setDate(lowerDate.getDate() - days);
+    const days = getAnalyticsDayFromTimeline(id)?.days;
+    lowerDate.setDate(lowerDate.getDate() - days!);
     return { lowerDate, days };
 }
 

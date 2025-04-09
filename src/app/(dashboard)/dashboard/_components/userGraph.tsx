@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { TIME_SCALE } from "@/lib/constant";
 import { DashboardGraphApiResponse, DashboardGraphDataEntry } from "@/lib/types";
-import { dashboardGraphHref, formatCurrency, formatDate } from "@/lib/utils";
+import { dashboardGraphHref, formatCurrency, formatDate, getAnalyticsDayFromTimeline } from "@/lib/utils";
 import { userStore } from "@/store/store";
 import { notFound } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -66,7 +66,7 @@ export function UserGraph() {
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
                 <CardTitle>Bar Chart - Interactive</CardTitle>
                 <CardDescription>
-                    Showing total visitors for the last 3 months
+                    {`Showing daily revenue for last ${getAnalyticsDayFromTimeline(btnIndex)?.description}`}
                 </CardDescription>
             </div>
             <div className="flex">

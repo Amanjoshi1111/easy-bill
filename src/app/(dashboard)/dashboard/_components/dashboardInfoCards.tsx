@@ -41,7 +41,7 @@ export function DashboardInfoCards() {
     const dashboardCardData = userStore(state => state.dashboardCardData);
 
     //If this grows extract it to a new function.
-    const days = getAnalyticsDayFromTimeline(btnIndex);
+    const days = getAnalyticsDayFromTimeline(btnIndex)?.days;
     const totalRevenue = formatCurrency(dashboardCardData.totalRevenue, currency);
     const avgRevenue = formatCurrency(dashboardCardData.avgDailyRevenue, currency);
     const pendingRevenue = formatCurrency(dashboardCardData.pendingRevenue, currency);
@@ -52,7 +52,7 @@ export function DashboardInfoCards() {
     const pendingInvoices = dashboardCardData.pendingInvoices;
     const overDueInvoices = dashboardCardData.overDueInvoices;
     const successPercentage = ((totalInvoices > 0) ? (paidInvoices / totalInvoices) * 100 : 0).toFixed(2);
-    const averageInvoicePerDay = Number(((days > 0) ? (totalInvoices / days) : 0).toPrecision(1));
+    const averageInvoicePerDay = Number(((days! > 0) ? (totalInvoices / days!) : 0).toPrecision(1));
 
     const averageInvoicePerDayString = (averageInvoicePerDay < 1)
         ? `<1 per day`
