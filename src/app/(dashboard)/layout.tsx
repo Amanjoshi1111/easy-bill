@@ -14,8 +14,8 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
 
-    return (<>
-        <div className="h-16 w-full border-b"></div>
+    return (<>    
+        <div className="h-16 w-full border-b-1"></div>
         <div className="h-screen relative m-auto w-[1000px] z-10 bottom-16 ">
             <div className="h-16 w-full flex items-center justify-between px-4 shrink-0">
                 <div>
