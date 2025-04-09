@@ -3,6 +3,7 @@ import { DashboardInfoCards } from "./dashboardInfoCards";
 import TimelineButton from "./timelineButtons";
 import { UserGraph } from "./userGraph";
 import SelectCurrency from "./selectCurrency";
+import PaidInvoiceTable from "./paidInvoicesTable";
 
 export default function Dashboard() {
     return <>
@@ -22,12 +23,9 @@ export default function Dashboard() {
         </div>
         <div className="px-2">
             <DashboardInfoCards />
-            <div className="grid grid-cols-[1fr] gap-4 pt-4">
+            <div className="grid grid-cols-[1fr] lg:grid-cols-[3fr_1fr] gap-4 pt-4">
                 <UserGraph />
-                <UserGraph />
-                <UserGraph />
-                <UserGraph />
-                {/* <PaidInvoiceTable /> */}
+                <PaidInvoiceTable />
             </div>
         </div>
 

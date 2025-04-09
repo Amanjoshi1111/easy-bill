@@ -38,11 +38,11 @@ export function UserGraph() {
     const chartConfig = useMemo(() => ({
         totalRevenue: {
             label: "Total Revenue",
-            color: "var(--chart-2)"
+            color: "var(--chart-3)"
         },
         paidRevenue: {
             label: "Paid Revenue",
-            color: "var(--chart-3)"
+            color: "var(--chart-2)"
         },
         pendingRevenue: {
             label: "Pending Revenue",
