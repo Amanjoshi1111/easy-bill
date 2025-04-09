@@ -102,13 +102,18 @@ export function UserGraph() {
                             axisLine={false}
                             tickFormatter={(value) => {
                                 const date = new Date(value);
-                                return date.toLocaleDateString("en-US", {
+                                return date.toLocaleDateString("en-In", {
                                     month: "short",
                                     day: "numeric"
                                 });
                             }}
                         />
-                        <YAxis dataKey={"totalRevenue"} />
+                        <YAxis dataKey={"totalRevenue"}
+                            scale={"log"}
+                            domain={['auto', 'auto']}
+                            allowDataOverflow={true}
+                        // domain={[0, (dataMax: number) => Math.min(dataMax, 20000 * 3)]} 
+                        />
                         <Tooltip content={<CustomToolTip />} />
                         {/* <ChartTooltip content={
                             <ChartTooltipContent
@@ -131,7 +136,7 @@ export function UserGraph() {
     </Card>
 }
 
-function CustomToolTip({ active, payload, label,  }: TooltipProps<ValueType, NameType>) {
+function CustomToolTip({ active, payload, label, }: TooltipProps<ValueType, NameType>) {
 
     const currency = userStore((state) => state.currency);
 
@@ -139,7 +144,7 @@ function CustomToolTip({ active, payload, label,  }: TooltipProps<ValueType, Nam
 
     if (active && payload && payload.length) {
         return <div className="flex flex-col bg-white p-2 rounded-md shadow-2xl shadow-gray-800 gap-2">
-            <div className="font-bold">{formatDate(new Date(label))}</div>
+            <div className="font-bold">{(label != undefined) ? formatDate(new Date(label)) : ""}</div>
             <div className="flex justify-between gap-4">
                 <div className="flex justify-between items-center gap-1">
                     <div className={` h-2.5 w-2.5 flex items-center justify-center bg-[color:${payload[0].fill}] rounded-xs`}></div>
