@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Bar, CartesianGrid, XAxis, YAxis, BarChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
-export function UserGraph() {
+export function RevenueBarGraph() {
 
     const btnIndex = userStore(state => state.btnIndex);
     const currency = userStore(state => state.currency);

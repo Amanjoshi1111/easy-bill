@@ -7,6 +7,7 @@ interface UserState {
     currency: string,
     currencyList: Currency[],
     dashboardCardData: DashboardCardData,
+    activeGraphIdx: number
     // graphData: DashboardGraphDataEntry[]
 }
 
@@ -15,7 +16,7 @@ interface Actions {
     setCurrency: (currency: string) => void,
     setCurrencyList: (currenyList: Currency[]) => void,
     setDashboardCardData: (dashboardCardData: DashboardCardData) => void,
-    // setGraphData: (graphData: DashboardGraphDataEntry[]) => void
+    setActiveGraphIdx: (activeGraphIdx: number) => void
 }
 
 export const userStore = create<UserState & Actions>((set) => ({
@@ -31,7 +32,7 @@ export const userStore = create<UserState & Actions>((set) => ({
     //Dashboard cards info
     dashboardCardData: defaultDashboardCardData,
     setDashboardCardData: (dashboardCardData) => set({ dashboardCardData }),
-    //Graph data
-    // graphData: [defaultGraphDataEntry],
-    // setGraphData: (graphData) => set({ graphData })
+    //Active graph
+    activeGraphIdx: 0,
+    setActiveGraphIdx: (activeGraphIdx) => set({ activeGraphIdx })
 }))
