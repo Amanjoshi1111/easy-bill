@@ -140,14 +140,16 @@ function CustomToolTip({ active, payload, label, }: TooltipProps<ValueType, Name
 
     const currency = userStore((state) => state.currency);
 
-    console.log("BHAI BHAI BHAI", payload?.[0]);
+    console.log("BHAI BHAI BHAI", payload?.[0], payload?.[0]?.color);
 
     if (active && payload && payload.length) {
         return <div className="flex flex-col bg-white p-2 rounded-md shadow-2xl shadow-gray-800 gap-2">
             <div className="font-bold">{(label != undefined) ? formatDate(new Date(label)) : ""}</div>
             <div className="flex justify-between gap-4">
                 <div className="flex justify-between items-center gap-1">
-                    <div className={` h-2.5 w-2.5 flex items-center justify-center bg-[color:${payload[0].fill}] rounded-xs`}></div>
+                    <div className={` h-2.5 w-2.5 flex items-center justify-center rounded-xs`}
+                        style={{ backgroundColor: payload[0].color }}
+                    ></div>
                     <div className="font-medium text-muted-foreground">Amount</div>
                 </div>
                 <div>{formatCurrency(Number(payload[0].value), currency)}</div>
