@@ -7,17 +7,17 @@ export const TIMELINE_BUTTON_TEXTS = [
     {
         text: "7d",
         days: 5,
-        description: "7 Days"
+        description: "7 days"
     },
     {
         text: "15d",
         days: 15,
-        description: "15 Days"
+        description: "15 days"
     },
     {
         text: "30d",
         days: 30,
-        description: "30 Days"
+        description: "30 days"
     }
 ]
 export const NODEMAILER_CONFIG = {
@@ -39,8 +39,8 @@ export const defaultDashboardCardData = {
     avgDailyRevenue: 0,
     paidInvoices: 0,
     paidRevenue: 0,
-    pendingInvoices: 0,
-    pendingRevenue: 0,
+    dueInvoices: 0,
+    dueRevenue: 0,
     overDueInvoices: 0,
     overDueRevenue: 0
 }

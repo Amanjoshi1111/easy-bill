@@ -1,6 +1,4 @@
 "use client"
-
-import * as React from "react"
 import { Pie, PieChart } from "recharts"
 
 import {
@@ -16,16 +14,8 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-const innerCircleData = [
-    { type: "paid", count: 100, fill: "var(--color-chart-2)" },
-    { type: "pending", count: 48, fill: "var(--color-chart-1)" },
-]
-
-const outerCircleData = [
-    { type: "paid", count: 100, fill: "var(--color-chart-2)" },
-    { type: "pending", count: 20, fill: "var(--color-chart-1)" },
-    { type: "overdue", count: 28, fill: "red" }
-]
+import { userStore } from "@/store/store"
+import { useMemo } from "react"
 
 const chartConfig = {
     visitors: {
@@ -39,10 +29,29 @@ const chartConfig = {
     },
     overdue: {
         label: "Overdue",
+    },
+    due: {
+        label: "Due"
     }
 } satisfies ChartConfig
 
 export function StackedPieChart() {
+
+    const dashboardData = userStore(state => state.dashboardCardData);
+
+    const innerChartData = useMemo(() => ([
+        { type: "paid", count: dashboardData.paidInvoices, fill: "#6A9FB5" },
+        { type: "pending", count: dashboardData.dueInvoices + dashboardData.overDueInvoices, fill: "#E29C45" }
+    ]), [dashboardData]);
+
+    const outerChartData = useMemo(() => [
+        { type: "paid", count: dashboardData.paidInvoices, fill: "#AFC9D6" },
+        { type: "due", count: dashboardData.dueInvoices, fill: "#F3C77C" },
+        { type: "overdue", count: dashboardData.overDueInvoices, fill: "#D95F3A" },
+    ], [dashboardData])
+
+
+
     return (
         <Card className="flex flex-col">
             <CardHeader className="items-center pb-0">
@@ -58,7 +67,6 @@ export function StackedPieChart() {
                         <ChartTooltip
                             content={
                                 <ChartTooltipContent
-                                    labelKey="visitors"
                                     nameKey="type"
                                     indicator="line"
                                     labelFormatter={(_, payload) => {
@@ -69,9 +77,9 @@ export function StackedPieChart() {
                                 />
                             }
                         />
-                        <Pie data={innerCircleData} dataKey="count" outerRadius={60} />
+                        <Pie data={innerChartData} dataKey="count" outerRadius={60}  />
                         <Pie
-                            data={outerCircleData}
+                            data={outerChartData}
                             dataKey="count"
                             innerRadius={70}
                             outerRadius={90}

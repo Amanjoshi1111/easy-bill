@@ -26,8 +26,12 @@ const chartConfig = {
         label: "Paid Invoices",
         // color: "red"
     },
-    pending: {
-        label: "Pending Invoices",
+    due: {
+        label: "Due Invoices",
+        // color: "orange",
+    },
+    overdue: {
+        label: "Overdue Invoices",
         // color: "orange",
     },
 } satisfies ChartConfig
@@ -38,7 +42,9 @@ export function DashboardPieChart() {
 
     const chartData = useMemo(() => ([
         { type: "paid", count: dashboardData.paidInvoices, fill: "var(--color-chart-2)" },
-        { type: "pending", count: dashboardData.pendingInvoices, fill: "var(--color-chart-1)" }
+        { type: "due", count: dashboardData.dueInvoices, fill: "var(--color-chart-4)" },
+        { type: "overdue", count: dashboardData.overDueInvoices, fill: "var(--color-chart-1)" },
+        // { type: "pending", count: dashboardData.dueInvoices + dashboardData.overDueInvoices, fill: "var(--color-chart-1)" }
     ]), [dashboardData])
 
     const totalInvoices = useMemo(() => {
@@ -47,12 +53,28 @@ export function DashboardPieChart() {
 
     return (
         <Card className="flex flex-col">
-            <CardHeader className="items-center pb-0">
-                <CardTitle>Pie Chart - Donut with Text</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+            <CardHeader className="items-center pb-0 flex justify-between">
+                <div>
+                    <CardTitle>Pie Chart - Invoices status distribution</CardTitle>
+                    <CardDescription>January - June 2024</CardDescription>
+                </div>
+                <div className="flex gap-4 [&>*]:text-sm">
+                    <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 bg-[var(--color-chart-2)] rounded-xs"></div>
+                        <div>Paid</div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 bg-[var(--color-chart-4)] rounded-xs"></div>
+                        <div>Due</div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 bg-[var(--color-chart-1)] rounded-xs"></div>
+                        <div>Overdue</div>
+                    </div>
+                </div>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
-                <ChartContainer 
+                <ChartContainer
                     config={chartConfig}
                     className="mx-auto aspect-square max-h-[250px]"
                 >
@@ -68,9 +90,6 @@ export function DashboardPieChart() {
                             innerRadius={60}
                             strokeWidth={5}
                         >
-                            {/* {chartData.map((entry, index)=> (
-                                <Cell key={index} fill=""/> 
-                            ))} */}
                             <Label
                                 content={({ viewBox }) => {
                                     if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -84,7 +103,7 @@ export function DashboardPieChart() {
                                                 <tspan
                                                     x={viewBox.cx}
                                                     y={viewBox.cy}
-                                                    className="fill-foreground text-3xl font-bold"
+                                                    className=" text-3xl font-bold"
                                                 >
                                                     {totalInvoices.toLocaleString()}
                                                 </tspan>

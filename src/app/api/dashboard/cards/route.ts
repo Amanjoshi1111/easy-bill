@@ -58,8 +58,6 @@ export async function GET(request: NextRequest) {
         ORDER BY i."createdAt" DESC;
     `
 
-    console.log(dbData);
-
     const responseData = { ...defaultDashboardCardData };
     responseData.totalInvoices = dbData.length;
 
@@ -82,15 +80,16 @@ export async function GET(request: NextRequest) {
             responseData.paidInvoices++;
             responseData.paidRevenue += amount;
         } else {
-            responseData.pendingInvoices++;
-            responseData.pendingRevenue += amount;
-            if (new Date() > new Date(data.dueDate)) {
+            if (new Date().toISOString().split("T")[0] > new Date(data.dueDate).toISOString().split("T")[0]) {
                 responseData.overDueInvoices++;
                 responseData.overDueRevenue += amount;
+            } else {
+                responseData.dueInvoices++;
+                responseData.dueRevenue += amount;
             }
         }
     }
-    responseData.avgDailyRevenue = (days > 0) ? responseData.totalRevenue / days : 0;
+    responseData.avgDailyRevenue = (days! > 0) ? responseData.totalRevenue / days! : 0;
 
     console.log("BBBYYEEE");
     return NextResponse.json({ success: true, data: responseData }, { status: 200 });

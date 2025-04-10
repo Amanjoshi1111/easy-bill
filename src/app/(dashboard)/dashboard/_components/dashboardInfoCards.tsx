@@ -44,12 +44,12 @@ export function DashboardInfoCards() {
     const days = getAnalyticsDayFromTimeline(btnIndex)?.days;
     const totalRevenue = formatCurrency(dashboardCardData.totalRevenue, currency);
     const avgRevenue = formatCurrency(dashboardCardData.avgDailyRevenue, currency);
-    const pendingRevenue = formatCurrency(dashboardCardData.pendingRevenue, currency);
+    const pendingRevenue = formatCurrency(dashboardCardData.dueRevenue + dashboardCardData.overDueRevenue, currency);
     // const paidRevenue = formatCurrency(dashboardCardData.paidRevenue, currency);
     const overDueRevenue = formatCurrency(dashboardCardData.overDueRevenue, currency);
     const totalInvoices = dashboardCardData.totalInvoices;
     const paidInvoices = dashboardCardData.paidInvoices;
-    const pendingInvoices = dashboardCardData.pendingInvoices;
+    const pendingInvoices = dashboardCardData.dueInvoices + dashboardCardData.overDueInvoices;
     const overDueInvoices = dashboardCardData.overDueInvoices;
     const successPercentage = ((totalInvoices > 0) ? (paidInvoices / totalInvoices) * 100 : 0).toFixed(2);
     const averageInvoicePerDay = Number(((days! > 0) ? (totalInvoices / days!) : 0).toPrecision(1));
