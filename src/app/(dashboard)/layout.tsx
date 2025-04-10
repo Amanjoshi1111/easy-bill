@@ -28,7 +28,7 @@ export default async function RootLayout({
                 <div className="w-60 flex justify-end items-center gap-3">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className="hover:cursor-pointer">
-                            <Button variant="outline" className="rounded-full size-11" size="icon">
+                            <Button variant="outline" className="rounded-full size-11 dark:bg-[#171717] hover:dark:bg-[#171717]" size="icon">
                                 <User2 className="size-6" />
                             </Button>
                         </DropdownMenuTrigger>

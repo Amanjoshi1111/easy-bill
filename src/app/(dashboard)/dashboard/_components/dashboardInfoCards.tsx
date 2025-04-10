@@ -64,45 +64,45 @@ export function DashboardInfoCards() {
             title: "Total Revenue",
             number: totalRevenue,
             footer: `Average daily revenue : ${avgRevenue}`,
-            icon: <Banknote color="white" />,
-            color: "bg-gradient-to-r from-green-500 to-green-600",
-            hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-green-100"
+            icon: <Banknote className="text-white dark:text-green-100" />,
+            color: "bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700",
+            hoverColor: "hover:bg-gradient-to-r hover:from-green-50 hover:to-green-100 dark:hover:from-green-700 dark:hover:to-green-800"
         },
         {
             idx: 1,
             title: "Invoice Issued",
             number: totalInvoices.toString(),
             footer: averageInvoicePerDayString,
-            icon: <FileText color="white" />,
-            color: "bg-gradient-to-r from-blue-500 to-blue-600",
-            hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-green-100"
+            icon: <FileText className="text-white dark:text-blue-100" />,
+            color: "bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700",
+            hoverColor: "hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-700 dark:hover:to-blue-800"
         },
         {
             idx: 2,
             title: "Paid Invoices",
             number: paidInvoices.toString(),
             footer: `${successPercentage}% payment success rate`,
-            icon: <CircleCheckBig color="white" />,
-            color: "bg-gradient-to-r from-purple-500 to-purple-600",
-            hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-green-100"
+            icon: <CircleCheckBig className="text-white dark:text-purple-100" />,
+            color: "bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700",
+            hoverColor: "hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-700 dark:hover:to-purple-800"
         },
         {
             idx: 3,
             title: "Unpaid Invoices",
             number: pendingInvoices.toString(),
             footer: `Total pending amount: ${pendingRevenue}`,
-            icon: <CircleX color="white" />,
-            color: "bg-gradient-to-r from-orange-500 to-orange-600",
-            hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-red-100"
+            icon: <CircleX className="text-white dark:text-orange-100" />,
+            color: "bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700",
+            hoverColor: "hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 dark:hover:from-orange-700 dark:hover:to-orange-800"
         },
         {
             idx: 4,
             title: "Overdue Invoices",
             number: overDueInvoices.toString(),
             footer: `Total pending amount: ${overDueRevenue}`,
-            icon: <Clock10 color="white" />,
-            color: "bg-gradient-to-r from-red-500 to-red-600",
-            hoverColor: "hover:bg-gradient-to-r hover:from-white hover:to-red-100"
+            icon: <Clock10 className="text-white dark:text-red-100" />,
+            color: "bg-gradient-to-r from-red-500 to-red-600 dark:from-red-600 dark:to-red-700",
+            hoverColor: "hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 dark:hover:from-red-700 dark:hover:to-red-800"
         }
     ]
 

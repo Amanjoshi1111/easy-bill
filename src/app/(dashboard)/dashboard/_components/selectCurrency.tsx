@@ -23,8 +23,8 @@ export default function SelectCurrency() {
 
 
     return <Select defaultValue={currency} onValueChange={(value) => setCurrency(value)} >
-        <SelectTrigger className="bg-white">
-            <SelectValue />
+        <SelectTrigger className="bg-white dark:bg-[#171717] dark:hover:bg-[#171717]">
+            <SelectValue/>
         </SelectTrigger>
         <SelectContent>
             <SelectGroup>

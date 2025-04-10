@@ -30,7 +30,7 @@ export default function Dashboard() {
                 <div>
                     <SelectCurrency />
                 </div>
-                <div className="flex gap-2 px-2 py-2 border bg-white rounded-md shadow-lg &>*]:hover:cursor-pointer">
+                <div className="flex gap-2 px-2 py-2 [&>*]:hover:cursor-pointer">
                     <TimelineButton />
                 </div>
             </div>

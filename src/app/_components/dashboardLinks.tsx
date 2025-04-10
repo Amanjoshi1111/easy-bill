@@ -8,15 +8,26 @@ export default function DashboardLinks() {
 
     const pathname = usePathname();
 
-    return <>
-        {links.map(link => {
-            return <Link
-                className={cn(`flex  rounded-sm items-center px-4 py-1 `, (pathname == link.href)
-                    ? "bg-gray-200"
-                    : "hover:bg-gray-100")}
-                href={link.href} key={link.id} >
-                <div className="text-md font-[500]">{link.name}</div>
-            </Link>
-        })}
-    </>
+    return (
+        <>
+            {links.map(link => {
+                const isActive = pathname === link.href;
+                return (
+                    <Link
+                        key={link.id}
+                        href={link.href}
+                        className={cn(
+                            "flex items-center rounded-sm px-4 py-1 transition-colors",
+                            isActive
+                                ? "bg-gray-200 dark:bg-gray-700"
+                                : "hover:bg-gray-100 dark:hover:bg-gray-900"
+                        )}
+                    >
+                        <div className="text-md font-[500] text-black dark:text-white">{link.name}</div>
+                    </Link>
+                );
+            })}
+        </>
+    );
+
 }

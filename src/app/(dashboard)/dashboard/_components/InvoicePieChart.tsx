@@ -103,7 +103,7 @@ export function DashboardPieChart() {
                                                 <tspan
                                                     x={viewBox.cx}
                                                     y={viewBox.cy}
-                                                    className=" text-3xl font-bold"
+                                                    className=" text-3xl font-bold dark:fill-white" 
                                                 >
                                                     {totalInvoices.toLocaleString()}
                                                 </tspan>
