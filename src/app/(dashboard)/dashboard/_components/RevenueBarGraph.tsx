@@ -1,4 +1,5 @@
 
+"use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { TIME_SCALE } from "@/lib/constant";
@@ -14,8 +15,13 @@ export function RevenueBarGraph() {
 
     const btnIndex = userStore(state => state.btnIndex);
     const currency = userStore(state => state.currency);
-    const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>("totalRevenue");
     const [chartData, setChartData] = useState<DashboardGraphDataEntry[]>([]);
+    const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>(() => {
+        if(typeof window == "undefined") 
+            return "totalRevenue";
+        return (localStorage.getItem("activeChart") as keyof typeof chartConfig) || "totalRevenue";
+    });
+    console.log({ activeChart }, "yoooo");
     useEffect(() => {
         console.log("Rerender");
         async function getGraphData() {
@@ -64,20 +70,25 @@ export function RevenueBarGraph() {
     return <Card className="pt-0">
         <CardHeader className="flex flex-col items-stretch space-y-0 border-b-1 p-0 sm:flex-row">
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-                <CardTitle>Bar Chart - Interactive</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-xl">Bar Chart - Interactive</CardTitle>
+                <CardDescription className="text-xs">
                     {`Showing daily revenue for last ${getAnalyticsDayFromTimeline(btnIndex)?.description}`}
                 </CardDescription>
             </div>
             <div className="flex">
-                {["totalRevenue", "paidRevenue", "pendingRevenue"].map((key) => {
+                {["totalRevenue", "paidRevenue", "pendingRevenue",].map((key) => {
                     const chart = key as keyof typeof chartConfig
                     return (
                         <button
                             key={chart}
                             data-active={activeChart === chart}
-                            className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                            onClick={() => setActiveChart(chart)}
+                            className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-4 sm:py-0"
+                            onClick={() => {
+                                if (typeof window != "undefined") {
+                                    localStorage.setItem("activeChart", chart);
+                                }
+                                setActiveChart(chart)
+                            }}
                         >
                             <span className="text-xs text-muted-foreground">
                                 {chartConfig[chart].label}
@@ -128,7 +139,7 @@ export function RevenueBarGraph() {
                                 }}
                             />
                         } /> */}
-                        <Bar dataKey={activeChart} fill={`${chartConfig[activeChart].color}`} />
+                        <Bar dataKey={activeChart} fill={`${chartConfig[activeChart]?.color}`} />
                     </BarChart>
                 </ResponsiveContainer>
             </ChartContainer>

@@ -21,11 +21,21 @@ interface Actions {
 
 export const userStore = create<UserState & Actions>((set) => ({
     //Date range button 
-    btnIndex: 0,
-    setBtnIndex: (btnIndex) => set({ btnIndex }),
+    btnIndex: getLocalStorageNumber("btnIndex", 0),
+    setBtnIndex: (btnIndex) => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("btnIndex", btnIndex.toString())
+        }
+        set({ btnIndex })
+    },
     //Currency select button
-    currency: "USD",
-    setCurrency: (currency) => set({ currency }),
+    currency: getLocalStorageItem("currency", "USD"),
+    setCurrency: (currency) => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("currency", currency);
+        }
+        set({ currency })
+    },
     //Currency list 
     currencyList: [],
     setCurrencyList: (currencyList) => set({ currencyList }),
@@ -33,6 +43,24 @@ export const userStore = create<UserState & Actions>((set) => ({
     dashboardCardData: defaultDashboardCardData,
     setDashboardCardData: (dashboardCardData) => set({ dashboardCardData }),
     //Active graph
-    activeGraphIdx: 0,
-    setActiveGraphIdx: (activeGraphIdx) => set({ activeGraphIdx })
+    activeGraphIdx: getLocalStorageNumber("activeGraphIdx", 0),
+    setActiveGraphIdx: (activeGraphIdx) => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("activeGraphIdx", activeGraphIdx.toString())
+        }
+        set({ activeGraphIdx })
+    }
 }))
+
+function getLocalStorageItem(key: string, defaultValue: string) {
+    if (typeof window !== "undefined") {
+        const data = localStorage.getItem(key);
+        return (data !== null) ? data : defaultValue;
+    }
+    return defaultValue;
+}
+
+function getLocalStorageNumber(key: string, defaultValue: number) {
+    const data = getLocalStorageItem(key, defaultValue.toString());
+    return Number(data);
+}
