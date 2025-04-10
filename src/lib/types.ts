@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { defaultDashboardCardData, TIME_SCALE } from "./constant";
 
-//Currency Type
+// Themes
+export enum Theme {
+    dark = "dark",
+    light = "light"
+}
 
 //Dashboard card api related
 export const dashboardCardQueryParamValidator = z.object({

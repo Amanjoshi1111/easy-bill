@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import DashboardLinks from "../_components/dashboardLinks";
 import { User2 } from "lucide-react";
 import LogoSection from "../_components/logoSection";
+import ThemeSwitchButton from "./_components/Theme";
 
 export default async function RootLayout({
     children,
@@ -14,7 +15,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
 
-    return (<>    
+    return (<>
         <div className="h-16 w-full border-b-1"></div>
         <div className="h-screen relative m-auto w-[1000px] z-10 bottom-16 ">
             <div className="h-16 w-full flex items-center justify-between px-4 shrink-0">
@@ -24,7 +25,7 @@ export default async function RootLayout({
                 <div className="flex w-50 justify-between gap-2">
                     <DashboardLinks />
                 </div>
-                <div className="w-60 flex justify-end ">
+                <div className="w-60 flex justify-end items-center gap-3">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild className="hover:cursor-pointer">
                             <Button variant="outline" className="rounded-full size-11" size="icon">
@@ -52,6 +53,7 @@ export default async function RootLayout({
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+                    <ThemeSwitchButton /> 
                 </div>
             </div>
             <div className="h-min-screen p-4 ">

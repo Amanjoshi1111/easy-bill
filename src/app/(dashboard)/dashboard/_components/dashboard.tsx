@@ -7,7 +7,7 @@ import PaidInvoiceTable from "./paidInvoicesTable";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { userStore } from "@/store/store";
-import { DashboardPieChart } from "./PieChart";
+import { DashboardPieChart } from "./InvoicePieChart";
 
 const CHART_DATA = [
     { text: "Revenue Analytics", component: <RevenueBarGraph /> },
