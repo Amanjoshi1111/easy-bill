@@ -18,12 +18,12 @@ export default async function Login() {
         <Card className="w-max-lg shadow-2xl py-6">
             <CardHeader>
                 <div className="flex flex-col items-center space-y-3">
-                    <div className="flex justify-center items-center w-10 h-10 bg-gray-200 rounded-full">
-                        <Mail strokeWidth={1.75} />
+                    <div className="flex justify-center items-center w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <Mail strokeWidth={1.75}/>
                     </div>
                     <CardTitle className="text-xl">Welcome</CardTitle>
                     <CardDescription className="text-center -mb-2">Enter your email to access your account</CardDescription>
-                </div>.
+                </div>  
             </CardHeader>
             <CardContent>
                 <form action={loginFormSubmit}>

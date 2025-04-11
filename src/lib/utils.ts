@@ -60,7 +60,6 @@ export function invoiceNumberString(invoiceNumber: number) {
 }
 
 export function formatDate(date: Date) {
-    console.log("Date: ", date);
     return new Intl.DateTimeFormat("en-IN", {
         dateStyle: "full"
     }).format(date).toString()
