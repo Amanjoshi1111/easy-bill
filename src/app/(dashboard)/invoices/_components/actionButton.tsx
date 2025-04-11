@@ -69,19 +69,19 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
         <DropdownMenuContent align="end">
             <DropdownMenuItem>
                 <Link href={`invoices/${id}`} className="flex items-center justify-between">
-                    <Pencil className="text-black size-4 mr-2" /> Edit Invoice
+                    <Pencil className="text-black dark:text-white size-4 mr-2" /> Edit Invoice
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
                 <Link target="_blank" href={invoicePdfHref(id)} className="flex items-center justify-between">
-                    <Download className="text-black size-4 mr-2" /> Download Invoice
+                    <Download className="text-black dark:text-white size-4 mr-2" /> Download Invoice
                 </Link>
             </DropdownMenuItem>
             <Dialog>
                 <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e)=> e.preventDefault()}>
                         <div className="flex items-center justify-between hover:cursor-pointer">
-                            <Mail className="text-black size-4 mr-2" /> Reminder Email
+                            <Mail className="text-black dark:text-white size-4 mr-2" /> Reminder Email
                         </div>
                     </DropdownMenuItem>
                 </DialogTrigger>
@@ -103,7 +103,7 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                 <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
                         <div className=" flex items-center justify-between hover:cursor-pointer">
-                            <Trash className="text-black size-4 mr-2" />Delete
+                            <Trash className="text-black dark:text-white size-4 mr-2" />Delete
                         </div>
                     </DropdownMenuItem>
                 </DialogTrigger>
@@ -125,7 +125,7 @@ export default function InvoiceActionButton({ id, status }: { id: string, status
                 <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
                         <div className="flex items-center justify-between hover:cursor-pointer">
-                            <SquareCheckBig className="text-black size-4 mr-2" /> Mark As {getStatus(status)}
+                            <SquareCheckBig className="text-black dark:text-white size-4 mr-2" /> Mark As {getStatus(status)}
                         </div>
                     </DropdownMenuItem>
                 </DialogTrigger>

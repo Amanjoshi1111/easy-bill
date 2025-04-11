@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 import DashboardLinks from "../_components/dashboardLinks";
 import { User2 } from "lucide-react";
 import LogoSection from "../_components/logoSection";
-import ThemeSwitchButton from "./_components/Theme";
+import ThemeSwitchButton from "./_components/ThemeButton";
 
 export default async function RootLayout({
     children,

@@ -17,9 +17,10 @@ export function RevenueBarGraph() {
     const currency = userStore(state => state.currency);
     const [chartData, setChartData] = useState<DashboardGraphDataEntry[]>([]);
     const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>(() => {
-        if(typeof window == "undefined") 
+        if (typeof window == "undefined")
             return "totalRevenue";
         return (localStorage.getItem("activeChart") as keyof typeof chartConfig) || "totalRevenue";
+
     });
     console.log({ activeChart }, "yoooo");
     useEffect(() => {
@@ -154,7 +155,7 @@ function CustomToolTip({ active, payload, label, }: TooltipProps<ValueType, Name
     console.log("BHAI BHAI BHAI", payload?.[0], payload?.[0]?.color);
 
     if (active && payload && payload.length) {
-        return <div className="flex flex-col bg-white p-2 rounded-md shadow-2xl shadow-gray-800 gap-2">
+        return <div className="flex flex-col bg-white dark:bg-black p-2 rounded-md shadow-2xl shadow-gray-800 gap-2">
             <div className="font-bold">{(label != undefined) ? formatDate(new Date(label)) : ""}</div>
             <div className="flex justify-between gap-4">
                 <div className="flex justify-between items-center gap-1">
