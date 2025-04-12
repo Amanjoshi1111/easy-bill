@@ -15,6 +15,8 @@ const createInvoice: FormServerAction = async (formData) => {
 
     const session = await userSession();
 
+    console.log("createInvoice", session);
+
     const validationObj = createInvoiceFormSchema.safeParse(formData);
     if (!validationObj.success) {
         return { success: false, errors: parseValidationError(validationObj.error) }
@@ -36,6 +38,7 @@ const createInvoice: FormServerAction = async (formData) => {
             redirect("/invoice");
         }
     }
+
 
     const data = await prisma.invoice.create({
         data: {
@@ -61,7 +64,7 @@ const createInvoice: FormServerAction = async (formData) => {
             note: validatedData?.note,
             user: {
                 connect: {
-                    id: session.user?.id
+                    id: session.user.id
                 }
             },
             currency: {

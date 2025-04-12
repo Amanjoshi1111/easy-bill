@@ -10,6 +10,7 @@ datasource db {
 model User {
     id            String          @id @default(cuid())
     isOnboarded   Boolean         @default(false)
+    name          String?
     firstName     String?
     lastName      String?
     address       String?
@@ -79,7 +80,7 @@ model Invoice {
     invoiceNumber Int           @default(autoincrement())
     invoiceName   String
     dueDate       DateTime
-    currency      Currency     @relation(fields: [currencyId], references: [id], onDelete: Restrict)
+    currency      Currency      @relation(fields: [currencyId], references: [id], onDelete: Restrict)
     currencyId    Int
     status        InvoiceStatus @default(PENDING)
     fromName      String

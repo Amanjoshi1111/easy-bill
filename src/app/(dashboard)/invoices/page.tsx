@@ -11,7 +11,6 @@ import { GetInvoicesType, InvoiceItemType } from "./type";
 
 export default async function InvoicePage() {
 
-    // await userSession();
     const invoiceList: GetInvoicesType = await getInvoices();
 
     return <Card >
