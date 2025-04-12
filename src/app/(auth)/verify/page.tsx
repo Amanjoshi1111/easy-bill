@@ -1,16 +1,9 @@
-import { auth } from "@/auth";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Mail } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function Verify() {
-
-    const session = await auth();
-    if (session?.user) {
-        redirect("/dashboard");
-    }
 
     return <div className="flex h-screen w-full justify-center items-center p-4">
         <Card className="w-[300px] shadow-2xl">

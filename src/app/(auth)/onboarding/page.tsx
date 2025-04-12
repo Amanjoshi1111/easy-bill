@@ -1,12 +1,11 @@
-import { userSession } from "@/hooks/sessionHook"
 import OnboardingForm from "./onboardingForm";
 import isUserOnboarded from "@/hooks/onboardingCheck";
 import { redirect } from "next/navigation";
 
 export default async function OnboardingPage() {
 
-    const session = await userSession();
-    const isOnboarded = await isUserOnboarded(session.user?.id as string);
+
+    const isOnboarded = await isUserOnboarded();
     if (isOnboarded) {
         redirect("/dashboard");
     }

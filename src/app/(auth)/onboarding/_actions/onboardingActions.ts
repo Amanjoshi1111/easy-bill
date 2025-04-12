@@ -25,7 +25,6 @@ export const onboardingUserAction = async (rawData: OnboardingFormSchema): Promi
                 isOnboarded: true
             }
         });
-
         return { success: true };
 
     } catch {

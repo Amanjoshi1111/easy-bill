@@ -34,6 +34,7 @@ export default function CreateInvoiceForm({ title, data, serverAction, invoiceId
             subTotal: 0,
             discount: 0,
             total: 0,
+            dueDate: new Date(), //If i remove this it will cause error like invalid date format
             currency: currencyData[0].id
         },
         mode: "all",
