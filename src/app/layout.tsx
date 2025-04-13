@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,14 +30,17 @@ export default async function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] 
                 dark:bg-[#000000] dark:bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] dark:bg-[size:20px_20px] relative`}
             >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                </ThemeProvider>
+                <AuroraBackground>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+
+                        {children}
+                    </ThemeProvider>
+                </AuroraBackground>
             </body>
         </html >
     );

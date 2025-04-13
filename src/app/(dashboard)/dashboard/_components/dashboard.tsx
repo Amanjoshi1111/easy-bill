@@ -23,7 +23,7 @@ export default function Dashboard() {
     return <>
         <div className="top-0 z-40 w-full flex justify-between items-center pt-1 pb-4">
             <div className="flex flex-col gap-2">
-                <div className="text-4xl font-bold">Dashboard</div>
+                <div className="text-4xl font-bold dark:text-white">Dashboard</div>
                 <div className="text-muted-foreground">Stay on top of your metrics</div>
             </div>
             <div className="flex items-center gap-5">

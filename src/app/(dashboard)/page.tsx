@@ -1,5 +1,9 @@
 export default function Home() {
   return (
-    <h1>Hello world</h1>
+    <div>
+        {/* <AuroraBackground> */}
+        <h1>Hello world</h1>
+        {/* </AuroraBackground> */}
+    </div>
   );
 }

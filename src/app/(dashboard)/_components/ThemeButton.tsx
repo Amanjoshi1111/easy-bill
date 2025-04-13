@@ -14,7 +14,7 @@ export default function ThemeSwitchButton() {
     const setThemeState = userStore(store => store.setTheme);
 
     return <>
-        <Button className="h-8 w-8 cursor-pointer" variant={"ghost"} onClick={() => {
+        <Button className="h-8 w-8 cursor-pointer dark:text-white" variant={"ghost"} onClick={() => {
             const newTheme = (theme === Theme.dark) ? Theme.light : Theme.dark;
             setThemeState(newTheme);
             setTheme(newTheme);

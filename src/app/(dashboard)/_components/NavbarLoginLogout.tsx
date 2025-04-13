@@ -2,16 +2,15 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { links } from "@/lib/constants";
-import { auth, signOut } from "@/auth";
+import { signOut } from "@/auth";
 import { User2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { Session } from "next-auth";
 
-export default async function NavbarLoginLogout() {
+export default async function NavbarLoginLogout({ session }: { session: Session | null }) {
 
-    const session = await auth();
-
-    if (!session?.user.id) {
+    if (session?.user.id == undefined) {
         return <Link href={"/login"} className={cn(buttonVariants({ variant: "default" }), "h-8")}>
             Login
         </Link>
