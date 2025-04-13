@@ -8,12 +8,19 @@ import DashboardLinks from "../_components/dashboardLinks";
 import { User2 } from "lucide-react";
 import LogoSection from "../_components/logoSection";
 import ThemeSwitchButton from "./_components/ThemeButton";
+import isUserOnboarded from "@/hooks/onboardingCheck";
+import { redirect } from "next/navigation";
 
 export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+    const isOnboarded = isUserOnboarded();
+    if (!isOnboarded) {
+        redirect("/onboarding");
+    }
 
     return (<>
         <div className="h-16 w-full border-b-1"></div>
@@ -53,7 +60,7 @@ export default async function RootLayout({
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <ThemeSwitchButton /> 
+                    <ThemeSwitchButton />
                 </div>
             </div>
             <div className="h-min-screen p-4 ">
