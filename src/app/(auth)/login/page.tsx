@@ -1,9 +1,21 @@
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card";
 import { Mail } from "lucide-react";
-import GithubButton from "./_components/GithubButton";
-import GoogleButton from "./_components/GoogleButton";
 import { userStore } from "@/store/store";
+import { Google } from "@/components/logos/Google";
+import { Github } from "@/components/logos/Github";
+import SignInButton from "./_components/GenericSignInButton";
+
+const LoginButtons = [
+    {
+        provider: "google",
+        logo: <Google />
+    },
+    {
+        provider: "github",
+        logo: <Github />
+    }
+]
 
 export default function Login() {
 
@@ -21,8 +33,7 @@ export default function Login() {
                 </div>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
-                <GithubButton />
-                <GoogleButton />
+                {LoginButtons.map((button, idx) => <SignInButton key={idx} provider={button.provider} logo={button.logo} />)}
                 {signInError && <div className="border rounded-md bg-red-50 dark:bg-red-900/50 border-red-200 dark:border-red-800 py-4 px-3 text-sm text-center">
                     <p className="text-red-600 dark:text-red-400 text-sm">{signInError}</p>
                 </div>}
