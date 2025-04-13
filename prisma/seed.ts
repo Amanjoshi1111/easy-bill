@@ -5,10 +5,10 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 async function seedInvoices() {
 
     //1. take user id
-    const userId = "cm9ehfjtd0000o6j6w2p2uqx2";
+    const userId = "cm9g24bww0000o62ju1b2kpxh";
     for (let i = 0; i < 100; i++) {
-        const createdAt = randomDateInRange(new Date(2023, 0, 1), new Date(2025, 2, 1));
-        const dueDate = randomDateInRange(new Date(2024, 0, 1), new Date(2025, 11, 1));
+        const createdAt = randomDateInRange(new Date(2025, 0, 1), new Date(2025, 3, 11));
+        const dueDate = randomDateInRange(new Date(2025, 1, 1), new Date(2025, 5, 15));
         const randomReciever = recieverInfoArray[Math.floor((Math.random() * recieverInfoArray.length))];
         const items = getRandomItems();
         const subTotal = items.reduce((acc, item) => {
@@ -69,7 +69,7 @@ async function seedInvoices() {
             },
         });
     }
-}   
+}
 
 function getRandomItems() {
     const totalItems = Math.floor(Math.random() * 5) + 1;

@@ -16,7 +16,7 @@ export const TIMELINE_BUTTON_TEXTS = [
     },
     {
         text: "30d",
-        days: 30,
+        days: 1000,
         description: "30 days"
     }
 ]

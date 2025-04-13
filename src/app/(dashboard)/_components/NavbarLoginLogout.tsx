@@ -20,7 +20,7 @@ export default async function NavbarLoginLogout({ session }: { session: Session 
 
     return <DropdownMenu>
         <DropdownMenuTrigger asChild className="hover:cursor-pointer">
-            <Button variant="outline" className="rounded-full border-2 border-black dark:border-white size-11 dark:bg-[#171717] hover:dark:bg-[#171717]" size="icon">
+            <Button variant="outline" className="rounded-full border-1 border-gray-600 dark:border-gray-600 size-11 dark:bg-[#171717] hover:dark:bg-[#171717]" size="icon">
                 {imgLink ?
                     <Image
                         src={imgLink}

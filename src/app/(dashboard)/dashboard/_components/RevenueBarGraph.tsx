@@ -122,7 +122,7 @@ export function RevenueBarGraph() {
                         />
                         <YAxis dataKey={"totalRevenue"}
                             scale={"log"}
-                            domain={[1, 'auto']}
+                            domain={["auto", "auto"]}
                             allowDataOverflow={true}
                         // domain={[0, (dataMax: number) => Math.min(dataMax, 20000 * 3)]} 
                         />

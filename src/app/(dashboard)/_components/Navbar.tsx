@@ -16,7 +16,7 @@ export default async function Navbar() {
         <div hidden={(session?.user.id) ? false : true} className="flex w-50 justify-between gap-2">
             <DashboardLinks />
         </div>
-        <div className="w-60 flex justify-end items-center gap-3">
+        <div className="w-60 flex justify-end items-center  gap-3">
             <NavbarLoginLogout session={session} />
             <ThemeSwitchButton />
         </div>

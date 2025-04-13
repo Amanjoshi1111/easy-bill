@@ -10,7 +10,8 @@ interface UserState {
     currencyList: Currency[],
     dashboardCardData: DashboardCardData,
     activeGraphIdx: number,
-    theme: Theme
+    theme: Theme,
+    signInError: string | null
     // graphData: DashboardGraphDataEntry[]
 }
 
@@ -20,7 +21,8 @@ interface Actions {
     setCurrencyList: (currenyList: Currency[]) => void,
     setDashboardCardData: (dashboardCardData: DashboardCardData) => void,
     setActiveGraphIdx: (activeGraphIdx: number) => void,
-    setTheme:(theme: Theme) => void
+    setTheme: (theme: Theme) => void
+    setSignInError: (signInError: string) => void
 }
 
 export const userStore = create<UserState & Actions>((set) => ({
@@ -66,7 +68,11 @@ export const userStore = create<UserState & Actions>((set) => ({
             localStorage.setItem("theme", theme);
         }
         set({ theme });
-    }
+    },
+
+    //SignInError 
+    signInError: null,
+    setSignInError: (signInError) => set({ signInError }),
 }))
 
 function getLocalStorageItem(key: string, defaultValue: string) {
