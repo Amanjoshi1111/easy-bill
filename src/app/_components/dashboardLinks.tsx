@@ -17,13 +17,13 @@ export default function DashboardLinks() {
                         key={link.id}
                         href={link.href}
                         className={cn(
-                            "flex items-center rounded-sm px-4 py-1 transition-colors",
+                            "flex items-center rounded-sm px-4 py-1 transition-colors text-md font-[500] text-white dark:text-white hover:text-white ",
                             isActive
-                                ? "bg-gray-200 dark:bg-gray-900"
-                                : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                                ? "bg-gray-900 text-white"
+                                : "hover:bg-gray-700 text-black"
                         )}
                     >
-                        <div className="text-md font-[500] text-black dark:text-white">{link.name}</div>
+                        <div>{link.name}</div>
                     </Link>
                 );
             })}
